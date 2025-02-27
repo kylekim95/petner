@@ -34,7 +34,7 @@ const mockImageSrc = PNG_IMAGES.cat;
   </div>
 </template>
 
-<style>
+<style scoped>
 .animal-card {
   width: 363px;
 }
