@@ -1,39 +1,12 @@
-# petner
+# HELLO WORLD!
 
-This template should help get you started developing with Vue 3 in Vite.
-
-## Recommended IDE Setup
-
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
-
-## Type Support for `.vue` Imports in TS
-
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
+feat (feature) : 기능 구현
+fix (bug fix) : 버그 수정
+docs (documentation) : 문서 관련 사항
+style (formatting, missing semi colons, …) : 스타일 변경 (형식, 세미콜론 누락 등)
+refactor : 리팩토링
+test (when adding missing tests) : 테스트
+build : 빌드 관련 파일 수정
+ci : CI 설정 파일 수정
+perf : 성능 개선
+chore (maintain) : 빌드, 패키지 관련 (업데이트 등) 혹은 그 외 자잘한 수정
