@@ -1,5 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <h1>HOME</h1>
+  <div>
+    <h1>LSJ Hello World!</h1>
+  </div>
 </template>

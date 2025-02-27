@@ -1,5 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <h1>HOME</h1>
+  <div>
+    <h1>CYS Hello World!</h1>
+  </div>
 </template>
