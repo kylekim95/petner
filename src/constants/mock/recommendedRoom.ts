@@ -13,5 +13,5 @@ const MOCK_RECOMMENDED_ROOM = {
   roomoffseasonminfee1: 100000,
   roomintro:
     '※ 위 정보는 2024년 10월에 작성된 정보로(정상요금), 해당 숙박시설 이용요금이 수시로 변동됨에 따라 이용요금 및 기타 자세한 사항은 홈페이지 참조 요망',
-};
+} as const;
 export default MOCK_RECOMMENDED_ROOM;
