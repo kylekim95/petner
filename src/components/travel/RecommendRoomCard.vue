@@ -62,12 +62,12 @@ const mockupImageURL = PNG_IMAGES.recommendRoom;
 }
 
 .room-info-price {
-  color: #f3723f;
+  color: var(--primary-red);
   font-size: 36px;
   font-weight: 600;
   text-align: end;
 }
 .bi-person.red {
-  color: #f3723f;
+  color: var(--primary-red);
 }
 </style>
