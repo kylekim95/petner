@@ -2,6 +2,6 @@
 
 <template>
   <div>
-    <h1>LJS Hello World!</h1>
+    <h1>이정수의 테스트 입니다.</h1>
   </div>
 </template>
