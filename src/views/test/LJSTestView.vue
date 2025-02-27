@@ -2,6 +2,7 @@
 import AdoptionAnimalCard from '@/components/adoption/AdoptionAnimalCard.vue';
 import FreeCommunityPostCard from '@/components/common/FreeCommunityPostCard.vue';
 import RecommendRoomCard from '@/components/travel/RecommendRoomCard.vue';
+import TravelReviewCard from '@/components/travel/TravelReviewCard.vue';
 </script>
 
 <template>
@@ -10,5 +11,6 @@ import RecommendRoomCard from '@/components/travel/RecommendRoomCard.vue';
     <RecommendRoomCard />
     <AdoptionAnimalCard />
     <FreeCommunityPostCard />
+    <TravelReviewCard />
   </div>
 </template>
