@@ -6,7 +6,7 @@ const mockupImageURL = PNG_IMAGES.recommendRoom;
 
 <template>
   <div class="d-flex gap-3 card-wrapper">
-    <img :src="mockupImageURL" />
+    <img :src="mockupImageURL" alt="recommended room image" />
     <div class="room-info d-flex flex-column justify-content-between">
       <div class="d-flex flex-column gap-1">
         <div class="room-info-title">별채 A</div>
