@@ -1,8 +1,7 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import MainShoppingSwiper from '@/components/common/MainShoppingSwiper.vue';
+</script>
 
 <template>
-  <div>
-    <h1>PR TEST!!!!!</h1>
-    <h2 class="text-bg-primary-red">PR TEST!!!!!</h2>
-  </div>
+  <MainShoppingSwiper />
 </template>
