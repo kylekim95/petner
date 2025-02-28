@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import AppFooter from '@/components/common/AppFooter.vue';
 import AppHeader from '@/components/common/AppHeader.vue';
 
 </script>
@@ -6,6 +7,7 @@ import AppHeader from '@/components/common/AppHeader.vue';
 <template>
   <div>
     <AppHeader/>
+    <AppFooter/>
   </div>
 
 </template>
