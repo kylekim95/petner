@@ -11,7 +11,7 @@ const headerStyles = computed(() => {
     case '/HomeMain':
     case '/TravelMain':
     case '/AdoptionMain':
-    case '/AdoptionSearch':
+    case '/Adoptionsearch':
     case '/MissingComunity':
     case '/FreeComunity':
       return {
@@ -87,9 +87,11 @@ const headerStyles = computed(() => {
   width: 100%;
   max-width: 100%;
   height: 75px;
+  position: fixed;
   left: 0;
   top: 0;
   border-bottom: 1px solid;
+  z-index: 9999;
 }
 
 .logo {

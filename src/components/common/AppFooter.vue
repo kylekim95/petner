@@ -9,19 +9,12 @@ defineComponent({
 <template>
   <footer>
     <div
-      class="d-flex flex-column justify-content-center align-items-center py-2 gap-2 position-absolute w-100"
-      style="bottom: 0; background: var(--gray-3)"
+      class="d-flex flex-column justify-content-center align-items-center py-2 gap-2 position-fixed w-100"
+      style="bottom: 0; background: var(--gray-3); z-index: 100; left: 0;"
     >
       <div
         class="w-135px h-60px text-center"
-        style="
-          font-family: 'Paperlogy';
-          font-weight: 700;
-          font-size: 40px;
-          line-height: 150%;
-          letter-spacing: -0.022em;
-          color: var(--gray-7);
-        "
+        style="font-family: 'Paperlogy'; font-weight: 700; font-size: 40px; line-height: 150%; letter-spacing: -0.022em; color: var(--gray-7);"
       >
         Petner
       </div>
@@ -51,4 +44,13 @@ defineComponent({
   </footer>
 </template>
 
-<style scoped></style>
+<style scoped>
+footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: var(--gray-3);
+  z-index: 100;
+}
+</style>
