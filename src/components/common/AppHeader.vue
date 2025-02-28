@@ -67,10 +67,10 @@ const headerStyles = computed(() => {
       <router-link to="/page4" class="link">커뮤니티</router-link>
       <router-link to="/page5" class="link">실종신고</router-link>
     </nav>
-    <div class="user-avatar">
+    <router-link to="/mypage" class="user-avatar">
       <div class="person-circle"></div>
       <span class="user-name">홍길동님</span>
-    </div>
+    </router-link>
   </header>
 </template>
 
@@ -87,7 +87,6 @@ const headerStyles = computed(() => {
   width: 100%;
   max-width: 100%;
   height: 75px;
-  position: fixed;
   left: 0;
   top: 0;
   border-bottom: 1px solid;
@@ -142,6 +141,12 @@ const headerStyles = computed(() => {
     color 0.3s,
     transform 0.3s;
 }
+.link:hover {
+  transform: scale(1.05);
+}
+.link:active {
+  transform: scale(0.98);
+}
 
 .user-avatar {
   display: flex;
@@ -149,11 +154,14 @@ const headerStyles = computed(() => {
   align-items: center;
   padding: 0;
   gap: 10px;
-  width: 108px;
+  width: 120px;
   height: 28px;
   flex: none;
   order: 2;
   flex-grow: 0;
+  text-decoration: none;
+  color: var(--gray-1);
+  font-weight: 400;
 }
 
 .person-circle {
