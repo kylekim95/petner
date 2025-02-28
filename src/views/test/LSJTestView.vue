@@ -1,8 +1,13 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import MainShoppingSwiper from '@/components/homeMain/MainShoppingSwiper.vue';
+import AccommodationSwiper from '@/components/travel/AccommodationSwiper.vue';
+import RestaurantSwiper from '@/components/travel/RestaurantSwiper.vue';
+import CultureShoppingSwiper from '@/components/travel/CultureShoppingSwiper.vue';
+</script>
 
 <template>
-  <div>
-    <h1>PR TEST!!!!!</h1>
-    <h2 class="text-bg-primary-red">PR TEST!!!!!</h2>
-  </div>
+  <MainShoppingSwiper />
+  <AccommodationSwiper />
+  <RestaurantSwiper />
+  <CultureShoppingSwiper />
 </template>
