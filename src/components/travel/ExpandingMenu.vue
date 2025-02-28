@@ -97,8 +97,8 @@ function OnMouseEnter(e : Event, id : number) {
       v-for="item in props.itemData"
       :key="item.id"
       class="container h-100 rounded p-2"
-      :class='focusedId === item.id ? "bg-primary flex-fill" : "bg-secondary col-2"'
-      style="transition: all .5s ease-in-out"
+      :class='focusedId === item.id ? "flex-fill" : "col-2"'
+      style="transition: all .5s ease-in-out; background-blend-mode: multiply; background-color: rgb(0,0,0,0.5)"
       :style='{backgroundImage : `url(${item.bgImage})` }'
       ref="menuItemElements"
       @mouseenter="(e)=>OnMouseEnter(e, item.id)"
