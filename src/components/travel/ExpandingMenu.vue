@@ -120,17 +120,20 @@ function OnMouseEnter(e : Event, id : number) {
 <style scoped>
 .horizontal-text-title {
   font-size: 48px;
-  font-family: 'Paperlogy-8ExtraBold';
+  font-family: 'Paperlogy';
+  font-weight: 700;
   transition: all .3s;
 }
 .horizontal-text-content {
   font-size: 24px;
-  font-family: 'Paperlogy-5Medium';
+  font-family: 'Paperlogy';
+  font-weight: 500;
   transition: all .3s;
 }
 .vertical-text-title {
   font-size: 20px;
-  font-family: 'Paperlogy-8ExtraBold';
+  font-family: 'Paperlogy';
+  font-weight: 700;
   transition: all .3s;
   letter-spacing: 0.25rem;
   writing-mode: vertical-lr;
@@ -138,7 +141,8 @@ function OnMouseEnter(e : Event, id : number) {
 }
 .vertical-text-content {
   font-size: 20px;
-  font-family: 'Paperlogy-5Medium';
+  font-family: 'Paperlogy';
+  font-weight: 500;
   transition: all .3s;
   letter-spacing: 0.25rem;
   writing-mode: vertical-lr;
