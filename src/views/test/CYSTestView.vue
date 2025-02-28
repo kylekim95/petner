@@ -1,7 +1,13 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import AppFooter from '@/components/common/AppFooter.vue';
+import AppHeader from '@/components/common/AppHeader.vue';
+
+</script>
 
 <template>
   <div>
-    <h1>CYS Hello World!</h1>
+    <AppHeader/>
+    <AppFooter/>
   </div>
+
 </template>
