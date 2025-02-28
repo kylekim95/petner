@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
+import TravelSearch from '../views/TravelSearch.vue';
 import PATH from '@/constants/path';
 
 const router = createRouter({
@@ -46,11 +47,7 @@ const router = createRouter({
       name: 'AdoptionMain',
       component: () => import('../views/AdoptionMain.vue'),
     },
-    {
-      path: '/TravelSearch',
-      name: 'TravelSearch',
-      component: () => import('../views/TravelSearch.vue'),
-    },
+    { path: PATH.travelSearch, name: 'TravelSearch', component: TravelSearch },
     {
       path: '/AdoptionSearch',
       name: 'AdoptionSearch',
