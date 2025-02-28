@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router';
 import { computed } from 'vue';
+import PATH from '@/constants/path';
 
 const route = useRoute();
 
@@ -10,7 +11,7 @@ const headerStyles = computed(() => {
   switch (path) {
     case '/HomeMain':
     case '/TravelMain':
-    case '/AdoptionMain':
+    case PATH.adoption:
     case '/AdoptionSearch':
     case '/MissingComunity':
     case '/FreeComunity':
