@@ -106,12 +106,12 @@ function OnMouseEnter(e : Event, id : number) {
       @transitionstart="(e)=>OnExpandStart(e)"
     >
       <div class="p-2 position-absolute bottom-0">
-        <span class="horizontal-text-title text-gray-1" ref='menuItemElementTitles'>{{ '어쩌구둘레길트랙킹' }}</span> <br>
-        <span class="horizontal-text-content text-gray-1" ref='menuItemElementContents'>{{ '제주도' }}</span>
+        <span class="horizontal-text-title text-gray-1" :class="item.id === focusedId ? 'opacity-100' : 'opacity-0'" ref='menuItemElementTitles'>{{ item.title }}</span> <br>
+        <span class="horizontal-text-content text-gray-1" :class="item.id === focusedId ? 'opacity-100' : 'opacity-0'" ref='menuItemElementContents'>{{ item.content }}</span>
       </div>
       <div class="p-2 d-flex">
-        <span class="vertical-text-title text-gray-1" ref='menuItemElementTitles2'>{{ '어쩌구둘레길트랙킹' }}</span>
-        <span class="vertical-text-content text-gray-6" ref='menuItemElementContents2'>{{ '안녕하세요' }}</span>
+        <span class="vertical-text-title text-gray-1" :class="item.id === focusedId ? 'opacity-0' : 'opacity-100'" ref='menuItemElementTitles2'>{{ item.title }}</span>
+        <span class="vertical-text-content text-gray-6" :class="item.id === focusedId ? 'opacity-0' : 'opacity-100'" ref='menuItemElementContents2'>{{ item.content }}</span>
       </div>
     </div>
   </div>
