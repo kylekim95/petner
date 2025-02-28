@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import PNG_IMAGES from '../../../public/PNG-Image/image.ts';
+import PNG_IMAGES from '../../../../public/PNG-Image/image.ts';
 </script>
 
 <template>

@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import AppHeader from '@/components/common/AppHeader.vue';
 import AppFooter from '@/components/common/AppFooter.vue';
-import AdoptionHero from '@/components/adoption/AdoptionHero.vue';
+import AdoptionHero from '@/components/adoption/main/AdoptionHero.vue';
+import AdoptionGraph from '@/components/adoption/main/AdoptionGraph.vue';
 </script>
 
 <template>
@@ -9,7 +10,7 @@ import AdoptionHero from '@/components/adoption/AdoptionHero.vue';
     <AppHeader />
     <AdoptionHero />
     <div class="main-contents">
-      <div>여행</div>
+      <AdoptionGraph />
     </div>
     <AppFooter />
   </div>
@@ -22,6 +23,7 @@ import AdoptionHero from '@/components/adoption/AdoptionHero.vue';
 
 .main-contents {
   width: 1280px;
+  min-width: 1200px;
   display: flex;
   flex-direction: column;
   margin: auto;
