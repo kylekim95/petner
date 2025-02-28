@@ -49,7 +49,7 @@ const props = defineProps<{
       </div>
       <div class="fw-bold" :style="{ fontSize: '20px' }">저희 집 댕댕이와 캠핑 다녀왔어요</div>
       <div class="text-gray-7" :style="{ fontSize: '16px', fontWeight: '300' }">
-        부산에 있는 캠피장 다녀왔는데 기대했던거 이상이에요. 꼭한번 가보시는걸 추천드려요
+        부산에 있는 캠피장 다녀왔는데 기대했던거 이상이에요. 꼭한번 가보시는걸 추천드려요!
       </div>
       <div class="d-flex flex-row align-content-center justify-content-between">
         <div class="d-flex flex-row align-items-center gap-3">
