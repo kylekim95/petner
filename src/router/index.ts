@@ -1,10 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
+import PATH from '@/constants/path';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    { path: '/', name: 'home', component: HomeView },
+    { path: PATH.root, name: 'home', component: HomeView },
     {
       path: '/KSYTestView',
       name: 'KSYTestView',
@@ -29,6 +30,31 @@ const router = createRouter({
       path: '/LSJTestView',
       name: 'LSJTestView',
       component: () => import('../views/test/LSJTestView.vue'),
+    },
+    {
+      path: '/HomeMain',
+      name: 'HomeMain',
+      component: () => import('../views/HomeMain.vue'),
+    },
+    {
+      path: '/TravelMain',
+      name: 'TravelMain',
+      component: () => import('../views/TravelMain.vue'),
+    },
+    {
+      path: '/AdoptionMain',
+      name: 'AdoptionMain',
+      component: () => import('../views/AdoptionMain.vue'),
+    },
+    {
+      path: '/TravelSearch',
+      name: 'TravelSearch',
+      component: () => import('../views/TravelSearch.vue'),
+    },
+    {
+      path: '/AdoptionSearch',
+      name: 'AdoptionSearch',
+      component: () => import('../views/AdoptionSearch.vue'),
     },
   ],
 });

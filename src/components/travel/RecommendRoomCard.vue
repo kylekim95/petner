@@ -63,7 +63,8 @@ const rest = MOCK_RECOMMENDED_ROOM.roommaxcount - MOCK_RECOMMENDED_ROOM.roombase
 
 .room-info-title {
   font-size: 36px;
-  font-family: 'Paperlogy-7Bold';
+  font-family: 'Paperlogy';
+  font-weight: 700;
 }
 
 .room-info-price {
