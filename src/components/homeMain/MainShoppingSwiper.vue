@@ -24,7 +24,7 @@ function handleClick() {
 </script>
 
 <template>
-  <div class="container my-5">
+  <div class="container p-0">
     <Swiper :slides-per-view="3" :space-between="5" style="width: 100%">
       <SwiperSlide v-for="item in props.shoppingItems" :key="item.id" @click="handleClick">
         <div class="card border-0 text-center text-gray-1">
