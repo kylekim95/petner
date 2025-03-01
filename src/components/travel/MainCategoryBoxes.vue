@@ -7,11 +7,8 @@ export interface Category {
 
 const props = defineProps<{
   categories: Category[];
+  handleClick?: () => void;
 }>();
-
-function handleClick() {
-  alert('path로 이동');
-}
 </script>
 
 <template>

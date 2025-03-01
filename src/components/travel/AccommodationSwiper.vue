@@ -19,11 +19,8 @@ const props = defineProps<{
   accommodations: Accommodation[];
   sectionTitle?: string;
   sectionSubtitle?: string;
+  handleClick?: () => void;
 }>();
-
-function handleClick() {
-  alert('path로 이동');
-}
 </script>
 
 <template>
