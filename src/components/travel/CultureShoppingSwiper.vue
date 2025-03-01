@@ -1,70 +1,34 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-
 import { Swiper, SwiperSlide } from 'swiper/vue';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
 
-interface Shopping {
+export interface ShoppingAndCulture {
   id: number | string;
   img: string;
   path?: string;
 }
 
-const restaurants = ref<Shopping[]>([
-  {
-    id: 1,
-    img: '/forSwipers/shopping1.png',
-  },
-  {
-    id: 2,
-    img: '/forSwipers/shopping2.png',
-  },
-  {
-    id: 3,
-    img: '/forSwipers/shopping3.png',
-  },
-  {
-    id: 4,
-    img: '/forSwipers/shopping4.png',
-  },
-  {
-    id: 5,
-    img: '/forSwipers/shopping5.png',
-  },
-  {
-    id: 6,
-    img: '/forSwipers/shopping1.png',
-  },
-  {
-    id: 7,
-    img: '/forSwipers/shopping2.png',
-  },
-  {
-    id: 8,
-    img: '/forSwipers/shopping3.png',
-  },
-  {
-    id: 9,
-    img: '/forSwipers/shopping4.png',
-  },
-  {
-    id: 10,
-    img: '/forSwipers/shopping5.png',
-  },
-]);
-
-function handleClick() {
-  alert('path로 이동');
-}
+const props = defineProps<{
+  shopping: ShoppingAndCulture[];
+  sectionTitle?: string;
+  sectionSubtitle?: string;
+  handleClick?: () => void;
+}>();
 </script>
 
 <template>
-  <div class="container my-5">
-    <Swiper :slides-per-view="5" :space-between="3" style="width: 100%">
-      <SwiperSlide v-for="item in restaurants" :key="item.id">
-        <div class="card border-0 text-center text-gray-1" @click="handleClick">
+  <div class="container mt-4">
+    <div class="gray-10 fw-bold mt-5" style="font-size: 36px; align-self: flex-start">
+      {{ sectionTitle }}
+    </div>
+    <div class="gray-10 text-gray-7" style="font-size: 24px; align-self: flex-start">
+      {{ sectionSubtitle }}
+    </div>
+    <Swiper :slides-per-view="5" :space-between="3" style="width: 100%" class="mt-3">
+      <SwiperSlide v-for="item in props.shopping" :key="item.id">
+        <div class="card border-0 text-center text-gray-1 card-img-top" @click="handleClick">
           <img
             :src="item.img"
             class="card-img-top"

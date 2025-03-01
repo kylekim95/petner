@@ -37,7 +37,7 @@ const router = createRouter({
       component: () => import('../views/HomeMain.vue'),
     },
     {
-      path: '/TravelMain',
+      path: PATH.travel,
       name: 'TravelMain',
       component: () => import('../views/TravelMain.vue'),
     },

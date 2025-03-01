@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { defineProps } from 'vue';
 
 import { Swiper, SwiperSlide } from 'swiper/vue';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
 
-interface Accommodation {
+export interface Accommodation {
   id: number | string;
   img: string;
   type: string;
@@ -15,53 +15,24 @@ interface Accommodation {
   path?: string;
 }
 
-const accommodations = ref<Accommodation[]>([
-  {
-    id: 1,
-    img: '/forSwipers/koreanTraditionalAccomodation.png',
-    type: '한옥숙소',
-    location: '서울시',
-    price: '100,000 원',
-  },
-  {
-    id: 2,
-    img: '/forSwipers/swimmingPool.png',
-    type: '수영장 숙소',
-    location: '강원도',
-    price: '100,000 원',
-  },
-  {
-    id: 3,
-    img: '/forSwipers/koreanTraditionalAccomodation2.png',
-    type: '한옥숙소',
-    location: '제주도',
-    price: '100,000 원',
-  },
-  {
-    id: 4,
-    img: '/forSwipers/swimmingPool.png',
-    type: '한옥숙소',
-    location: '서울시',
-    price: '100,000 원',
-  },
-  {
-    id: 5,
-    img: '/forSwipers/koreanTraditionalAccomodation2.png',
-    type: '한옥숙소',
-    location: '제주도',
-    price: '100,000 원',
-  },
-]);
-
-function handleClick() {
-  alert('path로 이동');
-}
+const props = defineProps<{
+  accommodations: Accommodation[];
+  sectionTitle?: string;
+  sectionSubtitle?: string;
+  handleClick?: () => void;
+}>();
 </script>
 
 <template>
-  <div class="container my-5">
-    <Swiper :slides-per-view="3" :space-between="3" style="width: 100%">
-      <SwiperSlide v-for="item in accommodations" :key="item.id">
+  <div class="container mt-4">
+    <div class="gray-10 fw-bold mt-5" style="font-size: 36px; align-self: flex-start">
+      {{ sectionTitle }}
+    </div>
+    <div class="gray-10 text-gray-7" style="font-size: 24px; align-self: flex-start">
+      {{ sectionSubtitle }}
+    </div>
+    <Swiper :slides-per-view="3" :space-between="3" style="width: 100%" class="mt-3">
+      <SwiperSlide v-for="item in props.accommodations" :key="item.id">
         <div class="card border-0 text-center text-gray-1" @click="handleClick">
           <img
             :src="item.img"
