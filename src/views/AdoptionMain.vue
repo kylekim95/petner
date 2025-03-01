@@ -22,7 +22,7 @@ import AdoptionCardBanner from '@/components/adoption/main/AdoptionCardBanner.vu
       <AdoptionReviews />
       <AdoptionCardBanner />
     </div>
-    <!-- <AppFooter /> -->
+    <AppFooter />
   </div>
 </template>
 
