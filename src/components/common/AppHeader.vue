@@ -1,64 +1,7 @@
-<script setup lang="ts">
-import { useRoute } from 'vue-router';
-import { computed } from 'vue';
-
-const route = useRoute();
-
-const headerStyles = computed(() => {
-  const path = route.path;
-
-  switch (path) {
-    case '/HomeMain':
-    case '/TravelMain':
-    case '/AdoptionMain':
-    case '/Adoptionsearch':
-    case '/MissingComunity':
-    case '/FreeComunity':
-      return {
-        color: 'var(--gray-1)',
-        borderBottom: '1px solid var(--gray-1)',
-      };
-    case '/TravelDetail':
-    case '/TravelSearch':
-    case '/TravelPlanner':
-      return {
-        backgroundColor: 'var(--primary-red)',
-        color: 'var(--gray-1)',
-        borderBottom: '1px solid var(--gray-1)',
-      };
-    case '/MissingComunityDetail':
-    case '/MissingComunityForm':
-      return {
-        backgroundColor: 'var(--primary-blue)',
-        color: 'var(--gray-1)',
-        borderBottom: '1px solid var(--gray-1)',
-      };
-    case '/AdoptionDetail':
-    case '/AdoptionForm':
-      return {
-        backgroundColor: 'var(--secondary-green)',
-        color: 'var(--gray-1)',
-        borderBottom: '1px solid var(--gray-1)',
-      };
-    case '/FreeComunityDetail':
-    case '/FreeComunityForm':
-      return {
-        backgroundColor: 'var(--primary-purple)',
-        color: 'var(--gray-1)',
-        borderBottom: '1px solid var(--gray-1)',
-      };
-    default:
-      return {
-        backgroundColor: 'var(--gray-1)',
-        color: 'var(--gray-10)',
-        borderBottom: '1px solid var(--gray-10)',
-      };
-  }
-});
-</script>
+<script setup lang="ts"></script>
 
 <template>
-  <header :style="headerStyles" class="header">
+  <header class="header">
     <div class="logo">Petner</div>
     <nav class="links">
       <router-link to="/AdoptionMain" class="link">유기동물 입양</router-link>
@@ -92,7 +35,6 @@ const headerStyles = computed(() => {
   border-bottom: 1px solid;
   z-index: 9999;
 }
-
 .logo {
   width: 165px;
   height: 72px;
@@ -107,7 +49,6 @@ const headerStyles = computed(() => {
   order: 0;
   flex-grow: 0;
 }
-
 .links {
   display: flex;
   flex-direction: row;
@@ -120,7 +61,6 @@ const headerStyles = computed(() => {
   order: 1;
   flex-grow: 0;
 }
-
 .link {
   display: flex;
   align-items: center;
@@ -147,7 +87,6 @@ const headerStyles = computed(() => {
 .link:active {
   transform: scale(0.98);
 }
-
 .user-avatar {
   display: flex;
   flex-direction: row;
@@ -163,14 +102,12 @@ const headerStyles = computed(() => {
   color: var(--gray-1);
   font-weight: 400;
 }
-
 .person-circle {
   width: 28px;
   height: 28px;
   border-radius: 50%;
   background-color: #f3723f;
 }
-
 .user-name {
   font-family: 'Pretendard';
   font-style: normal;
