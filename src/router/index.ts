@@ -42,7 +42,7 @@ const router = createRouter({
       component: () => import('../views/TravelMain.vue'),
     },
     {
-      path: '/AdoptionMain',
+      path: PATH.adoption,
       name: 'AdoptionMain',
       component: () => import('../views/AdoptionMain.vue'),
     },
