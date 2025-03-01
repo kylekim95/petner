@@ -11,7 +11,9 @@ import ShelterCard from './ShelterCard.vue';
       <router-link :to="PATH.adoptionShelter">더보기</router-link>
     </div>
     <div class="d-flex justify-content-between">
-      <div class="map">map</div>
+      <div class="map">
+        <img src="/public/PNG-Image/images/adoption-map.png" alt="korea map image" />
+      </div>
       <div class="shelter-info-wrapper">
         <div class="shelter-title-card mb-3">
           <span
