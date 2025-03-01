@@ -19,8 +19,13 @@ import ShelterCard from './ShelterCard.vue';
             >개소</span
           >
         </div>
-
-        <ShelterCard v-for="shelter of ANIMAL_SHELTERS" :key="shelter.careNm" :shelter="shelter" />
+        <div class="overflow-scroll">
+          <ShelterCard
+            v-for="shelter of ANIMAL_SHELTERS"
+            :key="shelter.careNm"
+            :shelter="shelter"
+          />
+        </div>
       </div>
     </div>
   </div>
