@@ -5,12 +5,11 @@ import PNG_IMAGES from '../../../../public/PNG-Image/image.ts';
 <template>
   <div class="hero-wrapper">
     <img :src="PNG_IMAGES.adoptionHero" alt="wish adoption top banner" class="hero-img" />
-    <div class="option">
-      <div class="hero-message-wrapper">
-        <div class="hero-message">
-          <p>작은 손길로 큰 변화를,</p>
-          <p>당신의 마음이 새로운 시작을 엽니다.</p>
-        </div>
+
+    <div class="hero-message-wrapper">
+      <div class="hero-message">
+        <p>작은 손길로 큰 변화를,</p>
+        <p>당신의 마음이 새로운 시작을 엽니다.</p>
       </div>
     </div>
   </div>

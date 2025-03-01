@@ -4,6 +4,7 @@ import AppFooter from '@/components/common/AppFooter.vue';
 import AdoptionHero from '@/components/adoption/main/AdoptionHero.vue';
 import AdoptionGraph from '@/components/adoption/main/AdoptionGraph.vue';
 import AdoptionCategory from '@/components/adoption/main/AdoptionCategory.vue';
+import AdoptionMap from '@/components/adoption/main/AdoptionMap.vue';
 </script>
 
 <template>
@@ -14,10 +15,10 @@ import AdoptionCategory from '@/components/adoption/main/AdoptionCategory.vue';
       <AdoptionGraph />
     </div>
     <AdoptionCategory />
-    <AdoptionCategory />
-    <AdoptionCategory />
-    <div class="fitted-contents"></div>
-    <AppFooter />
+    <div class="fitted-contents">
+      <AdoptionMap />
+    </div>
+    <!-- <AppFooter /> -->
   </div>
 </template>
 
