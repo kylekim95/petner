@@ -6,6 +6,7 @@ import AdoptionGraph from '@/components/adoption/main/AdoptionGraph.vue';
 import AdoptionCategory from '@/components/adoption/main/AdoptionCategory.vue';
 import AdoptionMap from '@/components/adoption/main/AdoptionMap.vue';
 import AdoptionReviews from '@/components/adoption/main/AdoptionReviews.vue';
+import AdoptionCardBanner from '@/components/adoption/main/AdoptionCardBanner.vue';
 </script>
 
 <template>
@@ -19,6 +20,7 @@ import AdoptionReviews from '@/components/adoption/main/AdoptionReviews.vue';
     <div class="fitted-contents">
       <AdoptionMap />
       <AdoptionReviews />
+      <AdoptionCardBanner />
     </div>
     <!-- <AppFooter /> -->
   </div>
