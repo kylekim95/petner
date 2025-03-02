@@ -19,6 +19,7 @@ const PATH: PathType = Object.freeze({
   // 입양페이지와 그 하위
   adoption: '/adoption',
   adoptionSearch: '/adoption/search',
+  adoptionShelter: '/adoption/shelter', // 보호소 지도
   adoptionDetail: '/adoption/:animalId',
   adoptionForm: '/adoption-form',
 

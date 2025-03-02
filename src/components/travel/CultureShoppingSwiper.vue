@@ -14,11 +14,8 @@ const props = defineProps<{
   shopping: ShoppingAndCulture[];
   sectionTitle?: string;
   sectionSubtitle?: string;
+  handleClick?: () => void;
 }>();
-
-function handleClick() {
-  alert('path로 이동');
-}
 </script>
 
 <template>
