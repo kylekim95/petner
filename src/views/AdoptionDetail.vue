@@ -31,7 +31,11 @@ const selectedImage = ref('/PNG-Image/images/cat.png'); // 초기 큰 이미지�
         <div class="row">
           <!-- 동물 큰 이미지 -->
           <div class="col-md-6">
-            <img :src="selectedImage" alt="Animal Image" class="img-fluid rounded mb-3" />
+            <img
+              :src="selectedImage"
+              alt="Animal Image"
+              class="img-fluid rounded mb-3 large-image"
+            />
             <div class="gallery d-flex gap-3">
               <img
                 src="/PNG-Image/images/cat.png"
@@ -59,7 +63,9 @@ const selectedImage = ref('/PNG-Image/images/cat.png'); // 초기 큰 이미지�
             <div class="info-section p-4 my-3 text-white text-center">
               <div class="d-flex justify-content-center align-items-center">
                 <i class="fa-solid fa-heart me-3" style="font-size: 30px"></i>
-                <span class="fs-5">당신의 사랑을 기다리는 생명들에게 새로운 시작을 선물하세요.</span>
+                <span class="fs-5"
+                  >당신의 사랑을 기다리는 생명들에게 새로운 시작을 선물하세요.</span
+                >
               </div>
             </div>
           </div>
@@ -68,15 +74,15 @@ const selectedImage = ref('/PNG-Image/images/cat.png'); // 초기 큰 이미지�
           <div class="col-md-6">
             <h3 class="mb-4">동물 정보</h3>
             <ul class="list-group list-group-flush">
-              <li class="list-group-item">공고번호: 0101234567890</li>
-              <li class="list-group-item">동물 종류: 개</li>
-              <li class="list-group-item">품종: 시바견</li>
-              <li class="list-group-item">성별: 수컷</li>
-              <li class="list-group-item">나이: 5살</li>
-              <li class="list-group-item">체중: 5kg</li>
-              <li class="list-group-item">상태: 입양 가능</li>
-              <li class="list-group-item">공고 시작일: 2024-01-01</li>
-              <li class="list-group-item">공고 종료일: 2024-12-31</li>
+              <li class="list-group-item">공고번호 <span>0101234567890</span></li>
+              <li class="list-group-item">동물 종류 <span>0101234567890</span></li>
+              <li class="list-group-item">품종 <span>0101234567890</span></li>
+              <li class="list-group-item">성별 <span>0101234567890</span></li>
+              <li class="list-group-item">나이 <span>0101234567890</span></li>
+              <li class="list-group-item">체중 <span>0101234567890</span></li>
+              <li class="list-group-item">상태 <span>0101234567890</span></li>
+              <li class="list-group-item">공고 시작일 <span>0101234567890</span></li>
+              <li class="list-group-item">공고 종료일 <span>0101234567890</span></li>
             </ul>
           </div>
         </div>
@@ -128,6 +134,15 @@ p {
   border-bottom: 2px solid #ebeeef;
   border-left: none;
   border-right: none;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.list-group-item span {
+  margin-left: 10px;
+  font-weight: bold;
 }
 
 button {
@@ -155,6 +170,6 @@ h3 {
 .large-image {
   max-width: 100%;
   max-height: 400px;
-  object-fit: contain; 
+  object-fit: contain;
 }
 </style>
