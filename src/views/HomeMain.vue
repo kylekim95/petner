@@ -70,8 +70,6 @@ const shoppingText : TextBlockDescriptor[] = [
   },
 ];
 
-
-
 const dummyData : PopularTravelData[] = [
   { image: 'https://tong.visitkorea.or.kr/cms/resource/80/3109380_image2_1.jpg', location: '웨이뷰', title: '제목제목', content: '내용내용' },
   { image: 'https://tong.visitkorea.or.kr/cms/resource/80/3109380_image2_1.jpg', location: '웨이뷰', title: '제목제목', content: '내용내용' },
@@ -147,7 +145,6 @@ const gridItemTexts : TextBlockDescriptor[][][] = [
     [ { content:'해외 이동 봉사', bgColor:'', color:'var(--primary-green)', font: 'Pretendard', size:'32px', weight:700, margin: 'm-0' }, ],
   ],
 ];
-
 </script>
 
 <template>
@@ -176,7 +173,11 @@ const gridItemTexts : TextBlockDescriptor[][][] = [
     <swiper-slide v-for="(item, index) in dummyData" :key="index"><PopularTravelCard class="h-100" :data="item" /></swiper-slide>
   </swiper>
   <!-- 플래너 배너 -->
-  <div class="container-fluid mb-5 align-content-center" style="height: 500px;" :style="{backgroundImage : `url(/PlannerBackgroundImg.png)`}">
+  <div class="container-fluid mb-5 align-content-center" style="height: 500px; min-width: 1280px; max-width: 1920px;"
+    :style="{
+      backgroundImage : `url(/PlannerBackgroundImg.png)`,
+    }"
+  >
     <div class="gap-1" :style="{ width: '67%', height: '100%', justifySelf : 'center', justifyContent: 'center', display: 'flex', flexDirection: 'row'}">
       <div class="d-flex flex-column" style="width: 35%; justify-content: center;">
         <div class="d-flex">
@@ -195,12 +196,11 @@ const gridItemTexts : TextBlockDescriptor[][][] = [
           </div>
         </button>
       </div>
-      <div class="w-50 bg-secondary opacity-50 rounded-4 align-self-center" style="height: 450px"></div>
+      <div class="w-50 bg-secondary opacity-50 rounded-4 align-self-center" style="height: 450px; min-width: 500px;"></div>
     </div>
   </div>
   <!-- 유기 동물 배너 -->
   <div class="container-fluid mb-5" style="height: 575px;">
-
 
   </div>
   <!-- 그리드 메뉴 -->
