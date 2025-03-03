@@ -68,8 +68,8 @@ import CAMPAIGN_LINKS from '@/constants/campaigns';
 
 <style>
 .wrapper {
-  width: 100vw;
-  height: 460px;
+  max-width: 100vw;
+  height: 400px;
   background-color: var(--gray-3);
 }
 </style>
