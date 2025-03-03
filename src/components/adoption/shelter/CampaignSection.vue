@@ -2,19 +2,22 @@
 import CampaignCard from '@/components/common/CampaignCard.vue';
 import TitleText from '@/components/common/TitleText.vue';
 import CAMPAIGN_LINKS from '@/constants/campaigns';
+
+const CARD_WIDTH = '100%';
+const CARD_HEIGHT = '300px';
 </script>
 
 <template>
-  <div class="wrapper d-flex gap-3 justify-content-center align-items-end pb-3">
+  <div class="wrapper d-flex flex-column flex-lg-row gap-3 justify-content-center pb-3">
     <div>
       <div class="title d-flex gap-1 align-items-center">
         <TitleText size="32px" weight="600" color="gray-10"> # 진행중인 </TitleText>
         <TitleText size="32px" weight="600" highlight-color="blue"> 반려동물 캠페인 </TitleText>
       </div>
-      <div Class="d-flex gap-3 bg-red ">
+      <div Class="d-flex gap-3 bg-red w-100">
         <CampaignCard
-          width="400px"
-          height="300px"
+          :width="CARD_WIDTH"
+          :height="CARD_HEIGHT"
           image-url="/public/Campaign/campaign-tossbank.png"
           :linkTo="CAMPAIGN_LINKS.toss"
           :hasFilter="true"
@@ -27,8 +30,8 @@ import CAMPAIGN_LINKS from '@/constants/campaigns';
           </template>
         </CampaignCard>
         <CampaignCard
-          width="400px"
-          height="300px"
+          :width="CARD_WIDTH"
+          :height="CARD_HEIGHT"
           image-url="/public/Campaign/campagin-game.png"
           :linkTo="CAMPAIGN_LINKS.togetheron"
           :hasFilter="true"
@@ -49,15 +52,15 @@ import CAMPAIGN_LINKS from '@/constants/campaigns';
       </div>
       <div Class="d-flex gap-3 bg-red ">
         <CampaignCard
-          width="400px"
-          height="300px"
+          :width="CARD_WIDTH"
+          :height="CARD_HEIGHT"
           image-url="/public/Campaign/volunteer1.png"
           :linkTo="CAMPAIGN_LINKS.luppyworld"
         />
 
         <CampaignCard
-          width="400px"
-          height="300px"
+          :width="CARD_WIDTH"
+          :height="CARD_HEIGHT"
           image-url="/public/Campaign/volunteer2.png"
           :linkTo="CAMPAIGN_LINKS.balunteer"
         />
@@ -69,7 +72,12 @@ import CAMPAIGN_LINKS from '@/constants/campaigns';
 <style>
 .wrapper {
   max-width: 100vw;
-  height: 400px;
+  padding: 20px 40px;
+  /* height: 400px; */
   background-color: var(--gray-3);
+}
+
+.campaign-category-section {
+  width: 45vw;
 }
 </style>
