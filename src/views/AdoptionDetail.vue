@@ -60,10 +60,10 @@ const selectedImage = ref('/PNG-Image/images/cat.png');
               />
             </div>
             <!-- 텍스트 섹션 -->
-            <div class="info-section p-4 my-3 text-white text-center">
+            <div class="info-section p-3 my-3 text-white text-center">
               <div class="d-flex justify-content-center align-items-center">
-                <i class="fa-solid fa-heart me-3" style="font-size: 30px"></i>
-                <span class="fs-5"
+                <i class="fa-solid fa-heart me-3" style="font-size: 20px"></i>
+                <span class="fs-6"
                   >당신의 사랑을 기다리는 생명들에게 새로운 시작을 선물하세요.</span
                 >
               </div>
@@ -147,6 +147,25 @@ const selectedImage = ref('/PNG-Image/images/cat.png');
         </table>
       </div>
 
+      <!-- 입양 신청서 작성하기 섹션 -->
+      <div class="adopt-form-container container my-5">
+        <div class="adopt-form-content">
+          <h3>
+            입양 신청서 작성하기
+            <i class="fa fa-paw" style="font-size: 2.5rem; margin-left: 10px"></i>
+          </h3>
+
+          <p>
+            사랑과 책임감을 가지고 입양을 고려해 주셔서 감사합니다.<br />
+            반려동물은 오랜 시간 동안 함께할 소중한 가족이자 친구입니다.<br />
+            신중하게 결정하시고, 입양 후에도 끝까지 책임을 다할 준비가 되어 있으신지 다시 한 번
+            생각해 주세요.
+          </p>
+          <p>아래 버튼을 클릭하여 입양신청서를 작성해 주세요.</p>
+          <a href="your-adopt-form-url" class="btn btn-primary">바로가기</a>
+        </div>
+      </div>
+
       <AppFooter />
     </div>
   </div>
@@ -222,10 +241,6 @@ h3 {
   object-fit: contain;
 }
 
-.info-section span {
-  font-size: 1.25rem;
-}
-
 .large-image {
   max-width: 100%;
   max-height: 400px;
@@ -251,5 +266,53 @@ h3 {
 
 .table th {
   width: 25%;
+}
+
+.adopt-form-container {
+  background-image: url('/PNG-Image/images/adoptformbtn.png');
+  background-size: cover;
+  background-position: center;
+  max-width: 1280px;
+  padding: 30px;
+  height: 440px;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  color: white;
+  border-radius: 15px;
+}
+
+.adopt-form-content {
+  padding: 50px;
+}
+
+.adopt-form-content h3 {
+  font-size: 40px;
+  margin-bottom: 40px;
+  text-align: start;
+}
+
+.adopt-form-content p {
+  font-size: 16px;
+  margin-bottom: 20px;
+  line-height: 1.8;
+  text-align: start;
+  font-family: 'Pretendard';
+  font-weight: 300;
+}
+
+.adopt-form-content .btn {
+  font-size: 16px;
+  padding: 10px 30px;
+  background-color: var(--gray-1);
+  color: var(--primary-green);
+  text-decoration: none;
+  border-radius: 30px;
+  transition: background-color 0.2s ease;
+}
+
+.adopt-form-content .btn:hover {
+  background-color: var(--primary-green);
+  color: var(--gray-1);
 }
 </style>
