@@ -4,7 +4,7 @@ import AppHeader from '@/components/common/AppHeader.vue';
 import AppFooter from '@/components/common/AppFooter.vue';
 
 // 클릭한 이미지의 src를 저장할 변수
-const selectedImage = ref('/PNG-Image/images/cat.png'); // 초기 큰 이미지는 첫 번째 이미지로 설정
+const selectedImage = ref('/PNG-Image/images/cat.png');
 </script>
 
 <template>
@@ -83,9 +83,68 @@ const selectedImage = ref('/PNG-Image/images/cat.png'); // 초기 큰 이미지�
               <li class="list-group-item">상태 <span>0101234567890</span></li>
               <li class="list-group-item">공고 시작일 <span>0101234567890</span></li>
               <li class="list-group-item">공고 종료일 <span>0101234567890</span></li>
+              <li class="list-group-item">특징 <span>0101234567890</span></li>
             </ul>
           </div>
         </div>
+      </div>
+
+      <!-- 구조 정보 표 -->
+      <div class="container my-5">
+        <h3 class="mb-4 title">구조 정보</h3>
+        <table class="table table-bordered">
+          <tbody>
+            <tr>
+              <th scope="row">구조 접수일</th>
+              <td class="text-center">2025-02-24</td>
+            </tr>
+            <tr>
+              <th scope="row">구조 장소</th>
+              <td class="text-center">진주시 미번천 항로 370번길 88</td>
+            </tr>
+            <tr>
+              <th scope="row">공고 기간</th>
+              <td class="text-center">2025-02-24 - 2025-03-06</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="d-flex align-items-center" style="color: var(--gray-7)">
+          <i class="bi bi-exclamation-circle-fill me-2" style="font-size: 1.5rem"></i>
+          유기동물 문의는 보호센터에 연락하시기 바랍니다.
+        </div>
+      </div>
+
+      <!-- 동물 보호소 정보 표 -->
+      <div class="container my-5">
+        <h3 class="mb-4 title">동물 보호소 정보</h3>
+        <table class="table table-bordered">
+          <tbody>
+            <tr>
+              <th scope="row">보호소명</th>
+              <td class="text-center">이기사항수의과병원</td>
+            </tr>
+            <tr>
+              <th scope="row">보호소 전화번호</th>
+              <td class="text-center">02-1234-5678</td>
+            </tr>
+            <tr>
+              <th scope="row">보호소 장소</th>
+              <td class="text-center">충청남도 공주시 팀병리7 (반죽동)</td>
+            </tr>
+            <tr>
+              <th scope="row">관할 기관</th>
+              <td class="text-center">충청남도 공주시</td>
+            </tr>
+            <tr>
+              <th scope="row">담당자</th>
+              <td class="text-center">홍길동</td>
+            </tr>
+            <tr>
+              <th scope="row">담당자 연락처</th>
+              <td class="text-center">010-1234-5678</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
       <AppFooter />
@@ -141,7 +200,7 @@ p {
 }
 
 .list-group-item span {
-  margin-left: 10px;
+  margin-left: 20px;
   font-weight: bold;
 }
 
@@ -171,5 +230,26 @@ h3 {
   max-width: 100%;
   max-height: 400px;
   object-fit: contain;
+}
+
+.title {
+  font-weight: bold;
+  display: flex;
+}
+
+.table th {
+  background: var(--gray-3);
+  text-align: center;
+  padding: 15px;
+  border-left: none;
+}
+.table td {
+  text-align: center;
+  padding: 15px;
+  border-right: none;
+}
+
+.table th {
+  width: 25%;
 }
 </style>
