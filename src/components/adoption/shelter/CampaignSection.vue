@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import CampaignCard from '@/components/common/CampaignCard.vue';
 import TitleText from '@/components/common/TitleText.vue';
+import CAMPAIGN_LINKS from '@/constants/campaigns';
 </script>
 
 <template>
@@ -15,7 +16,7 @@ import TitleText from '@/components/common/TitleText.vue';
           width="400px"
           height="300px"
           image-url="/public/Campaign/campaign-tossbank.png"
-          linkTo="https://www.tossbank.com/articles/32383"
+          :linkTo="CAMPAIGN_LINKS.toss"
           :hasFilter="true"
         >
           <template #title>
@@ -29,7 +30,7 @@ import TitleText from '@/components/common/TitleText.vue';
           width="400px"
           height="300px"
           image-url="/public/Campaign/campagin-game.png"
-          linkTo="https://togetheron.net/dang_introduce"
+          :linkTo="CAMPAIGN_LINKS.togetheron"
           :hasFilter="true"
         >
           <template #title>
@@ -51,14 +52,14 @@ import TitleText from '@/components/common/TitleText.vue';
           width="400px"
           height="300px"
           image-url="/public/Campaign/volunteer1.png"
-          linkTo="https://luppyworld.com/VolunteerApply/?idx=331"
+          :linkTo="CAMPAIGN_LINKS.luppyworld"
         />
 
         <CampaignCard
           width="400px"
           height="300px"
           image-url="/public/Campaign/volunteer2.png"
-          linkTo="https://www.biteme.co.kr/shop/event/event_view?no=2371&allow=Y&srsltid=AfmBOorT1yYAgrLNfeOY4D5tJwLVRMWufjFE7LKJ4H-hj2w3yVu-84Gk"
+          :linkTo="CAMPAIGN_LINKS.balunteer"
         />
       </div>
     </div>
