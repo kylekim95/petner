@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { travelListEffect } from '@/constants/travel/motion';
+import { travelListEffect } from '@/constants/travel/motion';
 import { defineModel } from 'vue';
 const currentPage = defineModel<string>();
 </script>

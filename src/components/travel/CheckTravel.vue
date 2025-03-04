@@ -3,7 +3,7 @@ import FacilitiesCategory from './FacilitiesCategory.vue';
 import RadioCategory from './RadioCategory.vue';
 import { computed, ref } from 'vue';
 import { defineModel } from 'vue';
-import { travelCategoryEffect } from '@/constants/travel/motion';
+import { travelCategoryEffect } from '@/constants/travel/motion';
 
 // props
 
