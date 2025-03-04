@@ -2,10 +2,7 @@
 import MissingCommunityPostCard from '@/components/community/MissingCommunityPostCard.vue';
 import PATH from '@/constants/path';
 import { ref } from 'vue';
-
-const sortBy = ref<'recent' | 'comment'>('recent');
-const animalType = ref<'dog' | 'cat' | 'etc'>('dog');
-
+// 목업 데이터
 const missingPost = {
   imageUrl: '/public/PNG-Image/images/cat.png',
   avatarWidth: '40px',
@@ -13,6 +10,18 @@ const missingPost = {
 };
 
 const MOCK_MISSING_POSTS = Array(6).fill(missingPost);
+
+// 필터
+const sortBy = ref<'recent' | 'comment'>('recent');
+const animalType = ref<'dog' | 'cat' | 'etc'>('dog');
+
+// 페이지네이션 변수
+const currentPage = ref(1);
+const cardsPerPage = 6;
+
+// 페이지에 표시할 카드 계산
+const startIndex = (currentPage.value - 1) * cardsPerPage;
+const currentCards = MOCK_MISSING_POSTS.slice(startIndex, startIndex + cardsPerPage); // TODO 자유게시판과 중복되는 로직 컴포지블로 분리
 </script>
 
 <template>
