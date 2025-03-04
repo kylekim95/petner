@@ -75,20 +75,21 @@ const currentCards = cards.slice(startIndex, startIndex + cardsPerPage);
 
   <!-- 카드 리스트 -->
   <div
-    class="card-list container d-grid gap-3 mb-4 py-2"
+    class="card-list container d-grid gap-2 mb-4 py-2"
     style="
       max-width: 1280px;
       margin: 0 auto;
       grid-template-columns: repeat(2, 1fr);
       justify-items: center;
+      padding-right: 80px;
     "
   >
     <!-- 카드 표시 -->
     <div v-for="(card, index) in currentCards" :key="index" class="card-item">
       <PostCard
-        width="500px"
-        height="780px"
-        imageHeight="560px"
+        width="550px"
+        height="670px"
+        imageHeight="430px"
         :imageUrl="card.imageUrl"
         :avatarWidth="card.avatarWidth"
         :avatarHeight="card.avatarHeight"
