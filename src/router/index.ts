@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
 import TravelSearch from '../views/TravelSearch.vue';
 import PATH from '@/constants/path';
+import ADOPTION_ROUTES from './routes/AdoptionRoutes';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -38,20 +39,32 @@ const router = createRouter({
       component: () => import('../views/HomeMain.vue'),
     },
     {
-      path: '/TravelMain',
+      path: PATH.travel,
       name: 'TravelMain',
       component: () => import('../views/TravelMain.vue'),
     },
+
     {
       path: '/AdoptionMain',
       name: 'AdoptionMain',
       component: () => import('../views/AdoptionMain.vue'),
     },
     { path: PATH.travelSearch, name: 'TravelSearch', component: TravelSearch },
+
     {
       path: '/AdoptionSearch',
       name: 'AdoptionSearch',
       component: () => import('../views/AdoptionSearch.vue'),
+    },
+    {
+      path: '/AdoptionDetail',
+      name: 'AdoptionDetail',
+      component: () => import('../views/AdoptionDetail.vue'),
+    },
+    {
+      path: PATH.travelDetail,
+      name: 'TravelDetail',
+      component: () => import('../views/TravelDetail.vue'),
     },
   ],
 });

@@ -8,10 +8,7 @@ defineComponent({
 
 <template>
   <footer>
-    <div
-      class="d-flex flex-column justify-content-center align-items-center py-2 gap-2 position-absolute w-100"
-      style="bottom: 0; background: var(--gray-3)"
-    >
+    <div class="footer-content">
       <div
         class="w-135px h-60px text-center"
         style="
@@ -51,4 +48,21 @@ defineComponent({
   </footer>
 </template>
 
-<style scoped></style>
+<style scoped>
+footer {
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: var(--gray-3);
+  z-index: 100;
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  gap: 10px;
+}
+</style>

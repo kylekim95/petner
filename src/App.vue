@@ -5,7 +5,7 @@ import { RouterLink, RouterView } from 'vue-router';
 <template>
   <header>
     <div>
-      <nav>
+      <!-- <nav>
         <RouterLink to="/">Home</RouterLink> |
         <RouterLink to="/KSYTestView">KSYTestView</RouterLink> |
         <RouterLink to="/LJSTestView">LJSTestView</RouterLink> |
@@ -13,7 +13,7 @@ import { RouterLink, RouterView } from 'vue-router';
         <RouterLink to="/SJSTestView">SJSTestView</RouterLink> |
         <RouterLink to="/LSJTestView">LSJTestView</RouterLink>
         
-      </nav>
+      </nav> -->
     </div>
   </header>
   <RouterView />
