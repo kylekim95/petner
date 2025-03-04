@@ -2,12 +2,10 @@
 import PhotoGrid from '@/components/travel/travelDetail/PhotoGrid.vue';
 import InfoCard from '@/components/travel/travelDetail/TravelInfoCard.vue';
 import { type DetailCard } from '@/components/travel/travelDetail/TravelInfoCard.vue';
-// import {
-//   type AccommodationDetail,
-//   type RestaurantDetail,
-// } from '@/components/travel/travelDetail/TravelInfoCard.vue';
+// import { computed } from 'vue';
+// import type{AccommodationDetail,RestaurantDetail} from '@/components/travel/travelDetail/TravelInfoCard.vue';
 
-// 예시 코드 (API로 받아서 contenttypeid 별로 prop을 지정해야합니다.)
+// *** 예시 코드 (API로 받아서 contenttypeid 별로 prop을 지정해야합니다.)
 // function parseDetail(apiResponse: any): DetailCard {
 //   // 예를 들어, API 응답이 JSON 객체라고 가정
 //   if (apiResponse.contenttypeid === 32) {
@@ -40,6 +38,8 @@ import { type DetailCard } from '@/components/travel/travelDetail/TravelInfoCard
 //     throw new Error('알 수 없는 contenttypeid: ' + apiResponse.contenttypeid);
 //   }
 // }
+
+// *** HTML 태그 없이 플레인 텍스트 렌더링하는 함수 필요!!!
 
 //이미지 API요청의의 RES
 const imageArray = [
@@ -115,9 +115,46 @@ const DummyShoppingData: DetailCard = {
   parkingshopping: '가능 (주차장 협소)',
   restdateshopping: null,
 };
+
+const DummyTourSpotData: DetailCard = {
+  contenttypeid: 12,
+  title: '가우도',
+  addr1: '전라남도 강진군 도암면 월곶로 473',
+  tel: null,
+  homepage: null,
+  firstimage: null,
+  overview:
+    '강진군 도암면 망호(望湖)에 속한 강진만의 8개 섬 가운데 유일한 유인도인 가우도는 강진읍 보은산이 소의 머리에 해당되고 섬의 생김새가 소(牛)의 멍에에 해당된다 하여 ‘가우도’라고 부르게 되었다고 전해진다. 가우도는 사방으로 강진만과 무인도를 조망할 수 있으며 해안경관이 매우 우수하고 섬 내부에는 후박나무, 편백나무 군락지 및 곰솔 등 천혜의 관광 자원이 매우 풍부하다. 자동차가 다니지 않는 출렁다리가 양쪽으로 연결되어 걸어서 섬에 들어갈 수 있으며 섬에 도착하면 산과 바다를 감상하여 걸을 수 있는 2.5km의 생태탐방로가 조성되어 있으며, 다양한 어종이 잡히는 복합낚시공원, 섬 정상에 있는 청자타워(높이 25m)에서 출발하여 해상을 나는 체험을 할 수 있는 친환경 레저시설인 집트렉, 바다를 가르는 제트보트 등 다양한 레저 체험을 즐길 수 있다.',
+  mapx: 0,
+  mapy: 0,
+  infocenter: '010-3849-7542',
+  restdate: '연중무휴',
+  parking: '불가능',
+  usetime: null,
+  expguide:
+    '[짚트랙체험]<br />\n- 개인 25,000원<br />\n- 단체 성인 18,000원 (20인 이상) / 단체 학생 15,000원(20인 이상)<br />\n- 학생 17,000원 (고등학생 이하)<br />\n- 강진군민 15,000원 (장애인, 군인, 경찰 포함)<br />\n※ 이용요금은 변동될 수 있으므로 홈페이지 참조 또는 전화 문의 요망',
+};
+
+const DummyActivitiesData: DetailCard = {
+  contenttypeid: 28,
+  title: '가평TOP랜드 번지점프',
+  addr1: '경기도 가평군 가평읍 북한강변로 1044-15',
+  homepage: 'http://www.ktopland.com',
+  tel: null,
+  mapx: 0,
+  mapy: 0,
+  overview:
+    '가평TOP랜드(가평탑랜드)는 1999년에 시작한 복합 익스트림 수상레저타운이다. 국내 최대 규모라고 할 만큼 번지점프와 수상 레저, 단체 수용 가능한 펜션과 라이브 카페, 북한강 선상 바비큐 시설을 겸비하고 있으며 여러 방송에 알려진 유명한 번지점프 장소이기도 하다.지점프는 예매를 해야 하고 예매 후 10일 이내 사용을 권장한다. 기상악화 시 이용이 중단될 수 있고 취소 시 위약금이 발생할 수 있다.번지점프는 안전한 번지점프를 위하여 주의사항이 적힌 서약서를 작성하고 서약서에 적힌 안전 규칙들을 숙지하여 안전한 번지점프를 즐길 수 있도록 주의해야 한다. 자신에게 맞는 장비 착용을 위한 필수 과정으로 몸무게를 측정하고 35kg~103kg까지 이용 가능하며, 교관의 지시에 따라 안전 장비를 착용하고 교관을 통해 번지점프 안전교육 및 실습을 받아야 한다.교관과 함께 번지점프를 하기 위한 [상판]으로 엘리베이터를 타고 이동하고 교관의 구령 및 지시에 따라 번지점프를 체험해 볼 수 있다.',
+  firstimage: 'http://tong.visitkorea.or.kr/cms/resource/86/1900086_image2_1.jpg',
+  infocenterleports: '031-582-5372',
+  parkingleports: '가능<br>요금(무료)',
+  restdateleports: '연중무휴, 단 사전예약',
+  usefeeleports: null,
+  usetimeleports: '09:00~18:00',
+};
 </script>
 
 <template>
-  <PhotoGrid :firstimage="DummyCultureData.firstimage" :images="imageArray" />
-  <InfoCard :detail="DummyCultureData" />
+  <PhotoGrid :firstimage="DummyActivitiesData.firstimage" :images="imageArray" />
+  <InfoCard :detail="DummyActivitiesData" />
 </template>

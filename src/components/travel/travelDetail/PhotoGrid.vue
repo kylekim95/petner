@@ -30,7 +30,7 @@ const subImages = computed<(string | null)[]>(() => {
         />
         <div
           v-else
-          class="placeholder bg-light d-flex align-items-center justify-content-center rounded-4"
+          class="placeholderMain bg-light d-flex align-items-center justify-content-center rounded-4"
         >
           <span class="text-muted">No Image</span>
         </div>
@@ -71,6 +71,12 @@ const subImages = computed<(string | null)[]>(() => {
   object-fit: cover;
 }
 
+.placeholderMain {
+  width: 100%;
+  height: 500px;
+  min-height: 200px;
+  border: 1px dashed #ccc;
+}
 .placeholder {
   width: 100%;
   height: 245px;

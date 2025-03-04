@@ -27,7 +27,7 @@ export interface RestaurantDetail extends BaseDetail {
   firstmenu: string | null;
 }
 
-export interface Culture extends BaseDetail {
+export interface CultureDetail extends BaseDetail {
   contenttypeid: 14;
   infocenterculture: string | null;
   usetimeculture: string | null;
@@ -35,15 +35,38 @@ export interface Culture extends BaseDetail {
   parkingculture: string | null;
   parkingfee: string | null;
 }
-export interface Shopping extends BaseDetail {
+
+export interface ShoppingDetail extends BaseDetail {
   contenttypeid: 38;
   infocentershopping: string | null;
   fairday: string | null;
   parkingshopping: string | null;
   restdateshopping: string | null;
 }
+export interface TourSpotDetail extends BaseDetail {
+  contenttypeid: 12;
+  infocenter: string | null;
+  restdate: string | null;
+  expguide: string | null;
+  parking: string | null;
+  usetime: string | null;
+}
+export interface ActivitiesDetail extends BaseDetail {
+  contenttypeid: 28;
+  infocenterleports: string | null;
+  restdateleports: string | null;
+  usetimeleports: string | null;
+  parkingleports: string | null;
+  usefeeleports: string | null;
+}
 
-export type DetailCard = AccommodationDetail | RestaurantDetail | Culture | Shopping;
+export type DetailCard =
+  | AccommodationDetail
+  | RestaurantDetail
+  | CultureDetail
+  | ShoppingDetail
+  | TourSpotDetail
+  | ActivitiesDetail;
 
 const { detail } = defineProps<{ detail: DetailCard }>();
 </script>
@@ -177,7 +200,7 @@ const { detail } = defineProps<{ detail: DetailCard }>();
     </div>
   </div>
 
-  <!-- 문화 & 쇼핑 (contenttyepid === 14 || 38) -->
+  <!-- 문화  (contenttyepid === 14) -->
   <div v-if="detail?.contenttypeid === 14" class="container mb-5">
     <div class="row g-2">
       <h3 class="text-secondary-red fs-5" style="font-family: 'Paperlogy'; font-weight: 700">
@@ -238,6 +261,7 @@ const { detail } = defineProps<{ detail: DetailCard }>();
     </div>
   </div>
 
+  <!-- 쇼핑 contenttypeid === 38 -->
   <div v-if="detail?.contenttypeid === 38" class="container mb-5">
     <div class="row g-2">
       <h3 class="text-secondary-red fs-5" style="font-family: 'Paperlogy'; font-weight: 700">
@@ -282,6 +306,127 @@ const { detail } = defineProps<{ detail: DetailCard }>();
         <div class="d-flex align-items-center justify-content-between mt-2">
           <h2 class="fs-5">주차 정보</h2>
           <span class="fs-6">{{ detail.parkingshopping ?? '주차요금 정보 없음' }}</span>
+        </div>
+      </div>
+
+      <!-- 오른쪽: 지도 Placeholder -->
+      <div class="col-6">
+        <div class="map-placeholder d-flex align-items-center justify-content-center rounded-4">
+          <span class="text-muted">지도 영역 (Placeholder)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 관광 contenttypeid === 12 -->
+  <div v-if="detail?.contenttypeid === 12" class="container mb-5">
+    <div class="row g-2">
+      <h3 class="text-secondary-red fs-5" style="font-family: 'Paperlogy'; font-weight: 700">
+        관광 & 체험
+      </h3>
+      <div class="d-flex align-items-center justify-content-between mb-3">
+        <h1 class="mb-0 text-gray-10" style="font-family: 'Paperlogy'; font-weight: 700">
+          {{ detail?.title ?? '가우도' }}
+        </h1>
+        <i class="bi bi-map fa-2x text-primary-green"></i>
+      </div>
+
+      <div class="bi bi-geo-alt fa-s text-secondary-red fs-5">
+        <span class="ms-1 text-gray-7"> {{ detail?.addr1 ?? '주소정보 없음' }}</span>
+      </div>
+      <div class="bi bi-telephone fa-s text-secondary-red fs-5">
+        <span class="ms-1 text-gray-7"> {{ detail?.tel ?? '-' }}</span>
+      </div>
+      <div class="bi bi-house fa-s text-secondary-red fs-5">
+        <span class="ms-1 text-gray-7">{{ detail?.homepage ?? '정보 없음' }}</span>
+      </div>
+    </div>
+    <div class="row mt-3 gy-3">
+      <div class="col-6">
+        <h2 class="mb-3 fs-4">소개</h2>
+
+        <p class="fs-7">
+          {{ detail?.overview ?? '소개글 없음' }}
+        </p>
+        <div class="d-flex align-items-center justify-content-between mt-5">
+          <h2 class="fs-5">문의 및 안내</h2>
+          <span class="fs-6">{{ detail?.infocenter ?? '-' }}</span>
+        </div>
+        <div class="d-flex align-items-center justify-content-between mt-2">
+          <h2 class="fs-5">영업시간</h2>
+          <span class="fs-6">{{ detail?.usetime ?? '-' }}</span>
+        </div>
+        <div class="d-flex align-items-center justify-content-between mt-2">
+          <h2 class="fs-5">쉬는 날</h2>
+          <span class="fs-6">{{ detail?.restdate || '-' }}</span>
+        </div>
+        <div class="d-flex align-items-center justify-content-between mt-2">
+          <h2 class="fs-5">주차 정보</h2>
+          <span class="fs-6">{{ detail.parking ?? '-' }}</span>
+        </div>
+        <div class="d-block mt-2">
+          <h2 class="fs-5">체험 안내</h2>
+          <span class="fs-6">{{ detail.expguide ?? '-' }}</span>
+        </div>
+      </div>
+
+      <!-- 오른쪽: 지도 Placeholder -->
+      <div class="col-6">
+        <div class="map-placeholder d-flex align-items-center justify-content-center rounded-4">
+          <span class="text-muted">지도 영역 (Placeholder)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 레포츠 contenttypeid === 28 -->
+  <div v-if="detail?.contenttypeid === 28" class="container mb-5">
+    <div class="row g-2">
+      <h3 class="text-secondary-red fs-5" style="font-family: 'Paperlogy'; font-weight: 700">
+        관광 & 체험
+      </h3>
+      <div class="d-flex align-items-center justify-content-between mb-3">
+        <h1 class="mb-0 text-gray-10" style="font-family: 'Paperlogy'; font-weight: 700">
+          {{ detail?.title ?? '가우도' }}
+        </h1>
+        <i class="bi bi-map fa-2x text-primary-green"></i>
+      </div>
+
+      <div class="bi bi-geo-alt fa-s text-secondary-red fs-5">
+        <span class="ms-1 text-gray-7"> {{ detail?.addr1 ?? '주소정보 없음' }}</span>
+      </div>
+      <div class="bi bi-telephone fa-s text-secondary-red fs-5">
+        <span class="ms-1 text-gray-7"> {{ detail?.tel ?? '-' }}</span>
+      </div>
+      <div class="bi bi-house fa-s text-secondary-red fs-5">
+        <span class="ms-1 text-gray-7">{{ detail?.homepage ?? '정보 없음' }}</span>
+      </div>
+    </div>
+    <div class="row mt-3 gy-3">
+      <div class="col-6">
+        <h2 class="mb-3 fs-4">소개</h2>
+
+        <p class="fs-7">
+          {{ detail?.overview ?? '소개글 없음' }}
+        </p>
+        <div class="d-flex align-items-center justify-content-between mt-5">
+          <h2 class="fs-5">문의 및 안내</h2>
+          <span class="fs-6">{{ detail?.infocenterleports ?? '-' }}</span>
+        </div>
+        <div class="d-flex align-items-center justify-content-between mt-2">
+          <h2 class="fs-5">영업시간</h2>
+          <span class="fs-6">{{ detail?.usetimeleports ?? '-' }}</span>
+        </div>
+        <div class="d-flex align-items-center justify-content-between mt-2">
+          <h2 class="fs-5">쉬는 날</h2>
+          <span class="fs-6">{{ detail?.restdateleports || '-' }}</span>
+        </div>
+        <div class="d-flex align-items-center justify-content-between mt-2">
+          <h2 class="fs-5">주차 정보</h2>
+          <span class="fs-6">{{ detail.parkingleports ?? '-' }}</span>
+        </div>
+        <div class="d-flex align-items-center justify-content-between mt-2">
+          <h2 class="fs-5">입장료</h2>
+          <span class="fs-6">{{ detail.usefeeleports ?? '-' }}</span>
         </div>
       </div>
 
