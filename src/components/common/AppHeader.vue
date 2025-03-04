@@ -1,10 +1,15 @@
 <script setup lang="ts">
+import { computed } from 'vue';
+import { useRoute } from 'vue-router';
 
+const route = useRoute();
+
+const headerClass = computed(() => route.meta.headerVariant || 'header-default');
 </script>
 
 <template>
-  <header class="header">
-    <div class="logo">Petner</div>
+  <header class="header" :class="headerClass">
+    <router-link to="/" class="logo"> Petner </router-link>
     <nav class="links">
       <router-link to="/AdoptionMain" class="link">유기동물 입양</router-link>
       <router-link to="/TravelMain" class="link">반려동물 동반 여행</router-link>
@@ -29,16 +34,16 @@
   width: 100%;
   height: 75px;
   top: 0;
-  background-color: var(--gray-1);
-  border-bottom: 1px solid var(--gray-10);
   z-index: 9999;
+  position: absolute;
   overflow: hidden;
 }
 .logo {
   font-family: 'Paperlogy';
   font-weight: 700;
   font-size: 2rem;
-  color: var(--gray-10);
+  text-decoration: none;
+  text-decoration: none;
   flex-grow: 0;
   margin-right: 50px;
 }
@@ -71,9 +76,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  font-family: 'Pretendard';
   font-size: 1rem;
-  color: var(--gray-10);
   text-decoration: none;
   flex-grow: 0;
 }
@@ -82,10 +85,11 @@
   height: 28px;
   border-radius: 50%;
   background-color: #cf54d3;
-  /* margin-left: 250px; */
 }
+
 .user-name {
   font-weight: 400;
   font-size: 1.2rem;
+  color: var(--gray-1);
 }
 </style>

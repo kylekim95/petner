@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import AppHeader from '@/components/common/AppHeader.vue';
-import AppFooter from '@/components/common/AppFooter.vue';
 import AdoptionAnimalCard from '@/components/adoption/AdoptionAnimalCard.vue';
 import Pagination from '@/components/common/Pagination.vue';
 
@@ -11,9 +9,7 @@ const activeCategory = ref('전체');
 const startDate = ref('');
 const endDate = ref('');
 
-// 시작 날짜 변경 시 끝 날짜를 업데이트하는 함수
 const updateEndDate = () => {
-  // 만약 끝 날짜가 시작 날짜보다 이전이면 끝 날짜를 시작 날짜로 설정
   if (endDate.value && endDate.value < startDate.value) {
     endDate.value = startDate.value;
   }
@@ -133,8 +129,6 @@ const goToPage = (page: number) => {
 
 <template>
   <div>
-    <!-- <AppHeader /> -->
-
     <!-- 배너 섹션 -->
 
     <div
@@ -300,30 +294,15 @@ const goToPage = (page: number) => {
 
     <!-- 페이지네이션 섹션 -->
     <Pagination :currentPage="currentPage" :totalPages="totalPages" :goToPage="goToPage" />
-
-    <AppFooter />
   </div>
 </template>
 
 <style scoped>
-.header {
-  box-sizing: border-box;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 20px;
-  width: 100%;
-  height: 75px;
-  position: absolute;
-  top: 0;
-  background-color: transparent;
-  border-bottom: 1px solid var(--gray-10);
-  z-index: 10;
-}
 .banner {
   position: relative;
   width: 100%;
   height: 575px;
+  z-index: 1;
 }
 
 .category-item {
