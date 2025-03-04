@@ -61,6 +61,11 @@ const router = createRouter({
       name: 'AdoptionDetail',
       component: () => import('../views/AdoptionDetail.vue'),
     },
+    {
+      path: PATH.travelDetail,
+      name: 'TravelDetail',
+      component: () => import('../views/TravelDetail.vue'),
+    },
   ],
 });
 
