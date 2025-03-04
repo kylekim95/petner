@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
+
 import PATH from '@/constants/path';
 import ADOPTION_ROUTES from './route/AdoptionRoutes';
 

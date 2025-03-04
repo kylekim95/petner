@@ -12,7 +12,7 @@
     </nav>
     <router-link to="/mypage" class="user-avatar">
       <div class="person-circle"></div>
-      <span class="user-name">홍길동님</span>
+      <span class="user-name" :style="{ color: headerStyles.userColor }">홍길동님</span>
     </router-link>
   </header>
 </template>
@@ -21,102 +21,69 @@
 .header {
   box-sizing: border-box;
   display: flex;
-  flex-direction: row;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  padding: 0;
-  gap: 140px;
-  position: absolute;
+  padding: 0 40px;
   width: 100%;
-  max-width: 100%;
   height: 75px;
-  left: 0;
   top: 0;
-  border-bottom: 1px solid;
+  background-color: var(--gray-1);
+  border-bottom: 1px solid var(--gray-10);
   z-index: 9999;
+  overflow: hidden;
 }
 .logo {
-  width: 165px;
-  height: 72px;
   font-family: 'Paperlogy';
-  font-style: normal;
   font-weight: 700;
-  font-size: 48px;
-  line-height: 150%;
-  letter-spacing: -0.022em;
-  color: inherit;
-  flex: none;
-  order: 0;
+  font-size: 2rem;
+  color: var(--gray-10);
   flex-grow: 0;
+  margin-right: 50px;
 }
 .links {
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: 0;
-  gap: 40px;
-  width: auto;
-  height: 28px;
-  flex: none;
-  order: 1;
-  flex-grow: 0;
+  gap: 50px;
+  flex-grow: 1;
+  justify-content: flex-start;
+  margin: 0 20px;
 }
 .link {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: auto;
-  height: 28px;
   font-family: 'Pretendard';
-  font-style: normal;
+  font-size: 1.2rem;
   font-weight: 400;
-  font-size: 20px;
-  line-height: 28px;
   color: inherit;
   text-decoration: none;
-  flex: none;
-  order: 0;
-  flex-grow: 0;
   transition:
     color 0.3s,
     transform 0.3s;
 }
+
 .link:hover {
   transform: scale(1.05);
 }
+
 .link:active {
   transform: scale(0.98);
 }
 .user-avatar {
   display: flex;
-  flex-direction: row;
   align-items: center;
-  padding: 0;
   gap: 10px;
-  width: 120px;
-  height: 28px;
-  flex: none;
-  order: 2;
-  flex-grow: 0;
+  font-family: 'Pretendard';
+  font-size: 1rem;
+  color: var(--gray-10);
   text-decoration: none;
-  color: var(--gray-1);
-  font-weight: 400;
+  flex-grow: 0;
 }
 .person-circle {
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  background-color: #f3723f;
+  background-color: #cf54d3;
+  /* margin-left: 250px; */
 }
 .user-name {
-  font-family: 'Pretendard';
-  font-style: normal;
   font-weight: 400;
-  font-size: 20px;
-  line-height: 28px;
-  color: inherit;
-  flex: none;
-  order: 1;
-  flex-grow: 0;
+  font-size: 1.2rem;
 }
 </style>
