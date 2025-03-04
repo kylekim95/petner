@@ -1,8 +1,18 @@
 <script setup lang="ts">
+import MissingCommunityPostCard from '@/components/community/MissingCommunityPostCard.vue';
 import PATH from '@/constants/path';
 import { ref } from 'vue';
+
 const sortBy = ref<'recent' | 'comment'>('recent');
 const animalType = ref<'dog' | 'cat' | 'etc'>('dog');
+
+const missingPost = {
+  imageUrl: '/public/PNG-Image/images/cat.png',
+  avatarWidth: '40px',
+  avatarHeight: '40px',
+};
+
+const MOCK_MISSING_POSTS = Array(6).fill(missingPost);
 </script>
 
 <template>
@@ -24,6 +34,7 @@ const animalType = ref<'dog' | 'cat' | 'etc'>('dog');
     </div>
     <div class="w-100 d-flex justify-content-center">
       <div class="fitted-content">
+        <!-- 필터-->
         <div class="controls">
           <div class="sort">
             <button :class="{ dark: sortBy === 'recent' }" @click="sortBy = 'recent'">
@@ -44,6 +55,7 @@ const animalType = ref<'dog' | 'cat' | 'etc'>('dog');
               기타 동물
             </button>
           </div>
+          <!-- 글 작성 버튼 -->
           <RouterLink :to="PATH.communityForm" class="write-button">
             <img
               src="/public/PNG-Image/images/car-light.png"
@@ -53,7 +65,23 @@ const animalType = ref<'dog' | 'cat' | 'etc'>('dog');
             <span>글 작성하기</span>
           </RouterLink>
         </div>
-        <div class="card-list-wrapper"></div>
+
+        <!-- 카드 리스트 -->
+        <div class="container px-3">
+          <div class="row row-cols-1 row-cols-2 justify-content-center">
+            <div
+              v-for="(post, index) of MOCK_MISSING_POSTS"
+              :key="index"
+              class="col d-flex g-3 justify-content-center"
+            >
+              <MissingCommunityPostCard
+                :imageUrl="post.imageUrl"
+                :avatarWidth="post.avatarWidth"
+                :avatarHeight="post.avatarHeight"
+              />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -63,6 +91,7 @@ const animalType = ref<'dog' | 'cat' | 'etc'>('dog');
 .wrapper {
   width: 100vw;
   min-width: 800px;
+  margin-bottom: 50px;
 }
 .banner {
   position: relative;
@@ -100,7 +129,7 @@ const animalType = ref<'dog' | 'cat' | 'etc'>('dog');
 .fitted-content {
   width: 66vw;
   min-width: 800px;
-  max-width: 1274px;
+  max-width: 1280px;
 }
 
 .controls {
