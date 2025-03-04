@@ -18,17 +18,20 @@ const subImages = computed<(string | null)[]>(() => {
 </script>
 
 <template>
-  <div class="container my-3">
+  <div class="container my-5">
     <div class="row g-2">
       <!-- 메인 이미지 영역 -->
-      <div class="col-6 mb-3 mb-md-0 b">
+      <div class="col-6 mb-3 mb-md-0">
         <img
           v-if="firstimage"
           :src="firstimage"
-          class="img-fluid main-image"
+          class="img-fluid main-image rounded-4"
           alt="Main lodging photo"
         />
-        <div v-else class="placeholder bg-light d-flex align-items-center justify-content-center">
+        <div
+          v-else
+          class="placeholder bg-light d-flex align-items-center justify-content-center rounded-4"
+        >
           <span class="text-muted">No Image</span>
         </div>
       </div>
@@ -36,10 +39,15 @@ const subImages = computed<(string | null)[]>(() => {
       <div class="col-6">
         <div class="row g-2">
           <div v-for="(img, index) in subImages" :key="index" class="col-6">
-            <img v-if="img" :src="img" class="img-fluid thumbnail" alt="Sub lodging photo" />
+            <img
+              v-if="img"
+              :src="img"
+              class="img-fluid rounded-4 thumbnail"
+              alt="Sub lodging photo"
+            />
             <div
               v-else
-              class="placeholder bg-light d-flex align-items-center justify-content-center thumbnail"
+              class="placeholder rounded-4 bg-light d-flex align-items-center justify-content-center thumbnail"
             >
               <span class="text-muted">No Image</span>
             </div>
@@ -64,7 +72,7 @@ const subImages = computed<(string | null)[]>(() => {
 }
 
 .placeholder {
-  width: 320px;
+  width: 100%;
   height: 245px;
   min-height: 200px;
   border: 1px dashed #ccc;

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import PhotoGrid from '@/components/travel/travelDetail/PhotoGrid.vue';
+import TravelInfo from '@/components/travel/travelDetail/TravelInfo.vue';
 
 const firstImageUrl = '/travelDetail/Accommodation1.png';
 
@@ -13,4 +14,5 @@ const imageArray = [
 
 <template>
   <PhotoGrid :firstimage="firstImageUrl" :images="imageArray" />
+  <TravelInfo />
 </template>
