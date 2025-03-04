@@ -25,6 +25,12 @@ const ADOPTION_ROUTES = [
     component: () => import('@/views/adoption/AdoptionDetail.vue'),
     meta: { headerVariant: 'header-transparent' },
   },
+  {
+    path: PATH.adoptionComplete,
+    name: 'adoptionComplete',
+    component: () => import('@/views/adoption/AdoptionComplete.vue'),
+    meta: { headerVariant: 'header-green' },
+  },
   // 하위 라우터 추가..
 ];
 
