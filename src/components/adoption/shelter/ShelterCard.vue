@@ -49,7 +49,7 @@ defineProps<{ shelter: Shelter }>();
 
 <style scoped>
 .card-wrapper {
-  width: 80%;
+  width: 100%;
   padding: 12px 14px;
   border-radius: 5px;
   border: 1px solid var(--gray-6);
