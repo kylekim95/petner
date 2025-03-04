@@ -13,6 +13,8 @@ const imageArray = [
 </script>
 
 <template>
-  <PhotoGrid :firstimage="firstImageUrl" :images="imageArray" />
-  <TravelInfo />
+  <div style="margin-top: 10vh">
+    <PhotoGrid :firstimage="firstImageUrl" :images="imageArray" />
+    <TravelInfo />
+  </div>
 </template>
