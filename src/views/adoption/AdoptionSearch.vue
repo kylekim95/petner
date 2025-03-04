@@ -133,7 +133,7 @@ const goToPage = (page: number) => {
 
 <template>
   <div>
-    <AppHeader />
+    <!-- <AppHeader /> -->
 
     <!-- 배너 섹션 -->
 
@@ -314,7 +314,7 @@ const goToPage = (page: number) => {
   padding: 0 20px;
   width: 100%;
   height: 75px;
-  position: absolute; 
+  position: absolute;
   top: 0;
   background-color: transparent;
   border-bottom: 1px solid var(--gray-10);
@@ -322,7 +322,7 @@ const goToPage = (page: number) => {
 }
 .banner {
   position: relative;
-  width: 100%; 
+  width: 100%;
   height: 575px;
 }
 
