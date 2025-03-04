@@ -27,7 +27,7 @@ const PATH: PathType = Object.freeze({
   // 커뮤니티 페이지와 그 하위
   community: '/community',
   communityFree: '/community/free',
-  communityMissing: '/communnity/missing',
+  communityMissing: '/community/missing',
   communityDetailFree: '/community/free/:postId',
   communityDetailMissing: '/community/missing/:postId',
   communityFreeForm: '/community/free/form',
