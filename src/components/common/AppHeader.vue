@@ -1,79 +1,8 @@
-<script setup lang="ts">
-import { useRoute } from 'vue-router';
-import { computed } from 'vue';
-import PATH from '@/constants/path';
-
-const route = useRoute();
-
-const headerStyles = computed(() => {
-  const path = route.path;
-
-  switch (path) {
-    case '/HomeMain':
-    case '/TravelMain':
-    case PATH.adoption:
-    case '/AdoptionSearch':
-    case '/MissingComunity':
-    case '/FreeComunity':
-      return {
-        backgroundColor: 'transparent',
-        color: 'var(--gray-1)',
-        borderBottom: '1px solid var(--gray-6)',
-        logoColor: 'var(--gray-1)',
-        userColor: 'var(--gray-1)',
-      };
-    case '/TravelDetail':
-    case '/TravelSearch':
-    case '/TravelPlanner':
-      return {
-        backgroundColor: 'var(--primary-red)',
-        color: 'var(--gray-1)',
-        borderBottom: '1px solid var(--gray-1)',
-        logoColor: 'var(--gray-1)',
-        userColor: 'var(--gray-1)',
-      };
-    case '/MissingComunityDetail':
-    case '/MissingComunityForm':
-      return {
-        backgroundColor: 'var(--primary-blue)',
-        color: 'var(--gray-1)',
-        borderBottom: '1px solid var(--gray-1)',
-        logoColor: 'var(--gray-1)',
-        userColor: 'var(--gray-1)',
-      };
-    case '/adoptiondetail':
-    case '/AdoptionForm':
-      return {
-        backgroundColor: 'var(--secondary-green)',
-        color: 'var(--gray-1)',
-        borderBottom: '1px solid var(--gray-1)',
-        logoColor: 'var(--gray-1)',
-        userColor: 'var(--gray-1)',
-      };
-    case '/FreeComunityDetail':
-    case '/FreeComunityForm':
-      return {
-        backgroundColor: 'var(--primary-purple)',
-        color: 'var(--gray-1)',
-        borderBottom: '1px solid var(--gray-1)',
-        logoColor: 'var(--gray-1)',
-        userColor: 'var(--gray-1)',
-      };
-    default:
-      return {
-        backgroundColor: 'var(--gray-1)',
-        color: 'var(--gray-10)',
-        borderBottom: '1px solid var(--gray-10)',
-        logoColor: 'var(--gray-10)',
-        userColor: 'var(--gray-10)',
-      };
-  }
-});
-</script>
+<script setup lang="ts"></script>
 
 <template>
-  <header :style="headerStyles" class="header">
-    <div class="logo" :style="{ color: headerStyles.logoColor }">Petner</div>
+  <header class="header">
+    <div class="logo">Petner</div>
     <nav class="links">
       <router-link to="/AdoptionMain" class="link">유기동물 입양</router-link>
       <router-link to="/TravelMain" class="link">반려동물 동반 여행</router-link>
@@ -103,7 +32,6 @@ const headerStyles = computed(() => {
   z-index: 9999;
   overflow: hidden;
 }
-
 .logo {
   font-family: 'Paperlogy';
   font-weight: 700;
@@ -112,7 +40,6 @@ const headerStyles = computed(() => {
   flex-grow: 0;
   margin-right: 50px;
 }
-
 .links {
   display: flex;
   gap: 50px;
@@ -120,7 +47,6 @@ const headerStyles = computed(() => {
   justify-content: flex-start;
   margin: 0 20px;
 }
-
 .link {
   font-family: 'Pretendard';
   font-size: 1.2rem;
@@ -139,7 +65,6 @@ const headerStyles = computed(() => {
 .link:active {
   transform: scale(0.98);
 }
-
 .user-avatar {
   display: flex;
   align-items: center;
@@ -150,7 +75,6 @@ const headerStyles = computed(() => {
   text-decoration: none;
   flex-grow: 0;
 }
-
 .person-circle {
   width: 28px;
   height: 28px;
@@ -158,7 +82,6 @@ const headerStyles = computed(() => {
   background-color: #cf54d3;
   /* margin-left: 250px; */
 }
-
 .user-name {
   font-weight: 400;
   font-size: 1.2rem;
