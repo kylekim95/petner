@@ -1,29 +1,22 @@
 <script setup lang="ts">
 import { defineProps } from 'vue';
-
 // Props 정의
 const props = defineProps<{
-  width: string;
-  height: string;
-  imageHeight: string;
   imageUrl: string;
-  avatarWidth: string;
-  avatarHeight: string;
 }>();
 </script>
-
 <template>
   <div
-    class="ms-5 overflow-hidden border border-gray-7"
-    :style="{ width: props.width, height: props.height, borderRadius: '15px' }"
+    class="overflow-hidden border border-gray-7"
+    :style="{ width: '90%', height: '670px', borderRadius: '15px' }"
   >
     <!-- 이미지 영역 -->
     <div class="position-relative z-0 filter">
       <img
         :src="props.imageUrl"
         alt="강아지"
-        :width="props.width"
-        :height="props.imageHeight"
+        width="100%"
+        height="430px"
         style="filter: brightness(0.7)"
       />
     </div>
@@ -33,7 +26,7 @@ const props = defineProps<{
       <div class="d-flex flex-row align-items-center gap-3">
         <div
           class="overflow-hidden"
-          :style="{ width: props.avatarWidth, height: props.avatarHeight, borderRadius: '40px' }"
+          :style="{ width: '40px', height: '40px', borderRadius: '40px' }"
         >
           <img
             src="https://cdn.pixabay.com/photo/2016/04/19/15/13/minion-1338858_1280.jpg"
@@ -71,5 +64,4 @@ const props = defineProps<{
     </div>
   </div>
 </template>
-
 <style scoped></style>
