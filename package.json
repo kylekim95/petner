@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@tanstack/vue-query": "^5.66.9",
+    "@vueuse/motion": "^2.2.6",
     "axios": "^1.8.0",
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
