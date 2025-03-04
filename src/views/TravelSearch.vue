@@ -2,7 +2,7 @@
 import AppHeader from '@/components/common/AppHeader.vue';
 import AppFooter from '@/components/common/AppFooter.vue';
 import CheckTraveList from '@/components/travel/CheckTraveList.vue';
-// import CheckTravel from '@/components/travel/\bCheckTravel.vue';
+// import CheckTravel from '@/components/travel/CheckTravel.vue';
 </script>
 
 <template>

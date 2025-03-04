@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import AppHeader from '@/components/common/AppHeader.vue';
-import AppFooter from '@/components/common/AppFooter.vue';
-
 import MainCategoryBoxes from '@/components/travel/MainCategoryBoxes.vue';
 import AccommodationSwiper from '@/components/travel/AccommodationSwiper.vue';
 import CultureShoppingSwiper from '@/components/travel/CultureShoppingSwiper.vue';
@@ -173,9 +170,7 @@ function handleClick() {
 <template>
   <div>
     <div class="hero-container">
-      <div class="header-wrapper">
-        <AppHeader />
-      </div>
+      <div class="header-wrapper"></div>
 
       <!-- 오버레이 텍스트 -->
       <div class="hero-text position-absolute top-50 start-0 translate-middle-y w-100">
@@ -225,7 +220,6 @@ function handleClick() {
         </div>
       </div>
     </div>
-    <AppFooter />
   </div>
 </template>
 

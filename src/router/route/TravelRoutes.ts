@@ -7,5 +7,23 @@ const TRAVEL_ROUTES = [
     component: () => import('@/views/TravelPlanner.vue'),
     meta: { headerVariant: 'header-red' },
   },
+  {
+    path: PATH.travel,
+    name: 'travelMain',
+    component: () => import('@/views/TravelMain.vue'),
+    meta: { headerVariant: 'header-transparent' },
+  },
+  {
+    path: PATH.travelSearch,
+    name: 'travelPlanner',
+    component: () => import('@/views/TravelSearch.vue'),
+    meta: { headerVariant: 'header-default' },
+  },
+  {
+    path: PATH.travelDetail,
+    name: 'travelDetail',
+    component: () => import('@/views/TravelDetail.vue'),
+    meta: { headerVariant: 'header-red' },
+  },
 ];
 export default TRAVEL_ROUTES;

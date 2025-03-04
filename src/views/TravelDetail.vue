@@ -12,6 +12,5 @@ const imageArray = [
 </script>
 
 <template>
-  <div>HEllo VIEW</div>
   <PhotoGrid :firstimage="firstImageUrl" :images="imageArray" />
 </template>
