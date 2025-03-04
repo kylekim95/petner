@@ -2,7 +2,7 @@
 import { computed } from 'vue';
 
 interface PhotoGridProps {
-  firstimage: string;
+  firstimage: string | null;
   images: string[];
 }
 
@@ -25,7 +25,7 @@ const subImages = computed<(string | null)[]>(() => {
         <img
           v-if="firstimage"
           :src="firstimage"
-          class="img-fluid main-image rounded-4"
+          class="main-image rounded-4"
           alt="Main lodging photo"
         />
         <div
