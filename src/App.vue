@@ -1,20 +1,12 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router';
+import { RouterView } from 'vue-router';
+import AppHeader from './components/common/AppHeader.vue';
+import AppFooter from './components/common/AppFooter.vue';
+import '@/assets/headerVariantStyles.css';
 </script>
 
 <template>
-  <header>
-    <div>
-      <!-- <nav>
-        <RouterLink to="/">Home</RouterLink> |
-        <RouterLink to="/KSYTestView">KSYTestView</RouterLink> |
-        <RouterLink to="/LJSTestView">LJSTestView</RouterLink> |
-        <RouterLink to="/CYSTestView">CYSTestView</RouterLink> |
-        <RouterLink to="/SJSTestView">SJSTestView</RouterLink> |
-        <RouterLink to="/LSJTestView">LSJTestView</RouterLink>
-        
-      </nav> -->
-    </div>
-  </header>
+  <AppHeader :class="$route.meta.headerVariant" />
   <RouterView />
+  <AppFooter />
 </template>

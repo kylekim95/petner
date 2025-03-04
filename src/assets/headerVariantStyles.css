@@ -1,0 +1,25 @@
+/* .header-default {
+  background-color: var(--gray-1);
+  color: var(--gray-10);
+  border-bottom: 1px solid var(--gray-10);
+}
+.header-transparent {
+  color: var(--gray-1);
+  border-bottom: 1px solid var(--gray-1);
+  backdrop-filter: blur(5px);
+}
+.header-red {
+  background-color: var(--primary-red);
+  color: var(--gray-1);
+  border-bottom: 1px solid var(--gray-1);
+}
+.header-green {
+  background-color: var(--secondary-green);
+  color: var(--gray-1);
+  border-bottom: 1px solid var(--gray-1);
+}
+.header-blue {
+  background-color: var(--primary-purple);
+  color: var(--gray-1);
+  border-bottom: 1px solid var(--gray-1);
+} */
