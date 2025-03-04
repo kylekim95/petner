@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import TextBlock, { type TextBlockDescriptor } from '../common/TextBlock.vue'
+import TextBlock, { type TextBlockDescriptor } from '@/components/common/TextBlock.vue'
 
 interface GalleryItemProps {
   bgImage: string,
