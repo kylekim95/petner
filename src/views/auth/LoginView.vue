@@ -41,10 +41,10 @@ const SwitchText : TextBlockDescriptor[] = [
 
 <template>
   <div class="container align-content-center" style="width: 67%; height: 1000px">
-    <div class="d-flex flex-column" style="margin-top: 75px;">
+    <div class="d-flex flex-column">
       <TextBlock :text-block="IntroText[0]" />
       <TextBlock :text-block="IntroText[1]" />
-      <div class="d-flex gap-5">
+      <div class="d-flex" style="justify-content: space-around;">
         <div class="decorative-image w-50" style="aspect-ratio: 1/1;"></div>
         <div style="width:30%">
           <TextBlock :text-block="LoginText[0]" />

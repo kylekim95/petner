@@ -11,3 +11,17 @@ export const travelCategoryEffect = {
     },
   },
 };
+
+export const travelListEffect = {
+  initial: {
+    opacity: 0,
+    x: 200,
+  },
+  enter: {
+    opacity: 1,
+    x: 0,
+    transition: {
+      duration: 1500,
+    },
+  },
+};

@@ -1,11 +1,15 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { travelListEffect } from '@/constants/travel/motion';
+import { defineModel } from 'vue';
+const currentPage = defineModel<string>();
+</script>
 
 <template>
   <!-- Top 검색창, 검색 결과 -->
   <!-- 조회 리스트 -->
-  <div class="mainRight">
-    <div class="searchResult title" :style="{}">검색결과 : 2000개</div>
-
+  <div :key="`checkTraveList-${currentPage}`" v-motion="travelListEffect" class="mainRight">
+    <!-- <div class="searchResult title" :style="{}">검색결과 : 2000개</div> -->
+    <div class="searchResult title" :style="{}">{{ currentPage }}</div>
     <!-- 카드 컴포넌트 -->
     <div
       class="d-flex flex-row gap-1 position-relative"

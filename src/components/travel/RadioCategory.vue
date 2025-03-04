@@ -1,28 +1,23 @@
 <script setup lang="ts">
 import { defineModel } from 'vue';
 
-// defineModel()을 사용하여 부모에서 전달된 `pageCategoryData` 받기
+// defineModel()을 사용하여 부모에서 전달된 `currentCategoryData` 받기
 const model = defineModel<{ category?: string; title: string; options: string[] }>();
-console.log('model', model.value?.title); // model.value를 사용해야 함
-
-// 현재 선택된 카테고리
-const selectedCategory = defineModel<string>('selectedCategory');
-console.log('selectedCategory', selectedCategory.value);
 </script>
 
 <template>
-  <!-- 페이지 카테고리 -->
+  <!-- 옵션 카테고리 -->
   <div class="title" :style="{ marginTop: '70px' }">{{ model?.title }}</div>
   <div class="PageCategorySection mt-4 gap-5">
-    <div @click="selectedCategory = item" v-for="(item, index) in model?.options" :key="index">
+    <div v-for="(item, index) in model?.options" :key="index">
       <input
         class="me-2"
         type="radio"
-        name="category"
-        id="cultureAndShopping"
-        :checked="selectedCategory === item"
+        name="option"
+        :id="`option-${index}`"
+        :checked="'전체' === item"
       />
-      <label for="cultureAndShopping">{{ item }}</label>
+      <label :for="`option-${index}`">{{ item }}</label>
     </div>
   </div>
 </template>

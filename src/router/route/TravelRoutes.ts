@@ -4,7 +4,7 @@ const TRAVEL_ROUTES = [
     path: PATH.travelPlanner,
     name: 'travelPlanner',
     component: () => import('@/views/travel/TravelPlanner.vue'),
-    meta: { headerVariant: 'header-red' },
+    meta: { headerVariant: 'header-red', footerDisabled: true },
   },
   {
     path: PATH.travel,
