@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import AppHeader from '@/components/common/AppHeader.vue';
-import AppFooter from '@/components/common/AppFooter.vue';
 import ANIMAL_DETAIL from '@/constants/mock/animalDetail';
 import ANIMAL_RESCUE from '@/constants/mock/animalRescue';
 import ANIMAL_SHELTERINFO from '@/constants/mock/animalShelterInfo';
@@ -18,8 +16,6 @@ const SehlterData = ANIMAL_SHELTERINFO;
 <template>
   <div>
     <div class="container-fluid p-0">
-      <AppHeader />
-
       <!-- 배너 섹션 -->
       <div class="position-relative">
         <div class="position-absolute top-50 start-0 translate-middle-y p-5 text-white ms-5">
@@ -319,8 +315,6 @@ const SehlterData = ANIMAL_SHELTERINFO;
           </div>
         </div>
       </div>
-
-      <AppFooter />
     </div>
   </div>
 </template>
