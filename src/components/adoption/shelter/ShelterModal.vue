@@ -5,7 +5,8 @@ import PATH from '@/constants/path';
 import { formatOperatingHours } from '@/utils/timeFormat';
 
 import { computed } from 'vue';
-interface Shelter {
+interface ShelterWithRegNo {
+  careRegNo: string;
   careNm: string;
   orgNm: string;
   divisionNm: string;
@@ -59,7 +60,11 @@ const ANIMAL_BADGE: AnimalBadge = {
     textColor: '#146C43',
   },
 };
-const { item, careRegNo } = defineProps<{ item: Shelter; careRegNo: string }>();
+const { item, careRegNo, onClose } = defineProps<{
+  item: ShelterWithRegNo;
+  careRegNo: string;
+  onClose: () => void;
+}>();
 const animalCategoryArray = computed(() =>
   item.saveTrgtAnimal.split('+').map((e) => ANIMAL_BADGE[e]),
 );
@@ -67,7 +72,9 @@ const animalCategoryArray = computed(() =>
 
 <template>
   <div class="modal-wrapper">
-    <div class="text-end"><i class="bi bi-x-lg"></i></div>
+    <div class="text-end">
+      <button class="close-button" @click="onClose()"><i class="bi bi-x-lg"></i></button>
+    </div>
     <div class="d-flex flex-column gap-2">
       <div class="d-flex gap-1 align-items-center">
         <TitleText size="24px" weight="700" color="gray-10">{{ item.careNm }}</TitleText>
@@ -127,6 +134,11 @@ const animalCategoryArray = computed(() =>
     34px 51px 37px 0px rgba(0, 0, 0, 0.05),
     15px 23px 27px 0px rgba(0, 0, 0, 0.09),
     4px 6px 15px 0px rgba(0, 0, 0, 0.1);
+}
+.close-button {
+  width: 35px;
+  background-color: transparent;
+  border: none;
 }
 
 .bi-x-lg {
