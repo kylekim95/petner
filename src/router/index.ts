@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
+import TravelSearch from '../views/TravelSearch.vue';
 import PATH from '@/constants/path';
 import ADOPTION_ROUTES from './routes/AdoptionRoutes';
 
@@ -42,12 +43,14 @@ const router = createRouter({
       name: 'TravelMain',
       component: () => import('../views/TravelMain.vue'),
     },
-    ...ADOPTION_ROUTES,
+
     {
-      path: '/TravelSearch',
-      name: 'TravelSearch',
-      component: () => import('../views/TravelSearch.vue'),
+      path: '/AdoptionMain',
+      name: 'AdoptionMain',
+      component: () => import('../views/AdoptionMain.vue'),
     },
+    { path: PATH.travelSearch, name: 'TravelSearch', component: TravelSearch },
+
     {
       path: '/AdoptionSearch',
       name: 'AdoptionSearch',
