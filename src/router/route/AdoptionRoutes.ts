@@ -11,12 +11,18 @@ const ADOPTION_ROUTES = [
     path: PATH.adoptionShelter,
     name: 'shelter',
     component: () => import('@/views/adoption/ShelterSearch.vue'),
-    meta: { headerVariant: 'header-transparent' },
+    meta: { headerVariant: 'header-default' },
   },
   {
     path: PATH.adoptionSearch,
     name: 'adoptionSearch',
     component: () => import('@/views/adoption/AdoptionSearch.vue'),
+    meta: { headerVariant: 'header-transparent' },
+  },
+  {
+    path: PATH.adoptionDetail,
+    name: 'adoptionDetail',
+    component: () => import('@/views/adoption/AdoptionDetail.vue'),
     meta: { headerVariant: 'header-transparent' },
   },
   // 하위 라우터 추가..

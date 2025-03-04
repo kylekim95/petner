@@ -8,5 +8,5 @@ import '@/assets/headerVariantStyles.css';
 <template>
   <AppHeader :class="$route.meta.headerVariant" />
   <RouterView />
-  <AppFooter />
+  <AppFooter v-if="!$route.meta.footerDisabled" />
 </template>
