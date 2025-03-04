@@ -15,15 +15,21 @@ const ADOPTION_ROUTES = [
   },
   {
     path: PATH.adoptionSearch,
-    name: 'adoptionSearch',
+    name: 'search',
     component: () => import('@/views/adoption/AdoptionSearch.vue'),
     meta: { headerVariant: 'header-transparent' },
   },
   {
     path: PATH.adoptionDetail,
-    name: 'adoptionDetail',
+    name: 'detail',
     component: () => import('@/views/adoption/AdoptionDetail.vue'),
-    meta: { headerVariant: 'header-transparent' },
+    meta: { headerVariant: 'header-green' },
+  },
+  {
+    path: PATH.adoptionForm,
+    name: 'form',
+    component: () => import('@/views/adoption/AdoptionForm.vue'),
+    meta: { headerVariant: 'header-green' },
   },
   {
     path: PATH.adoptionComplete,
