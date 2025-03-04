@@ -34,8 +34,6 @@ const headerClass = computed(() => route.meta.headerVariant || 'header-default')
   width: 100%;
   height: 75px;
   top: 0;
-  z-index: 9999;
-  position: absolute;
   overflow: hidden;
 }
 .logo {

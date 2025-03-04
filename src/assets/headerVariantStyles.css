@@ -17,6 +17,8 @@
   color: var(--gray-1);
   border-bottom: 1px solid var(--gray-1);
   backdrop-filter: blur(2px);
+  position: absolute;
+  z-index: 9999;
 }
 .header-transparent .user-name {
   color: var(--gray-1);
