@@ -1,4 +1,6 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+
+</script>
 
 <template>
   <header class="header">
@@ -12,7 +14,7 @@
     </nav>
     <router-link to="/mypage" class="user-avatar">
       <div class="person-circle"></div>
-      <span class="user-name" :style="{ color: headerStyles.userColor }">홍길동님</span>
+      <span class="user-name" :style="{ color: 'FFFFFF' }">홍길동님</span>
     </router-link>
   </header>
 </template>
