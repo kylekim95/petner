@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ADOPTION_ANIMAL from '@/constants/mock/adoptionAnimal.ts';
+import ADOPTION_ANIMAL from '@/constants/mock/adoptionAnimal';
 import { dateAddBarFormatter } from '@/utils/dateFormat';
 import SEX_CODE_TO_KOR from '@/constants/sexCodeMap';
 </script>

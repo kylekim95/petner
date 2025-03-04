@@ -136,6 +136,7 @@ const goToPage = (page: number) => {
     <AppHeader />
 
     <!-- 배너 섹션 -->
+
     <div
       class="banner d-flex justify-content-end align-items-center bg-cover"
       style="
@@ -143,6 +144,7 @@ const goToPage = (page: number) => {
         height: 575px;
         background-size: cover;
         background-position: center;
+        position: relative;
       "
     >
       <div>
@@ -304,9 +306,26 @@ const goToPage = (page: number) => {
 </template>
 
 <style scoped>
+.header {
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  width: 100%;
+  height: 75px;
+  position: absolute; 
+  top: 0;
+  background-color: transparent;
+  border-bottom: 1px solid var(--gray-10);
+  z-index: 10;
+}
 .banner {
   position: relative;
+  width: 100%; 
+  height: 575px;
 }
+
 .category-item {
   cursor: pointer;
   padding: 12px 24px;
