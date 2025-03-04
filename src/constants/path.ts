@@ -21,7 +21,8 @@ const PATH: PathType = Object.freeze({
   adoptionSearch: '/adoption/search',
   adoptionShelter: '/adoption/shelter', // 보호소 지도
   adoptionDetail: '/adoption/:animalId',
-  adoptionForm: '/adoption/form',
+  adoptionForm: '/adoption-form',
+  adoptionComplete: '/adoption-complete',
 
   // 커뮤니티 페이지와 그 하위
   community: '/community',
