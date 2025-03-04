@@ -3,6 +3,7 @@ import PATH from '@/constants/path';
 import ADOPTION_ROUTES from './route/AdoptionRoutes';
 import AUTH_ROUTES from './route/AuthRoutes';
 import TRAVEL_ROUTES from './route/TravelRoutes';
+import COMMUNITY_ROUTES from './route/CommunityRoutes';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -16,6 +17,7 @@ const router = createRouter({
     ...AUTH_ROUTES,
     ...TRAVEL_ROUTES,
     ...ADOPTION_ROUTES,
+    ...COMMUNITY_ROUTES,
   ],
 });
 
