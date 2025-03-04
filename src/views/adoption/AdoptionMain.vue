@@ -11,7 +11,7 @@ import AdoptionCardBanner from '@/components/adoption/main/AdoptionCardBanner.vu
 
 <template>
   <div class="main-wrapper">
-    <AppHeader />
+    <!-- <AppHeader /> -->
     <AdoptionHero />
     <div class="fitted-contents">
       <AdoptionGraph />
@@ -22,7 +22,7 @@ import AdoptionCardBanner from '@/components/adoption/main/AdoptionCardBanner.vu
       <AdoptionReviews />
       <AdoptionCardBanner />
     </div>
-    <AppFooter />
+    <!-- <AppFooter /> -->
   </div>
 </template>
 
