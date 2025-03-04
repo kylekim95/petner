@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import TitleText from '@/components/common/TitleText.vue';
-import ShelterCard from './ShelterCard.vue';
+import ShelterCard from '@/components/adoption/shelter/ShelterCard.vue';
 import ANIMAL_SHELTERS from '@/constants/mock/animalShelter';
+import ShelterModal from '@/components/adoption/shelter/ShelterModal.vue';
 import { KOR_ORG, GU_ORG } from '@/constants/korOrg';
 import { ref } from 'vue';
 
@@ -25,6 +26,8 @@ const org = ref<OrgType>({
   orgCd: '',
   orgdownNm: '하위 지역 선택',
 });
+
+const shelter = ref(ANIMAL_SHELTERS[0]);
 </script>
 
 <template>
@@ -97,7 +100,10 @@ const org = ref<OrgType>({
         <ShelterCard v-for="(shelter, index) of ANIMAL_SHELTERS" :key="index" :shelter="shelter" />
       </div>
     </div>
-    <div class="map">map</div>
+    <div class="map">
+      map
+      <ShelterModal :item="shelter" careRegNo="123" />
+    </div>
   </div>
 </template>
 
@@ -130,7 +136,8 @@ const org = ref<OrgType>({
 }
 
 .map {
-  background-color: blue;
+  position: relative;
+  background-color: aliceblue;
   flex: 1;
 }
 .btn-custom {
