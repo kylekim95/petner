@@ -1,9 +1,6 @@
 <script setup lang="js">
 import { ref, onMounted, watch } from 'vue';
-const { VITE_KAKAO_MAP_KEY } = import.meta.env;
 
-// 부모로 부터 lat, lang을 받아서
-// 마커로 표시해야함
 const props = defineProps({
   lat: {
     type: Number,
@@ -14,8 +11,6 @@ const props = defineProps({
     default: null,
   },
 });
-
-console.log(props.lat, props.lang);
 const mapContainer = ref(null);
 onMounted(() => {
   loadKakaoMap(mapContainer.value);

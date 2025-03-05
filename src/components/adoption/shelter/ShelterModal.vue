@@ -117,8 +117,8 @@ const animalCategoryArray = computed(() =>
 <style scoped>
 .modal-wrapper {
   position: absolute;
-  right: 10%;
-  top: 20%;
+  right: 5%;
+  top: 5%;
 
   width: 400px;
   height: 340px;

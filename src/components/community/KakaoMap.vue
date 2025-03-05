@@ -1,6 +1,5 @@
 <script setup lang="js">
 import { ref, onMounted } from 'vue';
-const { VITE_KAKAO_MAP_KEY } = import.meta.env;
 
 const mapContainer = ref(null);
 const doroRef = defineModel();
@@ -9,11 +8,7 @@ onMounted(() => {
 });
 
 const loadKakaoMap = (container) => {
-  const script = document.createElement('script');
-  script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${VITE_KAKAO_MAP_KEY}&autoload=false&​libraries=services`;
-  document.head.appendChild(script);
-
-  script.onload = () => {
+  if (window.kakao && window.kakao.maps) {
     window.kakao.maps.load(() => {
       const options = {
         center: new window.kakao.maps.LatLng(33.450701, 126.570667), // 지도 중심 좌표
@@ -58,7 +53,7 @@ const loadKakaoMap = (container) => {
         });
       });
     });
-  };
+  }
 };
 </script>
 
