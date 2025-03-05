@@ -3,8 +3,11 @@ import PhotoGrid from '@/components/travel/travelDetail/PhotoGrid.vue';
 import InfoCard from '@/components/travel/travelDetail/TravelInfoCard.vue';
 import { type DetailCard } from '@/components/travel/travelDetail/TravelInfoCard.vue';
 import { type PetTravelDetail } from '@/components/travel/travelDetail/withPetsInfo.vue';
+import { type RoomItem } from '@/components/travel/travelDetail/AccommodationCard.vue';
+
 import WithPetsInfo from '@/components/travel/travelDetail/withPetsInfo.vue';
 import AccommodationCard from '@/components/travel/travelDetail/AccommodationCard.vue';
+import CommunityPosts from '@/components/travel/travelDetail/CommunityPosts.vue';
 // import { computed } from 'vue';
 // import type{AccommodationDetail,RestaurantDetail} from '@/components/travel/travelDetail/TravelInfoCard.vue';
 
@@ -164,6 +167,23 @@ const DummyWithPetsInfo: PetTravelDetail = {
   etcAcmpyInfo:
     '- 맹견의 경우, 입마개 착용 필수\n- 배변봉투 지참 및 배변처리 필수\n- 맨발 체험이 가능한 황톳길은 동반 불가\n- 황톳길 옆 보행 도로는 동반 가능',
 };
+const dummyData = {
+  name: '가람초',
+};
+
+const roomsData: RoomItem[] = [
+  {
+    contentid: '1865597',
+    contenttypeid: '32',
+    roomtitle: '별채B',
+    roomsize1: '5',
+    roomcount: '0',
+    roomintro:
+      '※ 위 정보는 2024년 10월에 작성된 정보로(정상요금), 해당 숙박시설 이용요금이 수시로 변동됨에 따라 이용요금 및 기타 자세한 사항은 홈페이지 참조 요망',
+    roomimg1: 'http://tong.visitkorea.or.kr/cms/resource/34/2579434_image2_1.jpg',
+    roomoffseasonminfee1: '100000',
+  },
+];
 </script>
 
 <template>
@@ -175,6 +195,9 @@ const DummyWithPetsInfo: PetTravelDetail = {
   </div>
   <WithPetsInfo :detail="DummyWithPetsInfo" />
   <div class="my-5">
-    <AccommodationCard />
+    <AccommodationCard :rooms="roomsData" />
+  </div>
+  <div class="container mb-5">
+    <CommunityPosts :name="dummyData.name" :data="[]" />
   </div>
 </template>
