@@ -1,45 +1,16 @@
 <script setup lang="ts">
 import HeroSection from '@/components/myPage/HeroSection.vue';
 import MyPlan from '@/components/myPage/MyPlan.vue';
-import MyTravelCard from '@/components/myPage/MyTravelCard.vue';
-import { Swiper, SwiperSlide } from 'swiper/vue';
+import MyPost from '@/components/myPage/MyPost.vue';
 </script>
 
 <template>
-  <div class="myPageSection" :style="{ padding: '97px 0' }">
+  <div class="myPageSection" :style="{ paddingTop: '97px', paddingBottom: '97px' }">
     <div class="container" :style="{ minWidth: '1280px', width: '66%' }">
       <HeroSection style="" />
       <div class="contentSection d-flex flex-row gap-4" :style="{ marginTop: '20px' }">
         <MyPlan />
-
-        <div class="myPost">
-          <!-- 게시글, 입양신청 버튼섹션 -->
-          <div class="myContentText myPostTitleSection position-relative">
-            <div
-              class="position-absolute d-flex flex-row gap-4"
-              :style="{ left: '58px', top: '34px' }"
-            >
-              <span class="currentContentText">게시글</span>
-              <span class="">입양신청서</span>
-            </div>
-          </div>
-          <!-- 카드 리스트 섹션 -->
-          <div class="container myPostListSection">
-            <Swiper
-              :direction="'vertical'"
-              :slides-per-view="1"
-              :space-between="10"
-              :mousewheel="true"
-              :pagination="{ clickable: true }"
-              :navigation="true"
-              class="swiper"
-            >
-            </Swiper>
-            <SwiperSlide>
-              <MyTravelCard />
-            </SwiperSlide>
-          </div>
-        </div>
+        <MyPost />
       </div>
     </div>
   </div>
