@@ -1,16 +1,22 @@
 <script setup lang="ts">
+import { useRoute } from 'vue-router';
 import PhotoGrid from '@/components/travel/travelDetail/PhotoGrid.vue';
 import InfoCard from '@/components/travel/travelDetail/TravelInfoCard.vue';
 import { type DetailCard } from '@/components/travel/travelDetail/TravelInfoCard.vue';
 import { type PetTravelDetail } from '@/components/travel/travelDetail/withPetsInfo.vue';
 import { type RoomItem } from '@/components/travel/travelDetail/AccommodationCard.vue';
+import { type DetailInfoData } from '@/components/travel/travelDetail/DetailInfoComponent.vue';
 
 import WithPetsInfo from '@/components/travel/travelDetail/withPetsInfo.vue';
 import AccommodationCard from '@/components/travel/travelDetail/AccommodationCard.vue';
 import CommunityPosts from '@/components/travel/travelDetail/CommunityPosts.vue';
+import DetailInfoComponent from '@/components/travel/travelDetail/DetailInfoComponent.vue';
 // import { computed } from 'vue';
 // import type{AccommodationDetail,RestaurantDetail} from '@/components/travel/travelDetail/TravelInfoCard.vue';
 
+// 쿼리 파라미터
+const route = useRoute();
+const contenttypeid = (route.query.contenttypeid as string) || '';
 // *** 예시 코드 (API로 받아서 contenttypeid 별로 prop을 지정해야합니다.)
 // function parseDetail(apiResponse: any): DetailCard {
 //   // 예를 들어, API 응답이 JSON 객체라고 가정
@@ -182,8 +188,72 @@ const roomsData: RoomItem[] = [
       '※ 위 정보는 2024년 10월에 작성된 정보로(정상요금), 해당 숙박시설 이용요금이 수시로 변동됨에 따라 이용요금 및 기타 자세한 사항은 홈페이지 참조 요망',
     roomimg1: 'http://tong.visitkorea.or.kr/cms/resource/34/2579434_image2_1.jpg',
     roomoffseasonminfee1: '100000',
+    accomcountlodging: '17',
+  },
+  {
+    contentid: '1865597',
+    contenttypeid: '32',
+    roomtitle: '별채B',
+    roomsize1: '5',
+    roomcount: '0',
+    roomintro:
+      '※ 위 정보는 2024년 10월에 작성된 정보로(정상요금), 해당 숙박시설 이용요금이 수시로 변동됨에 따라 이용요금 및 기타 자세한 사항은 홈페이지 참조 요망',
+    roomimg1: 'http://tong.visitkorea.or.kr/cms/resource/34/2579434_image2_1.jpg',
+    roomoffseasonminfee1: '100000',
+    accomcountlodging: '17',
   },
 ];
+const rawDummyData = {
+  response: {
+    header: {
+      resultCode: '0000',
+      resultMsg: 'OK',
+    },
+    body: {
+      items: {
+        item: [
+          {
+            contentid: '2024432',
+            contenttypeid: '12',
+            serialnum: '0',
+            infoname: '개방 구간',
+            infotext:
+              '저두 출렁다리 : 438m / 도보 10분 소요 <br />\n망호 출렁다리 : 716m /  도보 15분 소요',
+            fldgubun: '1',
+          },
+          {
+            contentid: '2024432',
+            contenttypeid: '12',
+            serialnum: '1',
+            infoname: '등산로',
+            infotext: '"함께해(海)길"(2.5Km) / 도보1시간 ~ 1시간 30분 소요',
+            fldgubun: '1',
+          },
+          {
+            contentid: '2024432',
+            contenttypeid: '12',
+            serialnum: '2',
+            infoname: '이용가능시설',
+            infotext:
+              '[기반시설] 청자타워(짚트랙), 낚시공원, 출렁다리 등<br />\n[편의시설] 화장실 2개소(저두쪽, 망호쪽), 슈퍼 2개 등',
+            fldgubun: '3',
+          },
+        ],
+      },
+      numOfRows: 3,
+      pageNo: 1,
+      totalCount: 3,
+    },
+  },
+};
+const rawDummyString = JSON.stringify(rawDummyData);
+const dummyData1 = JSON.parse(rawDummyString).response.body.items.item;
+const data: DetailInfoData[] = dummyData1.map((e) => {
+  return {
+    infoname: e.infoname,
+    infotext: e.infotext,
+  };
+});
 </script>
 
 <template>
@@ -193,9 +263,14 @@ const roomsData: RoomItem[] = [
   <div class="mb-3">
     <InfoCard :detail="DummyAccData" />
   </div>
-  <WithPetsInfo :detail="DummyWithPetsInfo" />
-  <div class="my-5">
+  <div>
+    <WithPetsInfo :detail="DummyWithPetsInfo" />
+  </div>
+  <div v-if="contenttypeid === '32'" class="my-5">
     <AccommodationCard :rooms="roomsData" />
+  </div>
+  <div v-else class="container my-5">
+    <DetailInfoComponent :data="data" />
   </div>
   <div class="container mb-5">
     <CommunityPosts :name="dummyData.name" :data="[]" />
