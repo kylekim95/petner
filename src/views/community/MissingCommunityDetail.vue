@@ -32,7 +32,7 @@ const animalImg = '/missingDetailMockImage.png'
 </script>
 
 <template>
-  <div class="container d-flex flex-column mt-5" style="width: 67%">
+  <div class="container d-flex flex-column mt-5" style="width: 67%; min-width: 1280px;">
     <!-- 제목 -->
     <p class="m-0 p-0 title-text text-gray-10 mb-1">{{ dummyData.title }}</p>
     <!-- 유저 아바타 & 유저 ID -->
