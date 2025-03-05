@@ -10,7 +10,7 @@ onMounted(() => {
 
 const loadKakaoMap = (container) => {
   const script = document.createElement('script');
-  script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${VITE_KAKAO_MAP_KEY}&autoload=false`;
+  script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${VITE_KAKAO_MAP_KEY}&autoload=false&​libraries=services`;
   document.head.appendChild(script);
 
   script.onload = () => {
