@@ -18,7 +18,7 @@ const COMMUNITY_ROUTES = [
     path: PATH.communityDetailFree,
     name: 'freeCommunityDetail',
     component: () => import('@/views/community/FreeCommunityDetail.vue'),
-    meta: { headerVariant: 'header-transparent' },
+    meta: { headerVariant: 'header-purple' },
   },
   {
     path: PATH.communityFreeForm,
