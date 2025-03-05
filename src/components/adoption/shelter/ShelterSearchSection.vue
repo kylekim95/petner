@@ -3,7 +3,7 @@ import { Transition } from 'vue';
 import TitleText from '@/components/common/TitleText.vue';
 import ShelterCard from '@/components/adoption/shelter/ShelterCard.vue';
 import ShelterModal from '@/components/adoption/shelter/ShelterModal.vue';
-import { KOR_ORG, GU_ORG } from '@/constants/korOrg';
+import { KOR_ORG, GU_ORG } from '@/constants/api/korOrg';
 import { ref } from 'vue';
 import ShelterKakaoMap from './ShelterKakaoMap.vue';
 
