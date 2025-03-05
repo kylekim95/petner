@@ -3,8 +3,9 @@ import TitleText from '../common/TitleText.vue';
 import TextInput from '@/components/community/TextInput.vue';
 import TextareaInput from '@/components/community/TextareaInput.vue';
 import SelecterInput from '@/components/community/SelecterInput.vue';
-import { reactive, watch } from 'vue';
+import { reactive, watch, ref } from 'vue';
 import { ANIMAL_TYPE_ARRAY, GENDER_ARRAY } from '@/constants/mock/community/formOptions';
+import ImageUploader from '@/components/community/ImageUploader.vue';
 const data = reactive({
   name: '',
   phone: '',
@@ -20,11 +21,13 @@ const data = reactive({
   placeFeature: '', // 실종 장소 특징
   region: '', // 관할지
 });
-
+const images = ref<File[]>([]); // 이미지 담을 배열
 watch(data, (newV, oldV) => {
   console.log(newV, oldV);
 });
-
+watch(images, (newV, oldV) => {
+  console.log('image', newV);
+});
 const handleSubmit = (e) => {
   // 여기에 폼 제출 로직
   e.preventDefault();
@@ -60,7 +63,8 @@ const handleSubmit = (e) => {
             🐻‍❄️ 실종동물 정보
           </TitleText>
           <!-- 이미지 업로드 -->
-
+          <ImageUploader v-model="images" />
+          <div></div>
           <SelecterInput
             label="동물분류"
             selectorLabel="동물분류를 선택해주세요"

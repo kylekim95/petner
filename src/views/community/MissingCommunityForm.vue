@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import MissingCommunityForm from '@/components/community/MissingCommunityForm.vue';
+import MissingForm from '@/components/community/MissingForm.vue';
 
 // 폼 제출 하는 곳
 </script>
@@ -31,7 +31,7 @@ import MissingCommunityForm from '@/components/community/MissingCommunityForm.vu
     </div>
     <!-- 폼 제출 자리 -->
     <div class="w-100 d-flex justify-content-center">
-      <MissingCommunityForm />
+      <MissingForm />
     </div>
   </div>
 </template>
