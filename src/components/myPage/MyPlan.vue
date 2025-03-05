@@ -1,10 +1,18 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { Swiper, SwiperSlide } from 'swiper/vue';
+import 'swiper/css';
 
 const travelPlans = ref([
   { title: '덕구랑 2박 3일 강원도 여행', date: '2025.10.09' },
   { title: '서울 야경 투어', date: '2025.11.15' },
+  { title: '부산 해운대 여행', date: '2025.12.20' },
+  { title: '제주도 힐링 여행', date: '2026.01.05' },
+  { title: '부산 해운대 여행', date: '2025.12.20' },
+  { title: '제주도 힐링 여행', date: '2026.01.05' },
+  { title: '부산 해운대 여행', date: '2025.12.20' },
+  { title: '제주도 힐링 여행', date: '2026.01.05' },
+  { title: '제주도 힐링 여행', date: '2026.01.05' },
   { title: '부산 해운대 여행', date: '2025.12.20' },
   { title: '제주도 힐링 여행', date: '2026.01.05' },
 ]);
@@ -15,19 +23,27 @@ const travelPlans = ref([
     <div class="myContentText myTravelTitleSection position-relative">
       <span class="position-absolute" :style="{ left: '58px', top: '34px' }"> 나의여행 </span>
     </div>
+    <!-- 리스트 전체 영역 -->
     <div class="container myTravelContent">
       <!--  여행 리스트 -->
-      <div
-        v-for="(plan, index) in travelPlans"
-        :key="index"
-        class="d-flex flex-row align-items-center myTravelList position-relative"
+      <Swiper
+        :direction="'vertical'"
+        :slides-per-view="3"
+        :space-between="10"
+        style="height: 650px"
       >
-        <img src="/public/myPage/myPlanImg.png" width="68px" height="68px" alt="" />
-        <div>{{ plan.title }}</div>
-        <div class="position-absolute listText" :style="{ bottom: '5px', right: '10px' }">
-          {{ plan.date }}
-        </div>
-      </div>
+        <SwiperSlide
+          v-for="(plan, index) in travelPlans"
+          :key="index"
+          class="d-flex flex-row align-items-center myTravelList position-relative"
+        >
+          <img src="/public/myPage/myPlanImg.png" width="68px" height="68px" alt="" />
+          <div>{{ plan.title }}</div>
+          <div class="position-absolute listText" :style="{ bottom: '5px', right: '10px' }">
+            {{ plan.date }}
+          </div>
+        </SwiperSlide>
+      </Swiper>
     </div>
   </div>
 </template>
@@ -58,24 +74,28 @@ const travelPlans = ref([
 /* 여행 리스트 컨테이너 여역 */
 .myTravelContent {
   width: 80%;
-  height: 100%;
+  height: 650px;
 }
 
 /* 나의 여행 제목 섹션 */
 .myTravelTitleSection {
   height: 85px;
-  border-bottom: 1px solid var(--gray-6);
+  border-bottom: 1px solid #e6e6ea;
 }
 
 /* 여행 리스트 섹션  */
 .myTravelList {
   height: 145px;
-  border-bottom: 1px solid var(--gray-6);
+  border-bottom: 1px solid #e6e6ea;
 }
 
 .listText {
   font-size: 12px;
   font-weight: 500;
   color: var(--gray-7);
+}
+
+.cursorPointer:hover {
+  cursor: pointer;
 }
 </style>
