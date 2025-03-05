@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { defineProps } from 'vue';
-
 // Props 정의
 const props = defineProps<{
   imageUrl: string;
 }>();
 </script>
-
 <template>
   <div
-    class="ms-5 overflow-hidden border border-gray-7"
+
+    class="overflow-hidden border border-gray-7"
+
     :style="{ width: '90%', height: '670px', borderRadius: '15px' }"
   >
     <!-- 이미지 영역 -->
@@ -66,5 +66,4 @@ const props = defineProps<{
     </div>
   </div>
 </template>
-
 <style scoped></style>

@@ -24,7 +24,7 @@ const COMMUNITY_ROUTES = [
     path: PATH.communityMissing,
     name: 'missingCommunity',
     component: () => import('@/views/community/MissingCommunity.vue'),
-    meta: { headerVariant: 'header-default' },
+    meta: { headerVariant: 'header-blue' },
   },
   {
     path: PATH.communityDetailMissing,

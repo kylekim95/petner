@@ -1,4 +1,5 @@
 import axios from 'axios';
+import type { AxiosError, InternalAxiosRequestConfig, AxiosResponse } from 'axios';
 import PATH from '@/constants/path';
 const DEV_SERVER_URL = import.meta.env.VITE_API_BASE_URL;
 const devAPI = axios.create({
@@ -10,27 +11,30 @@ const devAPI = axios.create({
 });
 
 // 요청시 처리 ----------
-const onRequest = (config) => {
+const onRequest = (config: InternalAxiosRequestConfig) => {
   const jwt = localStorage.getItem('jwt');
+
   if (jwt) {
     config.headers.Authorization = `bearer ${jwt}`;
   }
   return config;
 };
 
-const onErrorRequest = (error) => {
+const onErrorRequest = (error: AxiosError | Error) => {
   return Promise.reject(error);
 };
 
 // 응답시 처리 ----------
+const onResponse = (response: AxiosResponse) => response;
 
 // 공통 에러 처리---------
-const onError = (status: number, message, errorDetail) => {
-  const error = { status, message, errorDetail };
+const onError = (status: number, custom_message: string, message: string) => {
+  const error = { status, custom_message, message };
   throw error;
 };
-const handleAuthError = async (originalRequest) => {
-  const hasToken = originalRequest.headers['Authorization'].split(' ').at(1);
+const handleAuthError = async (originalRequest: InternalAxiosRequestConfig) => {
+  if (!originalRequest.headers['Authorization']) return;
+  const hasToken = originalRequest.headers['Authorization'].toString().split(' ')[1];
   if (hasToken) {
     alert('사용자 정보가 만료되었습니다.홈으로 이동합니다.');
     // jwt를 지우고 홈으로 이동
@@ -44,44 +48,33 @@ const handleAuthError = async (originalRequest) => {
   }
 };
 
-const onResponse = (response) => response;
-
-// TODO :Typescript 전환하기
-const onErrorResponse = (error) => {
+const onErrorResponse = (error: AxiosError | Error): Promise<AxiosError> => {
   if (axios.isAxiosError(error)) {
-    const originalRequest = error.config;
-    const { data: message, status: statusCode, statusText } = error.response;
+    const { message } = error;
+    const origianlRequest = error.config as InternalAxiosRequestConfig;
+    const { method, url } = error.config as InternalAxiosRequestConfig;
+    const { status, statusText } = error.response as AxiosResponse;
 
-    // TODO : 배포후 DEV 상태에서만 로깅되도록 변경
     console.log(
-      `[API] ${originalRequest.method.toUpperCase()} ${url} | ERROR ${statusCode} ${statusText} | ${message}`,
+      `[API] ${method?.toUpperCase()} ${url} | ERROR ${status} ${statusText} | ${message}`,
     );
-
-    switch (statusCode) {
-      case 400: {
-        onError(statusCode, '잘못된 요청입니다.', message);
-        break;
-      }
+    switch (status) {
       case 401:
-      case 403: {
-        handleAuthError(originalRequest);
+        handleAuthError(origianlRequest);
         break;
-      }
-      case 404: {
-        onError(statusCode, '찾을 수 없는 페이지 입니다.', message);
+      case 403:
+        onError(status, '권한이 없습니다.', message);
         break;
-      }
-      case 500: {
-        onError(statusCode, '서버 오류입니다.', message);
+      case 404:
+        onError(status, '잘못된 요청입니다.', message);
         break;
-      }
-      default: {
-        onError(statusCode, '에러가 발생했습니다.', message);
-      }
+      case 500:
+        onError(status, '서버에 문제가 발생했습니다', message);
+        break;
+      default:
+        onError(status, '알수없는 에러가 발생했습니다.', message);
+        break;
     }
-  } else if (error && error.name === 'TimeoutError') {
-    console.log(`[API] | Timeout ERROR ${error.toString()}`);
-    onError(0, '요청시간이 초과되었습니다.', '');
   } else {
     console.log(`[API] | ERROR ${error.toString()}`);
     onError(0, '에러가 발생했습니다.', '');
