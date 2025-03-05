@@ -5,6 +5,7 @@ import ShelterCard from '@/components/adoption/shelter/ShelterCard.vue';
 import ShelterModal from '@/components/adoption/shelter/ShelterModal.vue';
 import { KOR_ORG, GU_ORG } from '@/constants/korOrg';
 import { ref } from 'vue';
+import ShelterKakaoMap from './ShelterKakaoMap.vue';
 
 const MOCK_SHELTERLIST_RESULT = [
   {
@@ -38,7 +39,7 @@ const MOCK_SHELTERLIST_RESULT = [
   },
   {
     careRegNo: '311311201100001',
-    careNm: '한국동물구조관리협회',
+    careNm: '한국동물구조관리협회2',
     orgNm: '서울특별시 은평구',
     divisionNm: '법인',
     saveTrgtAnimal: '개+고양이+기타',
@@ -79,33 +80,33 @@ interface OrgType {
 }
 
 interface ShelterWithRegNo {
-  careRegNo: string;
-  careNm: string;
-  orgNm: string;
-  divisionNm: string;
-  saveTrgtAnimal: string;
-  careAddr: string;
-  jibunAddr: string;
-  lat: number;
-  lng: number;
-  dsignationDate: string;
-  weekOprStime: string;
-  weekOprEtime: string;
-  weekCellStime: string;
-  weekCellEtime: string;
-  weekendOprStime: string;
-  weekendOprEtime: string;
-  weekendCellStime: string;
-  weekendCellEtime: string;
-  closeDay: string;
-  vetPersonCnt: number;
-  specsPersonCnt: number;
-  medicalCnt: number;
-  breedCnt: number;
-  quarabtineCnt: number;
-  feedCnt: number;
-  careTel: string;
-  dataStdDt: string;
+  careRegNo: string | null;
+  careNm: string | null;
+  orgNm: string | null;
+  divisionNm: string | null;
+  saveTrgtAnimal: string | null;
+  careAddr: string | null;
+  jibunAddr: string | null;
+  lat: number | null;
+  lng: number | null;
+  dsignationDate: string | null;
+  weekOprStime: string | null;
+  weekOprEtime: string | null;
+  weekCellStime: string | null;
+  weekCellEtime: string | null;
+  weekendOprStime: string | null;
+  weekendOprEtime: string | null;
+  weekendCellStime: string | null;
+  weekendCellEtime: string | null;
+  closeDay: string | null;
+  vetPersonCnt: number | null;
+  specsPersonCnt: number | null;
+  medicalCnt: number | null;
+  breedCnt: number | null;
+  quarabtineCnt: number | null;
+  feedCnt: number | null;
+  careTel: string | null;
+  dataStdDt: string | null;
 }
 const upperOrg = ref<UpperOrgType | null>({
   orgCd: '6110000',
@@ -119,7 +120,35 @@ const org = ref<OrgType>({
 });
 
 const isOpenModal = ref<boolean>(false);
-const shelter = ref<ShelterWithRegNo | null>(null); // 현재 보여지는 보호소 목록중 선택된 보호소정보
+const shelter = ref<ShelterWithRegNo | null>({
+  careRegNo: null,
+  careNm: null,
+  orgNm: null,
+  divisionNm: null,
+  saveTrgtAnimal: null,
+  careAddr: null,
+  jibunAddr: null,
+  lat: null,
+  lng: null,
+  dsignationDate: null,
+  weekOprStime: null,
+  weekOprEtime: null,
+  weekCellStime: null,
+  weekCellEtime: null,
+  weekendOprStime: null,
+  weekendOprEtime: null,
+  weekendCellStime: null,
+  weekendCellEtime: null,
+  closeDay: null,
+  vetPersonCnt: null,
+  specsPersonCnt: null,
+  medicalCnt: null,
+  breedCnt: null,
+  quarabtineCnt: null,
+  feedCnt: null,
+  careTel: null,
+  dataStdDt: null,
+}); // 현재 보여지는 보호소 목록중 선택된 보호소정보
 
 const handleClose = () => {
   isOpenModal.value = false;
@@ -218,7 +247,7 @@ const handleCardClick = (shelterItem: ShelterWithRegNo) => {
       </div>
     </div>
     <div class="map">
-      map
+      <ShelterKakaoMap :lat="shelter.lat" :lng="shelter.lng" />
       <Transition name="fade">
         <ShelterModal
           v-if="shelter !== null && isOpenModal"
