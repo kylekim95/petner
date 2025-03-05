@@ -4,8 +4,9 @@ import TextInput from '@/components/community/TextInput.vue';
 import TextareaInput from '@/components/community/TextareaInput.vue';
 import SelecterInput from '@/components/community/SelecterInput.vue';
 import ImageUploader from '@/components/community/ImageUploader.vue';
+import KakaoMap from '@/components/community/KakaoMap.vue';
 import { ANIMAL_TYPE_ARRAY, GENDER_ARRAY } from '@/constants/mock/community/formOptions';
-import { reactive, watch, ref, computed } from 'vue';
+import { reactive, ref, computed } from 'vue';
 
 const data = reactive({
   name: '',
@@ -71,7 +72,7 @@ const handleSubmit = (e) => {
           </TitleText>
           <!-- 이미지 업로드 -->
           <ImageUploader v-model="images" />
-          <div></div>
+
           <SelecterInput
             label="동물분류"
             selectorLabel="동물분류를 선택해주세요"
@@ -133,7 +134,7 @@ const handleSubmit = (e) => {
           <div class="map">
             <span class="fs-6"> * 마커를 움직여 실종장소를 선택할 수 있어요</span>
             <div :style="{ width: '400px', height: '400px' }" class="bg-primary-blue mb-3">
-              지도
+              <KakaoMap />
             </div>
             <TextInput
               label="실종 장소"
