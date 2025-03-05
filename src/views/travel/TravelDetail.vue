@@ -2,6 +2,8 @@
 import PhotoGrid from '@/components/travel/travelDetail/PhotoGrid.vue';
 import InfoCard from '@/components/travel/travelDetail/TravelInfoCard.vue';
 import { type DetailCard } from '@/components/travel/travelDetail/TravelInfoCard.vue';
+import { type PetTravelDetail } from '@/components/travel/travelDetail/withPetsInfo.vue';
+import WithPetsInfo from '@/components/travel/travelDetail/withPetsInfo.vue';
 // import { computed } from 'vue';
 // import type{AccommodationDetail,RestaurantDetail} from '@/components/travel/travelDetail/TravelInfoCard.vue';
 
@@ -49,7 +51,7 @@ const imageArray = [
 ];
 
 const DummyAccData: DetailCard = {
-  contenttypeid: 32,
+  contenttypeid: '32',
   title: '가람초연재',
   addr1: '경상북도 안동시 풍천면 하회종가길 76-6',
   tel: '010-2342-1256',
@@ -65,7 +67,7 @@ const DummyAccData: DetailCard = {
   refundregulation: '이용일 7일전 90%, 5일전 70%, 3일전 50%, 1일전 또는 당일 20%',
 };
 const DummyRestaurantData: DetailCard = {
-  contenttypeid: 39,
+  contenttypeid: '39',
   title: '가평카페109',
   addr1: '경기도 가평군 상면 축령로 109',
   tel: '010-2342-1256',
@@ -82,7 +84,7 @@ const DummyRestaurantData: DetailCard = {
 };
 
 const DummyCultureData: DetailCard = {
-  contenttypeid: 14,
+  contenttypeid: '14',
   title: '가평현암 농경박물관',
   addr1: '경기도 가평군 북면 석장모루길 13',
   tel: null,
@@ -100,7 +102,7 @@ const DummyCultureData: DetailCard = {
 };
 
 const DummyShoppingData: DetailCard = {
-  contenttypeid: 38,
+  contenttypeid: '38',
   title: '가평 현리5일장 (4, 9일)',
   addr1: '경기도 가평군 조종면 현창로44번길 14',
   tel: '031-585-1014',
@@ -117,7 +119,7 @@ const DummyShoppingData: DetailCard = {
 };
 
 const DummyTourSpotData: DetailCard = {
-  contenttypeid: 12,
+  contenttypeid: '12',
   title: '가우도',
   addr1: '전라남도 강진군 도암면 월곶로 473',
   tel: null,
@@ -136,7 +138,7 @@ const DummyTourSpotData: DetailCard = {
 };
 
 const DummyActivitiesData: DetailCard = {
-  contenttypeid: 28,
+  contenttypeid: '28',
   title: '가평TOP랜드 번지점프',
   addr1: '경기도 가평군 가평읍 북한강변로 1044-15',
   homepage: 'http://www.ktopland.com',
@@ -152,9 +154,19 @@ const DummyActivitiesData: DetailCard = {
   usefeeleports: null,
   usetimeleports: '09:00~18:00',
 };
+
+const DummyWithPetsInfo: PetTravelDetail = {
+  contentId: '1720749',
+  acmpyNeedMtr: '일부구역 동반가능',
+  acmpyTypeCd: '일부구역 동반가능',
+  acmpyPsblCpam: '전 견종 동반 가능',
+  etcAcmpyInfo:
+    '- 맹견의 경우, 입마개 착용 필수\n- 배변봉투 지참 및 배변처리 필수\n- 맨발 체험이 가능한 황톳길은 동반 불가\n- 황톳길 옆 보행 도로는 동반 가능',
+};
 </script>
 
 <template>
-  <PhotoGrid :firstimage="DummyActivitiesData.firstimage" :images="imageArray" />
-  <InfoCard :detail="DummyActivitiesData" />
+  <PhotoGrid :firstimage="DummyAccData.firstimage" :images="imageArray" />
+  <InfoCard :detail="DummyAccData" />
+  <WithPetsInfo :detail="DummyWithPetsInfo" />
 </template>

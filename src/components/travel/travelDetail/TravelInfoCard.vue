@@ -11,7 +11,7 @@ interface BaseDetail {
 }
 
 export interface AccommodationDetail extends BaseDetail {
-  contenttypeid: 32;
+  contenttypeid: '32';
   roomcount: number | null;
   checkintime: string | null;
   checkouttime: string | null;
@@ -19,7 +19,7 @@ export interface AccommodationDetail extends BaseDetail {
 }
 
 export interface RestaurantDetail extends BaseDetail {
-  contenttypeid: 39;
+  contenttypeid: '39';
   opentimefood: string | null;
   restdatefood: string | null;
   parkingfood: string | null;
@@ -28,7 +28,7 @@ export interface RestaurantDetail extends BaseDetail {
 }
 
 export interface CultureDetail extends BaseDetail {
-  contenttypeid: 14;
+  contenttypeid: '14';
   infocenterculture: string | null;
   usetimeculture: string | null;
   restdateculture: string | null;
@@ -37,14 +37,14 @@ export interface CultureDetail extends BaseDetail {
 }
 
 export interface ShoppingDetail extends BaseDetail {
-  contenttypeid: 38;
+  contenttypeid: '38';
   infocentershopping: string | null;
   fairday: string | null;
   parkingshopping: string | null;
   restdateshopping: string | null;
 }
 export interface TourSpotDetail extends BaseDetail {
-  contenttypeid: 12;
+  contenttypeid: '12';
   infocenter: string | null;
   restdate: string | null;
   expguide: string | null;
@@ -52,7 +52,7 @@ export interface TourSpotDetail extends BaseDetail {
   usetime: string | null;
 }
 export interface ActivitiesDetail extends BaseDetail {
-  contenttypeid: 28;
+  contenttypeid: '28';
   infocenterleports: string | null;
   restdateleports: string | null;
   usetimeleports: string | null;
@@ -73,7 +73,7 @@ const { detail } = defineProps<{ detail: DetailCard }>();
 
 <template>
   <!-- 숙소 타입(contenttypeid === 32) -->
-  <div v-if="detail?.contenttypeid === 32" class="container mb-5">
+  <div v-if="detail?.contenttypeid === '32'" class="container mb-3">
     <div class="row g-2">
       <h3 class="text-secondary-red fs-5" style="font-family: 'Paperlogy'; font-weight: 700">
         숙소
@@ -134,7 +134,7 @@ const { detail } = defineProps<{ detail: DetailCard }>();
   </div>
 
   <!-- 음식점 타입(contenttypeid === 39) -->
-  <div v-if="detail?.contenttypeid === 39" class="container mb-5">
+  <div v-if="detail?.contenttypeid === '39'" class="container mb-3">
     <div class="row g-2">
       <h3 class="text-secondary-red fs-5" style="font-family: 'Paperlogy'; font-weight: 700">
         레스토랑
@@ -201,7 +201,7 @@ const { detail } = defineProps<{ detail: DetailCard }>();
   </div>
 
   <!-- 문화  (contenttyepid === 14) -->
-  <div v-if="detail?.contenttypeid === 14" class="container mb-5">
+  <div v-if="detail?.contenttypeid === '14'" class="container mb-3">
     <div class="row g-2">
       <h3 class="text-secondary-red fs-5" style="font-family: 'Paperlogy'; font-weight: 700">
         문화 & 쇼핑
@@ -262,7 +262,7 @@ const { detail } = defineProps<{ detail: DetailCard }>();
   </div>
 
   <!-- 쇼핑 contenttypeid === 38 -->
-  <div v-if="detail?.contenttypeid === 38" class="container mb-5">
+  <div v-if="detail?.contenttypeid === '38'" class="container mb-3">
     <div class="row g-2">
       <h3 class="text-secondary-red fs-5" style="font-family: 'Paperlogy'; font-weight: 700">
         문화 & 쇼핑
@@ -319,7 +319,7 @@ const { detail } = defineProps<{ detail: DetailCard }>();
   </div>
 
   <!-- 관광 contenttypeid === 12 -->
-  <div v-if="detail?.contenttypeid === 12" class="container mb-5">
+  <div v-if="detail?.contenttypeid === '12'" class="container mb-3">
     <div class="row g-2">
       <h3 class="text-secondary-red fs-5" style="font-family: 'Paperlogy'; font-weight: 700">
         관광 & 체험
@@ -379,7 +379,7 @@ const { detail } = defineProps<{ detail: DetailCard }>();
     </div>
   </div>
   <!-- 레포츠 contenttypeid === 28 -->
-  <div v-if="detail?.contenttypeid === 28" class="container mb-5">
+  <div v-if="detail?.contenttypeid === '28'" class="container mb-3">
     <div class="row g-2">
       <h3 class="text-secondary-red fs-5" style="font-family: 'Paperlogy'; font-weight: 700">
         관광 & 체험
