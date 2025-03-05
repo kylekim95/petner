@@ -10,7 +10,7 @@ const abandonedText : TextBlockDescriptor[] = [
     color:'#8D827A', bgColor:'', font: 'Pretendard', size:'32px', weight:800, margin:'my-0'
   },
   {
-    content: '11,3072마리',
+    content: '113,072마리',
     color:'var(--primary-red)', bgColor:'', font: 'Pretendard', size:'56px', weight:800, margin:'my-0'
   },
   {
