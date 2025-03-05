@@ -18,18 +18,18 @@ const data = reactive({
   feature: '',
   animalType: '',
   gender: '',
-  place: '',
   date: '',
   placeFeature: '', // 실종 장소 특징
   region: '', // 관할지
 });
 const images = ref<File[]>([]); // 이미지 담을 배열
-
+const doroRef = ref('');
 const isValid = computed(() => {
   // data 배열을 돌면서 하나라도 비어있는 것이 있다면 false
   const dataResult = Object.values(data).every((value) => value.trim().length > 0);
   const imageResult = images.value.length > 0;
-  return dataResult && imageResult;
+  const addressResult = doroRef.value.trim().length > 0;
+  return dataResult && imageResult && addressResult;
 });
 
 const handleSubmit = (e) => {
@@ -134,15 +134,12 @@ const handleSubmit = (e) => {
           <div class="map">
             <span class="fs-6"> * 마커를 움직여 실종장소를 선택할 수 있어요</span>
             <div :style="{ width: '400px', height: '400px' }" class="bg-primary-blue mb-3">
-              <KakaoMap />
+              <KakaoMap v-model="doroRef" />
             </div>
-            <TextInput
-              label="실종 장소"
-              type="text"
-              placeholder="실종된 장소를 입력해주세요"
-              ariaLabel="실종 장소 입력"
-              v-model="data.place"
-            />
+            <div class="d-flex justify-content-between align-items-center px-3">
+              <span class="fs-6 fw-bold"> 실종장소 </span>
+              <span class="fs-6 fw-medium">{{ doroRef }}</span>
+            </div>
           </div>
           <TextInput
             label="실종 날짜"
