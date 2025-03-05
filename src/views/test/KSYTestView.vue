@@ -1,18 +1,16 @@
 <script setup lang="ts">
-import ExpandingMenu from '@/components/travel/ExpandingMenu.vue';
-import type { ExpandingMenuItemData } from '@/components/travel/ExpandingMenu.vue';
+import CommunityPosts from '@/components/travel/travelDetail/CommunityPosts.vue';
 
-const itemData : ExpandingMenuItemData[] = [
-  { id:0, bgImage:'http://tong.visitkorea.or.kr/cms/resource/82/3364482_image2_1.JPG', title:'title 1', content:'content 1' },
-  { id:1, bgImage:'http://tong.visitkorea.or.kr/cms/resource/82/3364482_image2_1.JPG', title:'title 2', content:'content 2' },
-  { id:2, bgImage:'http://tong.visitkorea.or.kr/cms/resource/82/3364482_image2_1.JPG', title:'title 3', content:'content 3' },
-];
+const dummyData = {
+  name : '가람초연재'
+}
 </script>
 
 <template>
   <div>
-    <div style="height:400px; width:1000px">
-      <ExpandingMenu :item-data="itemData"/>
+    <div class="container p-5" style="width: 67%; min-width: 1280px;">
+      <CommunityPosts :name="dummyData.name" :data="[]" />
     </div>
   </div>
 </template>
+
