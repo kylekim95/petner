@@ -38,5 +38,11 @@ const COMMUNITY_ROUTES = [
     component: () => import('@/views/community/MissingCommunityDetail.vue'),
     meta: { headerVariant: 'header-blue' },
   },
+  {
+    path: PATH.communityMissingForm,
+    name: 'missingForm',
+    component: () => import('@/views/community/MissingCommunityForm.vue'),
+    meta: { headerVariant: 'header-blue' },
+  },
 ];
 export default COMMUNITY_ROUTES;
