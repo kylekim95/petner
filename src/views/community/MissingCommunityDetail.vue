@@ -44,12 +44,12 @@ const animalImg = '/missingDetailMockImage.png'
     <div class="d-flex align-items-center justify-content-between mb-3">
       <p class="m-0 p-0 date-text text-gray-7">{{ dummyData.createdAt }}</p>
       <div class="d-flex gap-2">
-        <div class="bg-primary-green rounded-5 d-flex align-items-center justify-content-center" style="width:100px; height: 35px">
+        <button class="btn border-0 bg-primary-green rounded-5 d-flex align-items-center justify-content-center" style="width:100px; height: 35px">
           <p class="m-0 p-0 button-text text-gray-1">수정하기</p>
-        </div>
-        <div class="border border-primary-red rounded-5 d-flex align-items-center justify-content-center" style="width:100px; height: 35px">
-          <p class="m-0 p-0 button-text text-primary-red">삭제하기</p>
-        </div>
+        </button>
+        <button class="btn border-primary-red rounded-5 d-flex align-items-center justify-content-center bg-white" style="width:100px; height: 35px">
+            <p class="m-0 p-0 button-text text-primary-red">삭제하기</p>
+        </button>
       </div>
     </div>
     <!-- 실종 동물 정보 -->
@@ -73,15 +73,15 @@ const animalImg = '/missingDetailMockImage.png'
     <!-- 분실 정보 -->
     <div class="bg-gray-3 rounded mb-3 p-3">
       <div v-for="(item, index) in Object.values(dummyData.missingInfo)" :key="missingCat[index]" class="d-flex justify-content-between py-1">
-        <p class="w-50 m-0 p-0 cat-text">{{ missingCat[index] }}</p>
-        <p class="w-50 m-0 p-0 value-text">{{ item }}</p>
+        <p class="w-25 m-0 p-0 cat-text">{{ missingCat[index] }}</p>
+        <p class="w-75 m-0 p-0 value-text">{{ item }}</p>
       </div>
     </div>
     <!-- 발견시 연락 정보 -->
     <div class="bg-gray-3 rounded mb-3 p-3">
       <div v-for="(item, index) in Object.values(dummyData.contactInfo)" :key="contactInfoCat[index]" class="d-flex justify-content-between py-1">
-        <p class="w-50 m-0 p-0 cat-text">{{ contactInfoCat[index] }}</p>
-        <p class="w-50 m-0 p-0 value-text">{{ item }}</p>
+        <p class="w-25 m-0 p-0 cat-text">{{ contactInfoCat[index] }}</p>
+        <p class="w-75 m-0 p-0 value-text">{{ item }}</p>
       </div>
     </div>
   </div>
