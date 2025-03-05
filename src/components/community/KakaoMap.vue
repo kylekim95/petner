@@ -35,7 +35,7 @@ const loadKakaoMap = (container) => {
       }
 
       let geocoder = new window.kakao.maps.services.Geocoder(); // 주소-좌표 변환 객체
-      console.log(geocoder);
+
       let marker = new window.kakao.maps.Marker(); // 지도에 표시될 마커 생성
 
       function searchDetailAddrFromCoords(coords, callback) {
