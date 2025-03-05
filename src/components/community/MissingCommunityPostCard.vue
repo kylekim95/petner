@@ -8,15 +8,19 @@ const props = defineProps<{
 }>();
 </script>
 <template>
+
   <div class="border border-gray-7" :style="{ width: '100%', borderRadius: '10px' }">
+
     <!-- 이미지 영역 -->
     <div class="position-relative z-0 filter">
       <img
         :src="props.imageUrl"
         alt="강아지"
+
         width="100%"
         height="442px"
         :style="{ filter: 'brightness(0.7)', borderRadius: '10px 10px 0px 0px' }"
+
       />
       <div
         class="position-absolute bg-white text-center"

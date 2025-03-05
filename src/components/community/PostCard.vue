@@ -7,7 +7,9 @@ const props = defineProps<{
 </script>
 <template>
   <div
+
     class="overflow-hidden border border-gray-7"
+
     :style="{ width: '90%', height: '670px', borderRadius: '15px' }"
   >
     <!-- 이미지 영역 -->
