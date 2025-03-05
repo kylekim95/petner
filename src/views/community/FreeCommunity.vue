@@ -76,6 +76,7 @@ const currentCards = cards.slice(startIndex, startIndex + cardsPerPage);
   </div>
 
   <!-- 카드 리스트 -->
+
   <div class="container" style="max-width: 1280px; margin: 0 auto">
     <div class="row row-cols-1 row-cols-md-2 g-1 justify-content-center">
       <!-- 카드 표시 -->
