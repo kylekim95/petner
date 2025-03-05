@@ -9,6 +9,7 @@ const PATH: PathType = Object.freeze({
   // 유저기능
   login: '/login',
   signup: '/signup',
+  mypage: '/mypage',
 
   // 여행페이지와 그 하위
   travel: '/travel',

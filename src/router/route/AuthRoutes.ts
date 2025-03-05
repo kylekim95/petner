@@ -13,5 +13,11 @@ const AUTH_ROUTES = [
     component: () => import('@/views/auth/SignupView.vue'),
     meta: { headerVariant: 'header-default' },
   },
+  {
+    path: PATH.mypage,
+    name: 'mypage',
+    component: () => import('@/views/auth/MyPage.vue'),
+    meta: { headerVariant: 'header-default' },
+  },
 ];
 export default AUTH_ROUTES;
