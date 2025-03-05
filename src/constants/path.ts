@@ -31,6 +31,7 @@ const PATH: PathType = Object.freeze({
   communityDetailFree: '/community/free/:postId',
   communityDetailMissing: '/community/missing/:postId',
   communityForm: '/community/form',
+  communityMissingForm: '/community/missing-form',
 
   // 쇼핑페이지와 그 하위
   shopping: '/shopping',
