@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
+import axios from 'axios';
 
 const title = ref('');
 const content = ref('');
-const images = ref<File[]>([]); // 여러 이미지를 담을 배열
+const images = ref<File[]>([]); // 이미지 담을 배열
 const imagePreviews = ref<string[]>([]); // 이미지 미리보기 배열
 
 // 파일 선택 후 미리보기 업데이트
@@ -27,17 +28,35 @@ const removeImage = (index: number) => {
   imagePreviews.value.splice(index, 1);
 };
 
-// 폼 제출
-const handleSubmit = () => {
-  console.log('제목:', title.value);
-  console.log('내용:', content.value);
-  console.log('사진:', images.value);
-};
-
 // "등록하기" 버튼 활성화 여부 계산
 const isFormValid = computed(() => {
   return title.value.trim() !== '' && content.value.trim() !== '' && images.value.length > 0;
 });
+
+// 폼 제출
+const handleSubmit = async () => {
+  // Form 데이터 준비
+  const formData = new FormData();
+  formData.append('title', title.value);
+  formData.append('content', content.value);
+
+  // 이미지 데이터를 formData에 추가
+  images.value.forEach((image) => {
+    formData.append('images', image);
+  });
+
+  // POST 요청 보내기
+  try {
+    const response = await axios.post('API_ENDPOINT_URL', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    console.log('성공:', response.data);
+  } catch (error) {
+    console.error('에러:', error);
+  }
+};
 </script>
 
 <template>
@@ -45,13 +64,7 @@ const isFormValid = computed(() => {
     <!-- 배너 섹션 -->
     <div
       class="banner d-flex justify-content-center align-items-center bg-cover"
-      style="
-        background-image: url('/PNG-Image/images/FreeCommunityForm.png');
-        height: 384px;
-        background-size: cover;
-        background-position: center;
-        position: relative;
-      "
+      style="background-image: url('/PNG-Image/images/FreeCommunityForm.png'); height: 384px; background-size: cover; background-position: center; position: relative;"
     >
       <div class="container text-start">
         <div class="text-white px-4 py-8" style="max-width: 1280px; margin: 0 auto">
@@ -105,13 +118,7 @@ const isFormValid = computed(() => {
             <label
               for="image-upload"
               class="d-flex justify-content-center align-items-center border rounded-3"
-              style="
-                width: 200px;
-                height: 200px;
-                cursor: pointer;
-                background-color: var(--gray-3);
-                border: 2px dashed var(--gray-7);
-              "
+              style="width: 200px; height: 200px; cursor: pointer; background-color: var(--gray-3); border: 2px dashed var(--gray-7);"
             >
               <span class="text-center" style="font-size: 20px; color: #6c757d">+</span><br />
               <span style="font-size: 18px; color: #6c757d">이미지 업로드</span>
