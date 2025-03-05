@@ -3,9 +3,6 @@ import { defineProps } from 'vue';
 
 // Props 정의
 const props = defineProps<{
-  width: string;
-  height: string;
-  imageHeight: string;
   imageUrl: string;
   avatarWidth: string;
   avatarHeight: string;
@@ -15,15 +12,15 @@ const props = defineProps<{
 <template>
   <div
     class="ms-5 overflow-hidden border border-gray-7"
-    :style="{ width: props.width, height: props.height, borderRadius: '10px' }"
+    :style="{ width: '580px', height: '780px', borderRadius: '10px' }"
   >
     <!-- 이미지 영역 -->
     <div class="position-relative z-0 filter">
       <img
         :src="props.imageUrl"
         alt="강아지"
-        :width="props.width"
-        :height="props.imageHeight"
+        width="580px"
+        height="560px"
         style="filter: brightness(0.7)"
       />
       <div
@@ -61,8 +58,8 @@ const props = defineProps<{
           <img
             src="https://cdn.pixabay.com/photo/2016/04/19/15/13/minion-1338858_1280.jpg"
             alt="강아지"
-            width="40px"
-            height="40px"
+            :width="props.avatarWidth"
+            :height="props.avatarHeight"
             style="filter: brightness(0.7)"
           />
         </div>

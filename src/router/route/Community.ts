@@ -1,16 +1,14 @@
-// Community.ts
 import PATH from '@/constants/path';
-
 const COMMUNITY_ROUTES = [
   {
     path: PATH.community,
     name: 'communityMain',
     component: () => import('@/views/community/CommunityMain.vue'),
-    meta: { headerVariant: 'header-default' },
+    meta: { headerVariant: 'header-red' },
   },
   {
     path: PATH.communityFree,
-    name: 'free',
+    name: 'freeCommunity',
     component: () => import('@/views/community/FreeCommunity.vue'),
     meta: { headerVariant: 'header-transparent' },
   },
