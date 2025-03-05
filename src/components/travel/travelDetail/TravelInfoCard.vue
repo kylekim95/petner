@@ -73,7 +73,7 @@ const { detail } = defineProps<{ detail: DetailCard }>();
 
 <template>
   <!-- 숙소 타입(contenttypeid === 32) -->
-  <div v-if="detail?.contenttypeid === '32'" class="container mb-3">
+  <div v-if="detail?.contenttypeid === '32'" class="container">
     <div class="row g-2">
       <h3 class="text-secondary-red fs-5" style="font-family: 'Paperlogy'; font-weight: 700">
         숙소
@@ -134,7 +134,7 @@ const { detail } = defineProps<{ detail: DetailCard }>();
   </div>
 
   <!-- 음식점 타입(contenttypeid === 39) -->
-  <div v-if="detail?.contenttypeid === '39'" class="container mb-3">
+  <div v-if="detail?.contenttypeid === '39'" class="container">
     <div class="row g-2">
       <h3 class="text-secondary-red fs-5" style="font-family: 'Paperlogy'; font-weight: 700">
         레스토랑
@@ -201,7 +201,7 @@ const { detail } = defineProps<{ detail: DetailCard }>();
   </div>
 
   <!-- 문화  (contenttyepid === 14) -->
-  <div v-if="detail?.contenttypeid === '14'" class="container mb-3">
+  <div v-if="detail?.contenttypeid === '14'" class="container">
     <div class="row g-2">
       <h3 class="text-secondary-red fs-5" style="font-family: 'Paperlogy'; font-weight: 700">
         문화 & 쇼핑
@@ -262,7 +262,7 @@ const { detail } = defineProps<{ detail: DetailCard }>();
   </div>
 
   <!-- 쇼핑 contenttypeid === 38 -->
-  <div v-if="detail?.contenttypeid === '38'" class="container mb-3">
+  <div v-if="detail?.contenttypeid === '38'" class="container">
     <div class="row g-2">
       <h3 class="text-secondary-red fs-5" style="font-family: 'Paperlogy'; font-weight: 700">
         문화 & 쇼핑
@@ -319,7 +319,7 @@ const { detail } = defineProps<{ detail: DetailCard }>();
   </div>
 
   <!-- 관광 contenttypeid === 12 -->
-  <div v-if="detail?.contenttypeid === '12'" class="container mb-3">
+  <div v-if="detail?.contenttypeid === '12'" class="container">
     <div class="row g-2">
       <h3 class="text-secondary-red fs-5" style="font-family: 'Paperlogy'; font-weight: 700">
         관광 & 체험
@@ -379,7 +379,7 @@ const { detail } = defineProps<{ detail: DetailCard }>();
     </div>
   </div>
   <!-- 레포츠 contenttypeid === 28 -->
-  <div v-if="detail?.contenttypeid === '28'" class="container mb-3">
+  <div v-if="detail?.contenttypeid === '28'" class="container">
     <div class="row g-2">
       <h3 class="text-secondary-red fs-5" style="font-family: 'Paperlogy'; font-weight: 700">
         관광 & 체험

@@ -18,7 +18,7 @@ const subImages = computed<(string | null)[]>(() => {
 </script>
 
 <template>
-  <div class="container my-5">
+  <div class="container">
     <div class="row g-2">
       <!-- 메인 이미지 영역 -->
       <div class="col-6 mb-3 mb-md-0">

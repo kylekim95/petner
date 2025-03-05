@@ -4,6 +4,7 @@ import InfoCard from '@/components/travel/travelDetail/TravelInfoCard.vue';
 import { type DetailCard } from '@/components/travel/travelDetail/TravelInfoCard.vue';
 import { type PetTravelDetail } from '@/components/travel/travelDetail/withPetsInfo.vue';
 import WithPetsInfo from '@/components/travel/travelDetail/withPetsInfo.vue';
+import AccommodationCard from '@/components/travel/travelDetail/AccommodationCard.vue';
 // import { computed } from 'vue';
 // import type{AccommodationDetail,RestaurantDetail} from '@/components/travel/travelDetail/TravelInfoCard.vue';
 
@@ -166,7 +167,14 @@ const DummyWithPetsInfo: PetTravelDetail = {
 </script>
 
 <template>
-  <PhotoGrid :firstimage="DummyAccData.firstimage" :images="imageArray" />
-  <InfoCard :detail="DummyAccData" />
+  <div class="my-5">
+    <PhotoGrid :firstimage="DummyAccData.firstimage" :images="imageArray" />
+  </div>
+  <div class="mb-3">
+    <InfoCard :detail="DummyAccData" />
+  </div>
   <WithPetsInfo :detail="DummyWithPetsInfo" />
+  <div class="my-5">
+    <AccommodationCard />
+  </div>
 </template>
