@@ -5,7 +5,7 @@ const imagePreviews = ref<string[]>([]); // 이미지 미리보기 배열
 const images = defineModel<string[]>();
 // 이미지 삭제
 const removeImage = (index: number) => {
-  images.value.splice(index, 1);
+  images.value!.splice(index, 1);
   imagePreviews.value.splice(index, 1);
 };
 const handleImageChange = (event: Event) => {

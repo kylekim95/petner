@@ -3,9 +3,10 @@ import TitleText from '../common/TitleText.vue';
 import TextInput from '@/components/community/TextInput.vue';
 import TextareaInput from '@/components/community/TextareaInput.vue';
 import SelecterInput from '@/components/community/SelecterInput.vue';
-import { reactive, watch, ref } from 'vue';
-import { ANIMAL_TYPE_ARRAY, GENDER_ARRAY } from '@/constants/mock/community/formOptions';
 import ImageUploader from '@/components/community/ImageUploader.vue';
+import { ANIMAL_TYPE_ARRAY, GENDER_ARRAY } from '@/constants/mock/community/formOptions';
+import { reactive, watch, ref, computed } from 'vue';
+
 const data = reactive({
   name: '',
   phone: '',
@@ -22,16 +23,22 @@ const data = reactive({
   region: '', // 관할지
 });
 const images = ref<File[]>([]); // 이미지 담을 배열
-watch(data, (newV, oldV) => {
-  console.log(newV, oldV);
+
+const isValid = computed(() => {
+  // data 배열을 돌면서 하나라도 비어있는 것이 있다면 false
+  const dataResult = Object.values(data).every((value) => value.trim().length > 0);
+  const imageResult = images.value.length > 0;
+  return dataResult && imageResult;
 });
-watch(images, (newV, oldV) => {
-  console.log('image', newV);
-});
+
 const handleSubmit = (e) => {
-  // 여기에 폼 제출 로직
   e.preventDefault();
-  console.log(data);
+  if (isValid.value) {
+    // 여기에 폼 제출 로직
+    alert('제출되었습니다.');
+  } else {
+    alert('작성하지 않은 제출란이 있습니다.');
+  }
 };
 </script>
 
@@ -125,7 +132,16 @@ const handleSubmit = (e) => {
 
           <div class="map">
             <span class="fs-6"> * 마커를 움직여 실종장소를 선택할 수 있어요</span>
-            <div :style="{ width: '400px', height: '400px' }" class="bg-primary-blue">지도</div>
+            <div :style="{ width: '400px', height: '400px' }" class="bg-primary-blue mb-3">
+              지도
+            </div>
+            <TextInput
+              label="실종 장소"
+              type="text"
+              placeholder="실종된 장소를 입력해주세요"
+              ariaLabel="실종 장소 입력"
+              v-model="data.place"
+            />
           </div>
           <TextInput
             label="실종 날짜"
