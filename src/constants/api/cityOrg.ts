@@ -1,5 +1,8 @@
+import type { Org } from './korOrg';
+
+type CityOrgKey = Org['orgdownNm'];
 // 각 시도 별 하위 지역 코드
-const CITY_ORG = {
+const CITY_ORG: Record<CityOrgKey, { uprCd: string; orgCd: string; orgdownNm: string }[]> = {
   서울특별시: [
     {
       uprCd: '6110000',

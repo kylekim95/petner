@@ -1,4 +1,4 @@
-interface Org {
+export interface Org {
   orgCd: string;
   orgdownNm: string;
 }
