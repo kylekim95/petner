@@ -26,11 +26,11 @@ defineProps<{
 
 <style scoped>
 .card {
-  min-width: 305px;
+  min-width: 300px;
 }
 
 .card-img-top {
-  min-height: 305px;
+  height: 300px;
   object-fit: cover;
 }
 

@@ -1,16 +1,14 @@
-// Community.ts
 import PATH from '@/constants/path';
-
 const COMMUNITY_ROUTES = [
   {
     path: PATH.community,
     name: 'communityMain',
     component: () => import('@/views/community/CommunityMain.vue'),
-    meta: { headerVariant: 'header-default' },
+    meta: { headerVariant: 'header-red' },
   },
   {
     path: PATH.communityFree,
-    name: 'free',
+    name: 'freeCommunity',
     component: () => import('@/views/community/FreeCommunity.vue'),
     meta: { headerVariant: 'header-transparent' },
   },
@@ -18,25 +16,19 @@ const COMMUNITY_ROUTES = [
     path: PATH.communityDetailFree,
     name: 'freeCommunityDetail',
     component: () => import('@/views/community/FreeCommunityDetail.vue'),
-    meta: { headerVariant: 'header-purple' },
-  },
-  {
-    path: PATH.communityFreeForm,
-    name: 'freeCommunityForm',
-    component: () => import('@/views/community/FreeCommunityForm.vue'),
-    meta: { headerVariant: 'header-purple' },
+    meta: { headerVariant: 'header-transparent' },
   },
   {
     path: PATH.communityMissing,
     name: 'missingCommunity',
     component: () => import('@/views/community/MissingCommunity.vue'),
-    meta: { headerVariant: 'header-blue' },
+    meta: { headerVariant: 'header-default' },
   },
   {
     path: PATH.communityDetailMissing,
     name: 'freeCommunity',
     component: () => import('@/views/community/MissingCommunityDetail.vue'),
-    meta: { headerVariant: 'header-blue' },
+    meta: { headerVariant: 'header-transparent' },
   },
 ];
 export default COMMUNITY_ROUTES;
