@@ -14,18 +14,7 @@ const router = createRouter({
       component: () => import('@/views/HomeMain.vue'),
       meta: { headerVariant: 'header-transparent' },
     },
-    {
-      path: '/KSY',
-      name: 'test',
-      component: () => import('@/views/test/KSYTestView.vue'),
-      meta: { headerVariant: 'header-red' },
-    },
-    {
-      path: '/LSJtest',
-      name: 'test',
-      component: () => import('@/views/test/LSJTestView.vue'),
-      meta: { headerVariant: 'header-transparent' },
-    },
+
     ...AUTH_ROUTES,
     ...TRAVEL_ROUTES,
     ...ADOPTION_ROUTES,

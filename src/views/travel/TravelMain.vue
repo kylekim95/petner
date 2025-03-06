@@ -10,23 +10,30 @@ import type { ExpandingMenuItemData } from '@/components/travel/ExpandingMenu.vu
 import type { Restaurant } from '@/components/travel/RestaurantSwiper.vue';
 import type { Accommodation } from '@/components/travel/AccommodationSwiper.vue';
 import type { ShoppingAndCulture } from '@/components/travel/CultureShoppingSwiper.vue';
+import PATH from '@/constants/path';
 
-// tourDetailCommonAPI
-//   .get(tourDetailCommonAPI.detailCommon, {
-//     params: {
-//       numOfRows: 10,
-//       pageNo: 1,
-//       contentId: '1865597',
-//       contentTypeId: '32',
-//     },
-//   })
-//   .then((response) => {
-//     const data = response.data;
-//     console.log(data);
-//   })
-//   .catch((error) => {
-//     console.error(error);
-//   });
+const categories: Category[] = [
+  {
+    img: '/TravelMain/Firework.jpg',
+    content: '문화 & 쇼핑',
+    path: PATH.travelSearch.replace(':category', '38'),
+  },
+  {
+    img: '/TravelMain/Accommodation.jpg',
+    content: '숙소',
+    path: PATH.travelSearch.replace(':category', '32'),
+  },
+  {
+    img: '/TravelMain/Restaurant.jpg',
+    content: '레스토랑',
+    path: PATH.travelSearch.replace(':category', '39'),
+  },
+  {
+    img: '/TravelMain/Activity.jpg',
+    content: '관광 & 체험',
+    path: PATH.travelSearch.replace(':category', '28'),
+  },
+];
 
 const accommodations: Accommodation[] = [
   {
@@ -100,62 +107,40 @@ const restaurants: Restaurant[] = [
 
 const shoppingAndCulture: ShoppingAndCulture[] = [
   {
-    id: 1,
-    img: '/forSwipers/shopping1.png',
+    id: 3432213,
+    img: 'http://tong.visitkorea.or.kr/cms/resource/56/3431756_image2_1.jpg',
+    path: PATH.travelDetail.replace(':contentId', '3432213'),
   },
   {
-    id: 2,
-    img: '/forSwipers/shopping2.png',
+    id: 2609837,
+    img: 'http://tong.visitkorea.or.kr/cms/resource/92/3085092_image2_1.JPG',
+    path: PATH.travelDetail.replace(':contentId', '2609837'),
   },
   {
-    id: 3,
-    img: '/forSwipers/shopping3.png',
+    id: 2437611,
+    img: 'http://tong.visitkorea.or.kr/cms/resource/12/2437612_image2_1.jpg',
+    path: PATH.travelDetail.replace(':contentId', '2437611'),
   },
   {
-    id: 4,
-    img: '/forSwipers/shopping4.png',
+    id: 2639878,
+    img: 'http://tong.visitkorea.or.kr/cms/resource/66/3336266_image2_1.jpg',
+    path: PATH.travelDetail.replace(':contentId', '2639878'),
   },
   {
-    id: 5,
-    img: '/forSwipers/shopping5.png',
+    id: 2553929,
+    img: 'http://tong.visitkorea.or.kr/cms/resource/67/3340967_image2_1.jpg',
+    path: PATH.travelDetail.replace(':contentId', '2553929'),
   },
   {
-    id: 6,
-    img: '/forSwipers/shopping1.png',
+    id: 2756702,
+    img: 'http://tong.visitkorea.or.kr/cms/resource/97/2756897_image2_1.jpg',
+    path: PATH.travelDetail.replace(':contentId', '2756702'),
   },
+
   {
-    id: 7,
-    img: '/forSwipers/shopping2.png',
-  },
-  {
-    id: 8,
-    img: '/forSwipers/shopping3.png',
-  },
-  {
-    id: 9,
-    img: '/forSwipers/shopping4.png',
-  },
-  {
-    id: 10,
-    img: '/forSwipers/shopping5.png',
-  },
-];
-const categories: Category[] = [
-  {
-    img: '/TravelMain/firework.png',
-    content: '문화 & 쇼핑',
-  },
-  {
-    img: '/TravelMain/accommodation.png',
-    content: '숙소',
-  },
-  {
-    img: '/TravelMain/restaurant.png',
-    content: '레스토랑',
-  },
-  {
-    img: '/TravelMain/activity.png',
-    content: '관광 & 체험',
+    id: 1754453,
+    img: 'http://tong.visitkorea.or.kr/cms/resource/28/3465428_image2_1.jpg',
+    path: PATH.travelDetail.replace(':contentId', '1754453'),
   },
 ];
 
@@ -179,9 +164,6 @@ const itemData: ExpandingMenuItemData[] = [
     content: '제주도',
   },
 ];
-function handleClick() {
-  alert('PATH로 이동!');
-}
 </script>
 
 <template>
@@ -206,31 +188,28 @@ function handleClick() {
       </div>
     </div>
     <div class="d-flex flex-column align-items-center mt-4">
-      <MainCategoryBoxes :categories="categories" :handle-click="handleClick" />
+      <MainCategoryBoxes :categories="categories" />
 
       <CultureShoppingSwiper
         :shopping="shoppingAndCulture"
-        :handle-click="handleClick"
         section-title="문화 & 쇼핑"
         section-subtitle="펫트너의 쇼핑과 문화의 만남"
       />
 
       <AccommodationSwiper
         :accommodations="accommodations"
-        :handle-click="handleClick"
         section-title="숙소"
         section-subtitle="펫트너가 추천하는 반려동물 친화 숙소"
       />
 
       <RestaurantSwiper
         :restaurants="restaurants"
-        :handle-click="handleClick"
         section-title="레스토랑"
         section-subtitle="펫트너의 맛있는 여정"
       />
 
       <div class="container" style="width: 100%; margin-bottom: 5%">
-        <div class="gray-10 fw-bold mt-5" style="font-size: 36px">레스토랑</div>
+        <div class="gray-10 fw-bold mt-5" style="font-size: 36px">관광 & 체험</div>
         <div class="gray-10 text-gray-7" style="font-size: 24px">펫트너의 맛있는 여정</div>
         <div style="height: 400px; margin-left: -2%">
           <ExpandingMenu :item-data="itemData" class="mt-3" />

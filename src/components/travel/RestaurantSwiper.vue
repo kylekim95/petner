@@ -36,15 +36,15 @@ const props = defineProps<{
             alt="이미지"
             style="width: 400px; height: 400px; object-fit: cover; border-radius: 3%"
           />
-          <div class="card-img-overlay d-flex flex-column justify-content-end mb-3 ms-3">
+          <div class="card-img-overlay d-flex flex-column justify-content-end mb-0 ms-3">
             <div class="text-start">
               <h5
                 class="card-title text-gray-1 fw-bold"
-                style="font-size: 32px; font-family: 'Paperlogy-7Bold'; font-weight: 700"
+                style="font-size: 40px; font-family: 'Paperlogy'; font-weight: 700"
               >
                 {{ item.type }}
               </h5>
-              <p style="font-size: 20px">{{ item.location }}</p>
+              <p style="font-size: 28px">{{ item.location }}</p>
             </div>
           </div>
         </div>
