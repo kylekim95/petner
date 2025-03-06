@@ -1,5 +1,5 @@
 import devAPI from "@/config/axiosDevConfig";
-import { USER } from "@/apis/endpoints";
+import { USER } from "@/apis/devcourse/endpoints";
 import { type devUser, ExtractUserFromJson } from "@/types/devcourse/devUser";
 
 export interface UploadPhotoRequest {
