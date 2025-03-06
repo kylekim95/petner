@@ -4,6 +4,7 @@ import PopularTravelSwiperComponent from '@/components/homeMain/PopularTravelSwi
 import PlannerBanner from '@/components/homeMain/PlannerBanner.vue';
 import AbandonedBanner from '@/components/homeMain/AbandonedBanner.vue';
 import PopularShoppingSwiperComponent from '@/components/homeMain/PopularShoppingSwiperComponent.vue';
+import GridMenu from '@/components/homeMain/GridMenu.vue';
 
 // import { onMounted } from 'vue';
 // import { getAnimalList, getAnimalListBykindCd } from '@/apis/supabase';
