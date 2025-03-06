@@ -8,7 +8,6 @@ import CommunityMainMissing from '@/components/community/CommunityMainMissing.vu
   <div class="container" :style="{ minWidth: '1280px', width: '66%' }">
     <!-- 히어로 섹션 -->
     <CommunityMainHero />
-
     <!-- 자유 게시판 글 -->
     <CommunityMainFreePost />
     <!-- 실종 게시판 글 -->

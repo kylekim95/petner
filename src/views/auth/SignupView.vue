@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import TextBlock, { type TextBlockDescriptor } from '@/components/common/TextBlock.vue';
+import { ref, useTemplateRef } from 'vue';
+import { useAuthStore } from '@/stores/auth';
+import { useRouter } from 'vue-router';
 
 const IntroText : TextBlockDescriptor[] = [
   {
@@ -37,28 +40,67 @@ const SwitchText : TextBlockDescriptor[] = [
 ];
 
 // 제출 버튼 비활성화 시 (폼 검증 실패) secondary 색으로 변경
+const name = ref('');
+const email = ref('');
+const password = ref('');
+const router = useRouter();
+const auth = useAuthStore();
+const toast = useTemplateRef<HTMLDivElement>('toast');
+const toastMsg = '회원가입에 실패했습니다. 다시 시도해주세요.';
+
+const emailRules = [
+  (value: string) => !!value || "Email is required.",
+  (value: string) => /.+@.+\..+/.test(value) || "E-mail must be valid.",
+];
+const passwordRules = [
+  (value: string) => !!value || "Password is required.",
+  (value: string) => value.length >= 4 || "Password must be at least 4 characters.",
+];
+
+async function HandleAction() {
+  try{
+    await auth.Signup(name.value, email.value, password.value);
+    router.push('/login');
+  }
+  catch(e){
+    toast.value?.classList.add('show');
+    console.log(e);
+  }
+}
 </script>
 
 <template>
-  <div class="container align-content-center" style="width: 67%; height: 1000px">
+  <div ref='toast'
+    class="toast position-fixed start-50 translate-middle-x align-items-center text-gray-1 bg-primary-red border-0"
+    role="alert" aria-live="assertive" aria-atomic="true"
+    style="top: 90px; transition: all 0.5s ease-in-out;"
+  >
+    <div class="d-flex">
+      <div class="toast-body">
+        {{ toastMsg }}
+      </div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+  </div>
+  <div class="container" style="width: 67%; height: 1000px; margin-top: 100px; min-width: 1000px;">
     <div class="d-flex flex-column">
       <TextBlock :text-block="IntroText[0]" />
       <TextBlock :text-block="IntroText[1]" />
-      <div class="d-flex" style="justify-content: space-around;">
+      <div class="d-flex" style="justify-content: space-around; height: 750px;">
         <div class="decorative-image w-50" style="aspect-ratio: 1/1;"></div>
         <div style="width:30%">
           <TextBlock :text-block="SignupText[0]" />
           <TextBlock :text-block="SignupText[1]" />
           <TextBlock :text-block="SignupText[2]" />
-          <form>
+          <form @submit.prevent="HandleAction">
             <div class="d-flex flex-column">
               <label class="my-2" for="name" style="font-family: Paperlogy;">Name</label>
-              <input class="my-2 bg-gray-2 border-0 rounded-5 p-3" type="text" placeholder="Name" id="name" >
+              <input v-model='name' required class="my-2 bg-gray-2 border-0 rounded-5 p-3" type="text" placeholder="Name" id="name" >
               <label class="my-2" for="email" style="font-family: Paperlogy;">Email</label>
-              <input class="my-2 bg-gray-2 border-0 rounded-5 p-3" type="email" placeholder="Email" id="email" >
+              <input :rules="emailRules" v-model='email' required class="my-2 bg-gray-2 border-0 rounded-5 p-3" type="email" placeholder="Email" id="email" >
               <label class="my-2" for="password" style="font-family: Paperlogy;">Password</label>
-              <input class="my-2 bg-gray-2 border-0 rounded-5 p-3" type="password" placeholder="Password" id="password" >
-              <button type="button" class="btn rounded-5 text-gray-1 bg-primary-red my-2 w-100" style="width:200px; height:62.5px;">
+              <input :rules="passwordRules" v-model='password' required class="my-2 bg-gray-2 border-0 rounded-5 p-3" type="password" placeholder="Password" id="password" >
+              <button type="submit" class="btn rounded-5 text-gray-1 bg-primary-red my-2 w-100" style="width:200px; height:62.5px;">
                 <div class="d-flex justify-content-center position-relative">
                   <div :style="{ fontFamily:' Pretendard', fontSize: '20px', fontWeight: 400 }">Sign Up</div>
                 </div>
@@ -67,7 +109,7 @@ const SwitchText : TextBlockDescriptor[] = [
           </form>
           <div class="w-100 justify-content-center d-flex my-3 gap-3">
             <TextBlock :text-block="SwitchText[0]" />
-            <TextBlock :text-block="SwitchText[1]" />
+            <router-link style="text-decoration: none" to='login'><TextBlock :text-block="SwitchText[1]" /></router-link>
           </div>
         </div>
       </div>

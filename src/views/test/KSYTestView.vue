@@ -7,6 +7,8 @@ import { getUsers, type GetUsersRequest } from '@/apis/devcourse/User/getUsers';
 import { updatePassword, type UpdatePasswordRequest } from '@/apis/devcourse/User/updatePassword';
 import { updateUser, type UpdateUserRequest } from '@/apis/devcourse/User/updateUser';
 import { uploadPhoto, type UploadPhotoRequest } from '@/apis/devcourse/User/uploadPhoto';
+import { deleteUser } from '@/apis/devcourse/User/deleteUser';
+
 // import { deletePhoto, type DeletePhotoRequest } from '@/apis/devcourse/User/deletePhoto';
 import { createChannel, type CreateChannelRequest } from '@/apis/devcourse/Channel/createChannel';
 import { deleteChannel, type DeleteChannelRequest } from '@/apis/devcourse/Channel/deleteChannel';
@@ -117,6 +119,7 @@ const createNotificationRequest : CreateNotificationRequest = {
     </div>
     <button class="btn bg-primary-red text-gray-1" @click="()=>uploadPhoto(uploadPhotoRequest)" style="width: 200px; height: 50px">UPLOAD PHOTO</button>
     <!-- <button class="btn bg-primary-red text-gray-1" @click="()=>deletePhoto(deletePhotoRequest)" style="width: 200px; height: 50px">DELETE PHOTO</button> -->
+    <button class="btn bg-primary-red text-gray-1" @click="()=>deleteUser({id: '67c96a45d7d24f73478d3566'})" style="width: 200px; height: 50px">DELETE USER</button>
     <hr>
     <button class="btn bg-primary-red text-gray-1" @click="()=>createChannel(createChannelRequestFree)" style="width: 300px; height: 50px">CREATE FREE CHANNEL</button>
     <button class="btn bg-primary-red text-gray-1" @click="()=>createChannel(createChannelRequestMissing)" style="width: 300px; height: 50px">CREATE MISSING CHANNEL</button>

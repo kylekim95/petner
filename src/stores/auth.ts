@@ -5,6 +5,7 @@ import { ref, onMounted } from 'vue';
 import { login, type LoginRequest, type LoginResponse } from '@/apis/devcourse/Auth/login';
 import { logout } from '@/apis/devcourse/Auth/logout';
 import { getUser, type GetUserRequest, type GetUserResponse } from '@/apis/devcourse/User/getUser';
+import { signup, type SignupRequest } from '@/apis/devcourse/Auth/signup';
 
 export const useAuthStore = defineStore('auth', ()=>{
   const user = ref<devUser | null>(null);
@@ -13,14 +14,21 @@ export const useAuthStore = defineStore('auth', ()=>{
   const isAuth = ref<boolean>(false);
 
   async function Login(email: string, password: string){
-    const request : LoginRequest = { email, password };
-    const response : LoginResponse = await login(request);
-    localStorage.setItem('jwt', response.token);
-    localStorage.setItem('uid', response.user._id);
-    user.value = response.user;
-    token.value = response.token;
-    userId.value = response.user._id
-    isAuth.value = true;
+    try{
+      const request : LoginRequest = { email, password };
+      const response : LoginResponse = await login(request);
+      localStorage.setItem('jwt', response.token);
+      localStorage.setItem('uid', response.user._id);
+      user.value = response.user;
+      token.value = response.token;
+      userId.value = response.user._id
+      isAuth.value = true;
+    }
+    catch(e){
+      console.log('Login failed : ' + e);
+      throw e;
+    }
+
   }
   async function Logout(){
     const response : boolean = await logout();
@@ -33,6 +41,17 @@ export const useAuthStore = defineStore('auth', ()=>{
       isAuth.value = false;
     }
   }
+  async function Signup(fullName : string, email : string, password : string){
+    try{
+      const request : SignupRequest = { fullName, email, password };
+      await signup(request);
+    }
+    catch(e){
+      console.log('Signup failed : ' + e);
+      throw e;
+    }
+  }
+
   // 유저 아이디를 token 값에서 추출 할 수 있나?
   onMounted(async ()=>{
     if(token.value && userId.value){
@@ -48,6 +67,7 @@ export const useAuthStore = defineStore('auth', ()=>{
     token,
     isAuth,
     Login,
-    Logout
+    Logout,
+    Signup
   };
 });
