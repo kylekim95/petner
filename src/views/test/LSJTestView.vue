@@ -3,7 +3,13 @@ import { ref } from 'vue';
 import AccommodationSwiper from '@/components/travel/AccommodationSwiper.vue';
 import RestaurantSwiper from '@/components/travel/RestaurantSwiper.vue';
 import CultureShoppingSwiper from '@/components/travel/CultureShoppingSwiper.vue';
+import { fetchPetTourData } from '@/apis/tour/detailPetTour';
+import { fetchTourImageData } from '@/apis/tour/detailImage';
+import { fetchDetailInfoData } from '@/apis/tour/detailInfo';
+import { fetchAreaBasedData } from '@/apis/tour/getAreaBased';
+//API 테스트
 
+import { onMounted } from 'vue';
 
 const accommodations = ref([
   {
@@ -117,11 +123,74 @@ const shopping = ref([
     img: '/forSwipers/shopping5.png',
   },
 ]);
+onMounted(async () => {
+  fetchPetTourData({ contentId: 1720749 });
+  fetchAreaBasedData({ areaCode: 1 });
+  fetchTourImageData({ contentId: 1720749 });
+  fetchDetailInfoData({ contentId: 1865597, contentTypeId: 32 });
+});
 
-
+// onMounted(async () => {
+//   try {
+//     const response = await tourAPI.get(KEYWORD.get, {
+//       params: {
+//         contentTypeId: '32',
+//         listYN: 'Y',
+//         arrange: 'O',
+//         keyword: '서울',
+//       },
+//     });
+// const response1 = await tourAPI.get(AREABASED.get, {
+//   params: {
+//     contentTypeId: '32',
+//   },
+// });
+// const response2 = await tourAPI.get(INTRO.get, {
+//   params: {
+//     contentTypeId: '32',
+//     contentId: '1865597',
+//   },
+// });
+// const response3 = await tourAPI.get(COMMON.get, {
+//   params: {
+//     contentTypeId: '32',
+//     contentId: '1865597',
+//   },
+// });
+// const response4 = await tourAPI.get(INFO.get, {
+//   params: {
+//     contentTypeId: '32',
+//     contentId: '1865597',
+//   },
+// });
+// const response5 = await tourAPI.get(IMAGE.get, {
+//   params: {
+//     contentId: '1865597',
+//   },
+// });
+// });
+// const data = response.data;
+// console.log('KEYWORD DATA');
+// console.log(data);
+// console.log('AREABASED DATA');
+// console.log(data1);
+// console.log('INTRO DATA');
+// console.log(response2.data);
+// console.log('COMMON DATA');
+// console.log(response3.data);
+// console.log('INFO DATA');
+// console.log(response4.data);
+// console.log('IMAGE DATA');
+// console.log(response5.data);
+//   } catch (err: any) {
+//     console.log(err);
+//   }
+// });
+//-------
 </script>
 
 <template>
+  <div>hello</div>
   <AccommodationSwiper :accommodations="accommodations" />
   <RestaurantSwiper :restaurants="restaurants" />
   <CultureShoppingSwiper :shopping="shopping" />

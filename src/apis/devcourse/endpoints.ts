@@ -80,3 +80,26 @@ export const SEARCH = Object.freeze({
   getUserPost: (query: string) => `/search/all/${query}`,
   getUser: (query: string) => `/search/users/${query}`,
 });
+
+/**
+# ======================#
+|         LIKE          |
+# ======================#
+*/
+
+export const LIKE = Object.freeze({
+  create: `/likes/create`,
+  delete: `/likes/delete`,
+});
+
+/**
+# ======================#
+|     NOTIFICATION      |
+# ======================#
+*/
+
+export const NOTIFICATION = Object.freeze({
+  getNotification: `/notifications`,
+  create: `/notifications/create`,
+  seen: `/notifications/seen`,
+});
