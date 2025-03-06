@@ -1,5 +1,5 @@
 import devAPI from '@/config/axiosDevConfig';
-import { AUTH } from '@/apis/endpoints';
+import { AUTH } from '@/apis/devcourse/endpoints';
 import type { devUser } from "@/types/devcourse/devUser";
 
 export interface SignupRequest {

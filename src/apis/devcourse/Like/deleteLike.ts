@@ -1,5 +1,5 @@
 import { type devLike, ExtractLikeFromJson } from "@/types/devcourse/devLike";
-import { LIKE } from '@/apis/endpoints';
+import { LIKE } from '@/apis/devcourse/endpoints';
 import devAPI from "@/config/axiosDevConfig";
 
 export interface DeleteLikeRequest {

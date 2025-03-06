@@ -1,5 +1,5 @@
 import { type devComment, ExtractCommentFromJson } from '@/types/devcourse/devComment';
-import { COMMENT } from '@/apis/endpoints';
+import { COMMENT } from '@/apis/devcourse/endpoints';
 import devAPI from '@/config/axiosDevConfig';
 
 export interface CreateCommentRequest {
