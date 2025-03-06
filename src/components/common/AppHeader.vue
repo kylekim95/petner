@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
+import { useAuthStore } from '@/stores/auth';
 
 const route = useRoute();
+const auth = useAuthStore();
 
 const headerClass = computed(() => route.meta.headerVariant || 'header-default');
 </script>
@@ -11,15 +13,20 @@ const headerClass = computed(() => route.meta.headerVariant || 'header-default')
   <header class="header" :class="headerClass">
     <router-link to="/" class="logo"> Petner </router-link>
     <nav class="links">
-      <router-link to="/AdoptionMain" class="link">유기동물 입양</router-link>
-      <router-link to="/TravelMain" class="link">반려동물 동반 여행</router-link>
-      <router-link to="/page3" class="link">반려용품 쇼핑</router-link>
-      <router-link to="/page4" class="link">커뮤니티</router-link>
-      <router-link to="/page5" class="link">실종신고</router-link>
+      <router-link to="adoption" class="link">유기동물 입양</router-link>
+      <router-link to="travel" class="link">반려동물 동반 여행</router-link>
+      <!-- <router-link to="/page3" class="link">반려용품 쇼핑</router-link> -->
+      <router-link to="community" class="link">커뮤니티</router-link>
+      <router-link to="community/missing" class="link">실종신고</router-link>
     </nav>
-    <router-link to="/mypage" class="user-avatar">
-      <div class="person-circle"></div>
-      <span class="user-name" :style="{ color: 'FFFFFF' }">홍길동님</span>
+    <router-link to="/mypage" class="user-avatar" v-if="auth.isAuth">
+      <div class="person-circle">
+        <img :src="auth.user?.image" alt="" style="width: 100%; height: 100%; border-radius: 100%">
+      </div>
+      <span class="user-name" :style="{ color: 'FFFFFF' }">{{ auth.user?.fullName }}</span>
+    </router-link>
+    <router-link to="/login" v-if="!auth.isAuth" style="text-decoration: none;">
+      <span class="user-name" :style="{ color: 'FFFFFF' }">로그인</span>
     </router-link>
   </header>
 </template>

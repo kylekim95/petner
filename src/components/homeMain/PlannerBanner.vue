@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import TextBlock, { type TextBlockDescriptor } from '../common/TextBlock.vue';
+import { RouterLink } from 'vue-router';
 
 const plannerIntroText : TextBlockDescriptor[][] = [
   [
@@ -42,7 +43,7 @@ const plannerIntroText : TextBlockDescriptor[][] = [
         </div>
         <button type="button" class="btn border rounded-5 mt-5 text-primary-green border-primary-green" style="width:250px; height:50px;">
           <div class="d-flex justify-content-center position-relative">
-             <div :style="{ fontFamily:' Pretendard', fontSize: '20px', fontWeight: 500 }">시작하기</div>
+            <RouterLink to="travel/planner/1" style="text-decoration: none;"><div class="text-primary-green" :style="{ fontFamily:' Pretendard', fontSize: '20px', fontWeight: 500 }">시작하기</div></RouterLink>
           </div>
         </button>
       </div>

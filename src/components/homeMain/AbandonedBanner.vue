@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import TextBlock, { type TextBlockDescriptor } from '@/components/common/TextBlock.vue';
 import { Line } from 'vue-chartjs';
+import { RouterLink } from 'vue-router';
 import { Chart as ChartJS, Title, Tooltip, Legend, LineElement, CategoryScale, LinearScale, PointElement, type ChartData, type ChartOptions, type Plugin as ChartPlugin } from 'chart.js';
 ChartJS.register(Title, Tooltip, Legend, LineElement, PointElement, CategoryScale, LinearScale);
 
@@ -118,7 +119,7 @@ const chartPlugins : ChartPlugin<'line'>[] = [
       <TextBlock v-for="(item, index) in abandonedText" :key="'abandoned_' + index" :text-block="item"/>
       <button type="button" class="btn rounded-5 text-gray-1 align-self-end bg-primary-red" style="width:200px; height:62.5px;">
         <div class="d-flex justify-content-center position-relative">
-          <div :style="{ fontFamily:' Pretendard', fontSize: '20px', fontWeight: 500 }">입양 공고 보기</div>
+          <RouterLink style="text-decoration: none;" to="adoption/search"><div class="text-gray-1" :style="{ fontFamily:' Pretendard', fontSize: '20px', fontWeight: 500 }">입양 공고 보기</div></RouterLink>
         </div>
       </button>
     </div>
