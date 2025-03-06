@@ -15,7 +15,6 @@ export async function deleteChannel(request : DeleteChannelRequest) : Promise<De
       ...request
     }
   });
-  console.log(response);
   return {
     channel: ExtractChannelFromJson(response.data),
   };
