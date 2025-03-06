@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Swiper, SwiperSlide } from 'swiper/vue';
+import { useRouter } from 'vue-router';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -7,15 +8,20 @@ import 'swiper/css/navigation';
 export interface ShoppingAndCulture {
   id: number | string;
   img: string;
-  path?: string;
+  path: string;
 }
+
+const router = useRouter();
 
 const props = defineProps<{
   shopping: ShoppingAndCulture[];
   sectionTitle?: string;
   sectionSubtitle?: string;
-  handleClick?: () => void;
 }>();
+
+function handleCategoryClick(shopping: ShoppingAndCulture) {
+  router.push(shopping.path);
+}
 </script>
 
 <template>
@@ -28,7 +34,10 @@ const props = defineProps<{
     </div>
     <Swiper :slides-per-view="5" :space-between="3" style="width: 100%" class="mt-3">
       <SwiperSlide v-for="item in props.shopping" :key="item.id">
-        <div class="card border-0 text-center text-gray-1 card-img-top" @click="handleClick">
+        <div
+          class="card border-0 text-center text-gray-1 card-img-top"
+          @click="() => handleCategoryClick(item)"
+        >
           <img
             :src="item.img"
             class="card-img-top"
