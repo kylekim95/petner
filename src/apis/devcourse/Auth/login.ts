@@ -15,6 +15,7 @@ export async function login(request: LoginRequest): Promise<LoginResponse> {
   const response = await devAPI.post(import.meta.env.VITE_API_BASE_URL + AUTH.login, {
     ...request
   });
+  console.log(response)
   return {
     user: ExtractUserFromJson(response.data.user),
     token: response.data.token,
