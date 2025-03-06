@@ -2,10 +2,10 @@
 import TitleText from '@/components/common/TitleText.vue';
 import ShelterCard from '@/components/adoption/shelter/ShelterCard.vue';
 import ShelterModal from '@/components/adoption/shelter/ShelterModal.vue';
-import ShelterKakaoMap from '@/components/adoption/shelter/ShelterKakaoMap.vue';
 import { KOR_ORG } from '@/constants/api/korOrg';
 import CITY_ORG from '@/constants/api/cityOrg';
 import { ref, computed } from 'vue';
+import ShelterKakaoMap from '@/components/adoption/shelter/ShelterKakaoMap.vue';
 
 const MOCK_SHELTERLIST_RESULT = [
   {
