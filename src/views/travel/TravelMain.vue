@@ -34,77 +34,6 @@ const categories: Category[] = [
     path: PATH.travelSearch.replace(':category', '28'),
   },
 ];
-
-const accommodations: Accommodation[] = [
-  {
-    id: 1,
-    img: '/forSwipers/koreanTraditionalAccomodation.png',
-    type: '한옥숙소',
-    location: '서울시',
-    price: '100,000 원',
-  },
-  {
-    id: 2,
-    img: '/forSwipers/swimmingPool.png',
-    type: '수영장 숙소',
-    location: '강원도',
-    price: '100,000 원',
-  },
-  {
-    id: 3,
-    img: '/forSwipers/koreanTraditionalAccomodation2.png',
-    type: '한옥숙소',
-    location: '제주도',
-    price: '100,000 원',
-  },
-  {
-    id: 4,
-    img: '/forSwipers/swimmingPool.png',
-    type: '한옥숙소',
-    location: '서울시',
-    price: '100,000 원',
-  },
-  {
-    id: 5,
-    img: '/forSwipers/koreanTraditionalAccomodation2.png',
-    type: '한옥숙소',
-    location: '제주도',
-    price: '100,000 원',
-  },
-];
-const restaurants: Restaurant[] = [
-  {
-    id: 1,
-    img: '/forSwipers/restaurant1.png',
-    type: '바닷가카페',
-    location: '제주도',
-  },
-  {
-    id: 2,
-    img: '/forSwipers/restaurant2.png',
-    type: '몰디브모히또',
-    location: '제주도',
-  },
-  {
-    id: 3,
-    img: '/forSwipers/restaurant3.png',
-    type: '흑돼지맛집',
-    location: '제주도',
-  },
-  {
-    id: 4,
-    img: '/forSwipers/restaurant1.png',
-    type: '바닷가카페',
-    location: '제주도',
-  },
-  {
-    id: 5,
-    img: '/forSwipers/restaurant2.png',
-    type: '몰디브모히또',
-    location: '제주도',
-  },
-];
-
 const shoppingAndCulture: ShoppingAndCulture[] = [
   {
     id: 3432213,
@@ -141,6 +70,81 @@ const shoppingAndCulture: ShoppingAndCulture[] = [
     id: 1754453,
     img: 'http://tong.visitkorea.or.kr/cms/resource/28/3465428_image2_1.jpg',
     path: PATH.travelDetail.replace(':contentId', '1754453'),
+  },
+];
+const accommodations: Accommodation[] = [
+  {
+    id: 2531222,
+    img: 'http://tong.visitkorea.or.kr/cms/resource/56/3067856_image2_1.jpg',
+    type: '한옥 숙소',
+    location: '강원도',
+    price: '8,0000 원',
+    path: PATH.travelDetail.replace(':contentId', '2531222'),
+  },
+  {
+    id: 2708661,
+    img: 'http://tong.visitkorea.or.kr/cms/resource/01/2709101_image2_1.jpg',
+    type: '펜션',
+    location: '강원도',
+    price: '170,000 원',
+    path: PATH.travelDetail.replace(':contentId', '2708661'),
+  },
+  {
+    id: 2446529,
+    img: 'http://tong.visitkorea.or.kr/cms/resource/11/2635611_image2_1.jpg',
+    type: '한옥 숙소',
+    location: '경주시',
+    price: '80,000 원',
+    path: PATH.travelDetail.replace(':contentId', '2446529'),
+  },
+  {
+    id: 628690,
+    img: 'http://tong.visitkorea.or.kr/cms/resource/81/1853081_image2_1.jpg',
+    type: '펜션',
+    location: '강원도',
+    price: '120,000 원',
+    path: PATH.travelDetail.replace(':contentId', '628690'),
+  },
+
+  {
+    id: 2725982,
+    img: 'http://tong.visitkorea.or.kr/cms/resource/83/2725983_image2_1.jpg',
+    type: '호텔',
+    location: '강원도',
+    price: '100,000 원',
+    path: PATH.travelDetail.replace(':contentId', '2725982'),
+  },
+];
+const restaurants: Restaurant[] = [
+  {
+    id: 1,
+    img: '/forSwipers/restaurant1.png',
+    type: '바닷가카페',
+    location: '제주도',
+  },
+  {
+    id: 2,
+    img: '/forSwipers/restaurant2.png',
+    type: '몰디브모히또',
+    location: '제주도',
+  },
+  {
+    id: 3,
+    img: '/forSwipers/restaurant3.png',
+    type: '흑돼지맛집',
+    location: '제주도',
+  },
+  {
+    id: 4,
+    img: '/forSwipers/restaurant1.png',
+    type: '바닷가카페',
+    location: '제주도',
+  },
+  {
+    id: 5,
+    img: '/forSwipers/restaurant2.png',
+    type: '몰디브모히또',
+    location: '제주도',
   },
 ];
 
