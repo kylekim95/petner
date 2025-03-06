@@ -43,6 +43,9 @@ const props = defineProps<PopularTravelCardProps>();
   font-weight: 700;
   font-size: 36px;
   color: #78563E;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .content-text {
   font-family: 'Paperlogy';

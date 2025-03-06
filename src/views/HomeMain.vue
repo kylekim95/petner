@@ -32,7 +32,7 @@ import PopularShoppingSwiperComponent from '@/components/homeMain/PopularShoppin
 
 import { ref, onMounted } from 'vue';
 import { type PopularTravelData } from '@/components/homeMain/atoms/PopularTravelCard.vue';
-import { fetchCommonData } from '@/apis/tour/areaBasedList';
+import { detailCommon } from '@/apis/tour/detailCommon';
 const popularIds = [
   ['39', '2603467'],
   ['12', '2564158'],
@@ -43,10 +43,11 @@ const popularIds = [
 const popularTravelData = ref<PopularTravelData[]>([]);
 onMounted(async ()=>{
   try{
-    const promises = popularIds.map((e)=>fetchCommonData({contentId: parseInt(e[1]), contentTypeId: parseInt(e[0])}));
+    const promises = popularIds.map((e)=>detailCommon({contentId: parseInt(e[1]), contentTypeId: parseInt(e[0])}));
     const responses = (await Promise.allSettled(promises)).filter((e)=>e.status==='fulfilled');
+    console.log(responses);
     popularTravelData.value = responses.map<PopularTravelData>((e)=>{
-      const item = e.value.data.response.body.items.item[0];
+      const item = e.value[0];
       return {
         title: item.title,
         content: item.overview,
