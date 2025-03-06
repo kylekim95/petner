@@ -1,8 +1,9 @@
-interface Org {
+export interface Org {
   orgCd: string;
   orgdownNm: string;
 }
 
+// 동물 보호 센터 정보조회 시스템의 upr_cd값에 해당하는 코드를 조회합니다.
 export const KOR_ORG: Org[] = [
   {
     orgCd: '6110000',
@@ -46,6 +47,7 @@ export const KOR_ORG: Org[] = [
   },
 ];
 
+// 동물 보호센터 정보조회 시스템의 org_cd 값에 해당하는 코드 조회
 export const GU_ORG = {
   6110000: [
     {
