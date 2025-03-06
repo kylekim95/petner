@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { Transition } from 'vue';
 import TitleText from '@/components/common/TitleText.vue';
 import ShelterCard from '@/components/adoption/shelter/ShelterCard.vue';
 import ShelterModal from '@/components/adoption/shelter/ShelterModal.vue';
-import { KOR_ORG, GU_ORG } from '@/constants/korOrg';
-import { ref } from 'vue';
-import ShelterKakaoMap from './ShelterKakaoMap.vue';
+import { KOR_ORG } from '@/constants/api/korOrg';
+import CITY_ORG from '@/constants/api/cityOrg';
+import { ref, computed } from 'vue';
+import ShelterKakaoMap from '@/components/adoption/shelter/ShelterKakaoMap.vue';
 
 const MOCK_SHELTERLIST_RESULT = [
   {
@@ -108,16 +108,25 @@ interface ShelterWithRegNo {
   careTel: string | null;
   dataStdDt: string | null;
 }
-const upperOrg = ref<UpperOrgType | null>({
+const upperOrg = ref<UpperOrgType>({
   orgCd: '6110000',
   orgdownNm: '서울특별시',
 });
 
+// 최종적으로 선택된 지역 상태
 const org = ref<OrgType>({
   uprCd: '',
   orgCd: '',
   orgdownNm: '하위 지역 선택',
 });
+
+//  📍 여기서 org가 달라질때마다 보호소 목록 조회를 하면 됨.
+
+const orgList = computed(() => CITY_ORG[upperOrg.value?.orgdownNm]);
+const handleButtonClick = (upperOrgItem: UpperOrgType) => {
+  upperOrg.value = upperOrgItem; // 현재 상태를 업데이트하고
+  org.value = CITY_ORG[upperOrg.value?.orgdownNm][0]; // 하위 지역중 첫번재 지역을 자동 선택
+};
 
 const isOpenModal = ref<boolean>(false);
 const shelter = ref<ShelterWithRegNo | null>({
@@ -186,7 +195,8 @@ const handleCardClick = (shelterItem: ShelterWithRegNo) => {
               :key="upperOrgItem.orgCd"
               type="button"
               class="btn btn-custom"
-              @click="upperOrg = upperOrgItem"
+              :class="{ btnFocus: upperOrg.orgCd == upperOrgItem.orgCd }"
+              @click="handleButtonClick(upperOrgItem)"
             >
               {{ upperOrgItem.orgdownNm.slice(0, 2) }}
             </button>
@@ -207,7 +217,7 @@ const handleCardClick = (shelterItem: ShelterWithRegNo) => {
                 {{ org.orgdownNm }}
               </button>
               <ul class="dropdown-menu">
-                <li v-for="orgItem of GU_ORG['6110000']" :key="orgItem.orgCd">
+                <li v-for="orgItem of orgList" :key="orgItem.orgCd">
                   <a class="dropdown-item" href="#" @click="org = orgItem">{{
                     orgItem.orgdownNm
                   }}</a>
@@ -237,7 +247,9 @@ const handleCardClick = (shelterItem: ShelterWithRegNo) => {
         </div>
       </div>
       <div class="side-bar card-list">
-        <TitleText size="16px" color="gray-6" weight="600">'서울시 강서구' 조회결과</TitleText>
+        <TitleText size="16px" color="gray-6" weight="600"
+          >'{{ upperOrg.orgdownNm }} {{ org.orgdownNm }}' 조회결과</TitleText
+        >
         <ShelterCard
           v-for="(shelterItem, index) of MOCK_SHELTERLIST_RESULT"
           :key="index"
@@ -304,7 +316,7 @@ const handleCardClick = (shelterItem: ShelterWithRegNo) => {
   background-color: var(--secondary-green);
   color: var(--gray-1);
 }
-.btn-custom:focus {
+.btnFocus {
   background-color: var(--primary-green);
   color: var(--gray-1);
 }
