@@ -26,3 +26,44 @@ export interface Shelter {
   careTel: string;
   dataStdDt: string;
 }
+
+export interface UpperOrgType {
+  orgCd: string;
+  orgdownNm: string;
+}
+
+export interface OrgType {
+  uprCd: string;
+  orgCd: string;
+  orgdownNm: string;
+}
+
+export interface ShelterWithRegNo {
+  careRegNo: string | null;
+  careNm: string | null;
+  orgNm: string | null;
+  divisionNm: string | null;
+  saveTrgtAnimal: string | null;
+  careAddr: string | null;
+  jibunAddr: string | null;
+  lat: number | null;
+  lng: number | null;
+  dsignationDate: string | null;
+  weekOprStime: string | null;
+  weekOprEtime: string | null;
+  weekCellStime: string | null;
+  weekCellEtime: string | null;
+  weekendOprStime: string | null;
+  weekendOprEtime: string | null;
+  weekendCellStime: string | null;
+  weekendCellEtime: string | null;
+  closeDay: string | null;
+  vetPersonCnt: number | null;
+  specsPersonCnt: number | null;
+  medicalCnt: number | null;
+  breedCnt: number | null;
+  quarabtineCnt: number | null;
+  feedCnt: number | null;
+  careTel: string | null;
+  dataStdDt: string | null;
+}

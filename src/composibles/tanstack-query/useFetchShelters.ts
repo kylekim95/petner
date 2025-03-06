@@ -2,15 +2,15 @@ import { useQuery } from '@tanstack/vue-query';
 import { getShelterInfo, getShelterListApi } from '@/apis/adoption/shelter';
 import { computed } from 'vue';
 
-export const useFetchShelters = (uprCd: string, orgCd: string) => {
+export const useFetchShelters = (org) => {
   // 1. 해당 지역내 모든 보호소를 조회
   const {
     data: shelters,
     isLoading: isLoadingShelters,
     refetch,
   } = useQuery({
-    queryKey: ['shelters', 'list', { uprCd, orgCd }],
-    queryFn: () => getShelterListApi(uprCd, orgCd),
+    queryKey: ['shelters', 'list', org.uprCd, org.orgCd],
+    queryFn: () => getShelterListApi(org.uprCd, org.orgCd),
   });
 
   // 다음쿼리가 실행될 준비가 되었는지 확인한다.
