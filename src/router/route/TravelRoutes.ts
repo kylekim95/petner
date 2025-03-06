@@ -30,11 +30,11 @@ const TRAVEL_ROUTES = [
     component: () => import('@/views/travel/TravelMain.vue'),
     meta: { headerVariant: 'header-transparent' },
   },
-  {
-    path: PATH.travelSearch,
-    name: 'travelPlanner',
-    component: () => import('@/views/travel/TravelSearch.vue'),
-    meta: { headerVariant: 'header-default' },
-  },
+  // {
+  //   path: PATH.travelSearch,
+  //   name: 'travelPlanner',
+  //   component: () => import('@/views/travel/TravelSearch.vue'),
+  //   meta: { headerVariant: 'header-default' },
+  // },
 ];
 export default TRAVEL_ROUTES;
