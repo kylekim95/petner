@@ -4,8 +4,10 @@ import ShelterCard from '@/components/adoption/shelter/ShelterCard.vue';
 import ShelterModal from '@/components/adoption/shelter/ShelterModal.vue';
 import { KOR_ORG } from '@/constants/api/korOrg';
 import CITY_ORG from '@/constants/api/cityOrg';
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import ShelterKakaoMap from '@/components/adoption/shelter/ShelterKakaoMap.vue';
+import { getShelterInfo, getShelterListApi } from '@/apis/adoption/shelter';
+import { useFetchShelters } from '@/composibles/tanstack-query/useFetchShelters';
 
 const MOCK_SHELTERLIST_RESULT = [
   {
@@ -115,12 +117,17 @@ const upperOrg = ref<UpperOrgType>({
 
 // 최종적으로 선택된 지역 상태
 const org = ref<OrgType>({
-  uprCd: '',
-  orgCd: '',
+  uprCd: '6110000',
+  orgCd: '3220000',
   orgdownNm: '하위 지역 선택',
 });
 
 //  📍 여기서 org가 달라질때마다 보호소 목록 조회를 하면 됨.
+// shelterList를 computed로 정의
+const { shelterDetails, isLoadingShelterDetails, refetch } = useFetchShelters(
+  org.value.uprCd,
+  org.value.orgCd,
+);
 
 const orgList = computed(() => CITY_ORG[upperOrg.value?.orgdownNm]);
 const handleButtonClick = (upperOrgItem: UpperOrgType) => {
@@ -159,6 +166,11 @@ const shelter = ref<ShelterWithRegNo | null>({
   dataStdDt: null,
 }); // 현재 보여지는 보호소 목록중 선택된 보호소정보
 
+const handleDropDown = (orgItem) => {
+  org.value = orgItem;
+  //refetch();
+};
+
 const handleClose = () => {
   isOpenModal.value = false;
 };
@@ -166,18 +178,6 @@ const handleCardClick = (shelterItem: ShelterWithRegNo) => {
   shelter.value = shelterItem;
   isOpenModal.value = true;
 };
-// 보호소 목록 조회 결과 다음과 같은 정보를 줘야 함
-// {
-//   careRegNo:"311311201100001", // 👉 목록 조회시 얻는 데이터
-//   // 📍 아래는 상세 조회시 얻는 데이터
-//   "careNm": "한국동물구조관리협회",
-//   "orgNm": "서울특별시 은평구",
-//   "divisionNm": "법인",
-//   "saveTrgtAnimal": "개+고양이+기타",
-//   "careAddr": "경기도 양주시 남면 감악산로 63-48  ",
-//   "jibunAddr": "경기도 양주시 남면 상수리 536-11 ",
-
-// }
 </script>
 
 <template>
@@ -218,7 +218,7 @@ const handleCardClick = (shelterItem: ShelterWithRegNo) => {
               </button>
               <ul class="dropdown-menu">
                 <li v-for="orgItem of orgList" :key="orgItem.orgCd">
-                  <a class="dropdown-item" href="#" @click="org = orgItem">{{
+                  <a class="dropdown-item" href="#" @click="handleDropDown(orgItm)">{{
                     orgItem.orgdownNm
                   }}</a>
                 </li>
