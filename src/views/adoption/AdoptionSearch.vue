@@ -213,7 +213,7 @@ onMounted(async () => {
     </div>
 
     <!-- 검색창 섹션 -->
-    <div class="search-bar d-flex justify-content-center mt-5 mb-12">
+    <div class="search-bar d-flex justify-content-center mt-4 mb-12">
       <div
         class="search-container d-flex flex-column gap-4 bg-light rounded shadow-sm"
         style="max-width: 1280px; width: 100%; padding: 30px; margin-bottom: 40px"
@@ -289,20 +289,6 @@ onMounted(async () => {
             조회
           </button>
         </div>
-      </div>
-    </div>
-
-    <!-- 입양공고 및 정렬 버튼 -->
-    <div
-      class="info-section d-flex justify-content-between px-5 py-3"
-      style="max-width: 1280px; margin: 0 auto"
-    >
-      <h3 class="fs-3 fw-bold">입양공고중인 유기동물</h3>
-      <div class="sort-dropdown">
-        <select class="form-select">
-          <option>최신등록순</option>
-          <option>공고일마감순</option>
-        </select>
       </div>
     </div>
 
