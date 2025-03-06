@@ -18,6 +18,16 @@ import { createPost, type CreatePostRequest } from '@/apis/devcourse/Post/create
 import { deletePost } from '@/apis/devcourse/Post/deletePost';
 import { updatePost } from '@/apis/devcourse/Post/updatePost';
 
+import { createLike } from '@/apis/devcourse/Like/createLike';
+import { deleteLike } from '@/apis/devcourse/Like/deleteLike';
+
+import { createComment } from '@/apis/devcourse/Comment/createComment';
+import { deleteComment } from '@/apis/devcourse/Comment/deleteComment';
+
+import { createNotification, type CreateNotificationRequest } from '@/apis/devcourse/Notification/createNotification';
+import { getNotifications } from '@/apis/devcourse/Notification/getNotifications';
+import { notificationsSeen } from '@/apis/devcourse/Notification/notificationsSeen';
+
 // login test
 const auth = useAuthStore();
 const adminEmail = 'admin@programmers.co.kr';
@@ -79,6 +89,13 @@ const updatePostRequest = {
   channelId : '67c909eae1e6ed43d7d9244a',
 }
 
+const createNotificationRequest : CreateNotificationRequest = {
+  notificationType:'COMMENT',
+  notificationTypeId : '67c92b3ad7d24f73478d342b',
+  userId : '67c871e2e1e6ed43d7d9236e',
+  postId : '67c915b1e1e6ed43d7d92480'
+}
+
 </script>
 
 <template>
@@ -122,8 +139,17 @@ const updatePostRequest = {
     <button class="btn bg-primary-red text-gray-1" @click="()=>deletePost({id:'67c915b1e1e6ed43d7d92480'})" style="width: 300px; height: 50px">DELETE POST</button>
 
     <button class="btn bg-primary-red text-gray-1" @click="()=>updatePost(updatePostRequest)" style="width: 300px; height: 50px">UPDATE POST</button>
-
     <hr>
+    <button class="btn bg-primary-red text-gray-1" @click="()=>createLike({postId : '67c915b1e1e6ed43d7d92480'})" style="width: 300px; height: 50px">CREATE LIKE</button>
+    <button class="btn bg-primary-red text-gray-1" @click="()=>deleteLike({id : '67c921c2d7d24f73478d33d0'})" style="width: 300px; height: 50px">DELETE LIKE</button>
+    <hr>
+    <button class="btn bg-primary-red text-gray-1" @click="()=>createComment({postId : '67c915b1e1e6ed43d7d92480', comment: 'ㄹㅇㅋㅋ'})" style="width: 300px; height: 50px">CREATE COMMENT</button>
+    <button class="btn bg-primary-red text-gray-1" @click="()=>deleteComment({id: '67c92686d7d24f73478d33f9' })" style="width: 300px; height: 50px">DELETE COMMENT</button>
+    <hr>
+    <button class="btn bg-primary-red text-gray-1" @click="()=>getNotifications()" style="width: 300px; height: 50px">GET NOTIFICATION</button>
+    <button class="btn bg-primary-red text-gray-1" @click="()=>createNotification(createNotificationRequest)" style="width: 300px; height: 50px">CREATE NOTIFICATION</button>
+    <button class="btn bg-primary-red text-gray-1" @click="()=>notificationsSeen()" style="width: 300px; height: 50px">SEEN NOTIFICATION</button>
+
 </div>
 </template>
 
