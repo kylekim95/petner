@@ -2,6 +2,7 @@ import tourAPI from '@/config/axiosTourConfig';
 import { AREABASED } from '@/apis/tour/tourEndpoints';
 
 interface AreaData {
+  pageNo?: number;
   contentTypeId?: number | string;
   areaCode?: number | string;
   category?: number | string;
@@ -9,6 +10,7 @@ interface AreaData {
 
 //검색페이지 첫 렌더링 화면(숙소 전체 불러오기,검색 페이지에서 필터 value로 areaCode, catrgory 전달)
 export async function fetchAreaBasedData({
+  pageNo,
   contentTypeId = '32',
   areaCode,
   category,
@@ -19,10 +21,11 @@ export async function fetchAreaBasedData({
         contentTypeId,
         areaCode,
         cat3: category,
+        pageNo: pageNo,
       },
     });
     const data = response.data.response.body.items?.item;
-    console.log(data);
+    // console.log(data);
     return data;
   } catch (error) {
     console.error('Error fetching tour data:', error);
