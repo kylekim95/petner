@@ -11,7 +11,7 @@ const ADOPTION_ROUTES = [
     path: PATH.adoptionShelter,
     name: 'shelter',
     component: () => import('@/views/adoption/ShelterSearch.vue'),
-    meta: { headerVariant: 'header-default' },
+    meta: { headerVariant: 'header-default', footerDisabled: true },
   },
   {
     path: PATH.adoptionSearch,

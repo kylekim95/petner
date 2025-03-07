@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import ShelterKakaoMap from '@/components/adoption/shelter/ShelterKakaoMap.vue';
+
 interface BaseDetail {
   title: string;
   addr1: string | null;
@@ -9,7 +11,6 @@ interface BaseDetail {
   mapx: string | number | null;
   mapy: string | number | null;
 }
-
 export interface AccommodationDetail extends BaseDetail {
   contenttypeid: '32';
   roomcount: number | null;
@@ -17,7 +18,6 @@ export interface AccommodationDetail extends BaseDetail {
   checkouttime: string | null;
   refundregulation: string | null;
 }
-
 export interface RestaurantDetail extends BaseDetail {
   contenttypeid: '39';
   opentimefood: string | null;
@@ -26,7 +26,6 @@ export interface RestaurantDetail extends BaseDetail {
   treatmenu: string | null;
   firstmenu: string | null;
 }
-
 export interface CultureDetail extends BaseDetail {
   contenttypeid: '14';
   infocenterculture: string | null;
@@ -35,7 +34,6 @@ export interface CultureDetail extends BaseDetail {
   parkingculture: string | null;
   parkingfee: string | null;
 }
-
 export interface ShoppingDetail extends BaseDetail {
   contenttypeid: '38';
   infocentershopping: string | null;
@@ -59,7 +57,6 @@ export interface ActivitiesDetail extends BaseDetail {
   parkingleports: string | null;
   usefeeleports: string | null;
 }
-
 export type DetailCard =
   | AccommodationDetail
   | RestaurantDetail
@@ -127,7 +124,7 @@ const { detail } = defineProps<{ detail: DetailCard }>();
       <!-- 오른쪽: 지도 Placeholder -->
       <div class="col-6">
         <div class="map-placeholder d-flex align-items-center justify-content-center rounded-4">
-          <span class="text-muted">지도 영역 (Placeholder)</span>
+          <ShelterKakaoMap :lat="33.450701" :lng="126.570667" />
         </div>
       </div>
     </div>
