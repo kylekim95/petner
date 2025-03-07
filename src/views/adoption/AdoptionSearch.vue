@@ -10,6 +10,7 @@ import {
   fetchStateOptions,
   fetchBreedAllList,
 } from '@/apis/supabase';
+import type { Animal } from '@/types/animal';
 
 const router = useRouter();
 const route = useRoute();
@@ -30,16 +31,16 @@ const reverseCategoryMapping: Record<string, string> = {
 };
 
 // 1) 카테고리
-const categories = ref(['전체', '개', '고양이', '기타동물']);
-const activeCategory = ref('전체');
+const categories = ref<string[]>(['전체', '개', '고양이', '기타동물']);
+const activeCategory = ref<string>('전체');
 
 // 2) 검색 조건
-const region = ref('');
-const sex = ref('');
-const status = ref('');
-const startDate = ref('');
-const endDate = ref('');
-const breed = ref('');
+const region = ref<string>('');
+const sex = ref<string>('');
+const status = ref<string>('');
+const startDate = ref<string>('');
+const endDate = ref<string>('');
+const breed = ref<string>('');
 
 // 3) 옵션 배열
 const regionOptions = ref<string[]>([]);
@@ -48,13 +49,12 @@ const stateOptions = ref<string[]>([]);
 const breedAllList = ref<string[]>([]);
 
 // 3-1) 품종 옵션은 category에 따라 필터링
-const breedOptions = computed(() => {
+const breedOptions = computed<string[]>(() => {
   let prefix = '';
   if (activeCategory.value === '개') prefix = '[개]';
   else if (activeCategory.value === '고양이') prefix = '[고양이]';
   else if (activeCategory.value === '기타동물') prefix = '[기타축종]';
   else return [];
-
   return breedAllList.value
     .filter((item) => item.startsWith(prefix))
     .map((item) => item.replace(prefix, '').trim());
@@ -65,7 +65,7 @@ watch(activeCategory, () => {
   breed.value = '';
 });
 
-// 날짜 유효성
+// 날짜 유효성 검사
 function updateEndDate() {
   if (endDate.value && endDate.value < startDate.value) {
     endDate.value = startDate.value;
@@ -73,12 +73,12 @@ function updateEndDate() {
 }
 
 // 4) 동물 카드 & 페이징
-const animalCards = ref<any[]>([]);
-const currentPage = ref(1);
+const animalCards = ref<Animal[]>([]);
+const currentPage = ref<number>(1);
 const itemsPerPage = 9;
-const totalPages = ref(1);
+const totalPages = ref<number>(1);
 
-// 4-1) 조회
+// 4-1) 조회 함수
 async function fetchAnimals() {
   let kindCdParam: '개' | '고양이' | '기타축종' | undefined;
   if (activeCategory.value === '전체') {
@@ -130,7 +130,7 @@ async function fetchAnimals() {
   }
 }
 
-// 4-2) 페이지 이동
+// 4-2) 페이지 이동 함수
 function goToPage(page: number) {
   if (page >= 1 && page <= totalPages.value) {
     currentPage.value = page;
@@ -144,7 +144,7 @@ function sexLabel(code: string): string {
   else return '미상';
 }
 
-// 5) 마운트 시 옵션+데이터 조회
+// 5) 마운트 시 옵션과 데이터 조회
 onMounted(async () => {
   // URL에 category 쿼리 파라미터가 있으면 영어 값을 한글로 변환하여 초기 activeCategory에 반영
   if (route.query.category) {
@@ -158,7 +158,7 @@ onMounted(async () => {
   breedAllList.value = await fetchBreedAllList();
 });
 
-// activeCategory가 바뀔 때마다 URL 쿼리 파라미터를 영어 값으로 업데이트
+// activeCategory가 바뀔 때마다 URL 쿼리 파라미터를 업데이트
 watch(activeCategory, (newVal) => {
   router.replace({ query: { ...route.query, category: categoryMapping[newVal] } });
 });
