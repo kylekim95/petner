@@ -8,7 +8,9 @@ import KakaoMap from '@/components/community/KakaoMap.vue';
 import { ANIMAL_TYPE_ARRAY, GENDER_ARRAY } from '@/constants/mock/community/formOptions';
 import { reactive, ref, computed } from 'vue';
 import usePostMissingForm from '@/composibles/tanstack-query/usePostMissingForm';
-const MISSING_CHANNEL_ID = '67c935ddd7d24f73478d3481';
+import { MissingChannelId } from '@/constants/communityConsts';
+import { useRouter } from 'vue-router';
+import PATH from '@/constants/path';
 
 const data = reactive({
   name: '',
@@ -27,7 +29,7 @@ const data = reactive({
 const imageRef = ref<File | null>(null); // 이미지 담을 배열
 const doroRef = ref('');
 const { postFormMutation } = usePostMissingForm();
-
+const router = useRouter();
 const isValid = computed(() => {
   // data 배열을 돌면서 하나라도 비어있는 것이 있다면 false
   const dataResult = Object.values(data).every((value) => value.trim().length > 0);
@@ -38,17 +40,24 @@ const isValid = computed(() => {
 
 const handleSubmit = (e: SubmitEvent) => {
   e.preventDefault();
-  if (isValid.value) {
+  if (isValid.value && imageRef.value !== null) {
     const post = {
       ...data,
       address: doroRef.value,
     };
-    if (imageRef.value !== null) {
-      postFormMutation.mutate({
-        title: post.toString(),
-        channelId: MISSING_CHANNEL_ID,
-        image: imageRef.value,
-      });
+
+    postFormMutation.mutate({
+      title: post.toString(),
+      channelId: MissingChannelId,
+      image: imageRef.value,
+    });
+
+    // 성공
+    if (postFormMutation.isSuccess) {
+      alert('제출이 완료 되었습니다.');
+      router.push(PATH.communityMissing);
+    } else {
+      console.log('post 제출 실패');
     }
   } else {
     alert('작성하지 않은 제출란이 있습니다.');
