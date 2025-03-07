@@ -1,20 +1,16 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import axios from 'axios';
-
-import {
-  createPost,
-  type CreatePostRequest,
-  type CreatePostResponse,
-} from '@/apis/devcourse/Post/createPost';
+import { useRouter } from 'vue-router';
+import { createPost, type CreatePostResponse } from '@/apis/devcourse/Post/createPost';
 import * as CHANID from '@/constants/communityConsts';
+
+const router = useRouter();
 
 const title = ref('');
 const content = ref('');
 const image = ref<File | null>(null);
 const imagePreview = ref<string | null>(null);
 
-// 파일 선택 후 미리보기 업데이트
 const handleImageChange = (event: Event) => {
   const input = event.target as HTMLInputElement;
   if (input?.files && input.files.length > 0) {
@@ -29,45 +25,26 @@ const removeImage = () => {
   imagePreview.value = null;
 };
 
-// "등록하기" 버튼 활성화 여부 계산
 const isFormValid = computed(() => {
-  return title.value.trim() !== '' && content.value.trim() !== '' && images.value.length > 0;
+  return title.value.trim() !== '' && content.value.trim() !== '' && image.value !== null;
 });
 
-// 폼 제출
+// 폼 제출: createPost API 함수를 사용하여 요청 전송 (파일을 그대로 전달)
+// 등록 성공 후 상세 페이지로 이동
 const handleSubmit = async () => {
-  // Form 데이터 준비
-  // const formData = new FormData();
-  // formData.append('title', title.value);
-  // formData.append('content', content.value);
-
-  // 이미지 데이터를 formData에 추가
-  // images.value.forEach((image) => {
-  //   formData.append('images', image);
-  // });
-  // if(images.value.length > 0) formData.append('images', images.value[0]);
-
-  // POST 요청 보내기
   try {
-    // const response = await axios.post('API_ENDPOINT_URL', formData, {
-    //   headers: {
-    //     'Content-Type': 'multipart/form-data',
-    //   },
-    // });
-    // console.log('성공:', response.data);
-
-    // ---------- programmers api ----------
-
+    // 제목과 내용을 JSON 문자열로 번들링
     const bundle = JSON.stringify({ title: title.value, content: content.value });
-    createPost({
+    const res: CreatePostResponse = await createPost({
       channelId: CHANID.FreeChannelId,
       title: bundle,
       image: image.value ? image.value : undefined,
-    }).then((res: CreatePostResponse) => {
-      console.log(res);
     });
+    console.log('등록 성공:', res);
+    // 상세 페이지로 이동 (postId를 URL에 반영)
+    router.push(`/community/free/${res.post._id}`);
   } catch (error) {
-    console.error('에러:', error);
+    console.error('등록 에러:', error);
   }
 };
 </script>
@@ -148,7 +125,13 @@ const handleSubmit = async () => {
               <span class="text-center" style="font-size: 20px; color: #6c757d">+</span><br />
               <span style="font-size: 18px; color: #6c757d">이미지 업로드</span>
             </label>
-            <input type="file" id="image-upload" @change="handleImageChange" class="d-none" />
+            <input
+              type="file"
+              id="image-upload"
+              @change="handleImageChange"
+              class="d-none"
+              accept="image/*"
+            />
             <!-- 이미지 미리보기 -->
             <div v-if="imagePreview" class="position-relative">
               <div class="d-flex justify-content-center align-items-center position-relative">
@@ -160,7 +143,7 @@ const handleSubmit = async () => {
                 <button
                   type="button"
                   class="btn btn-sm btn-danger position-absolute top-0 end-0"
-                  @click="removeImage(index)"
+                  @click="removeImage"
                   style="z-index: 10; background-color: rgba(255, 255, 255, 0.5)"
                 >
                   X
