@@ -22,7 +22,6 @@ const prevFocusedId = ref(0);
 const menuItemElement = useTemplateRef<HTMLDivElement[]>('menuItemElements');
 const menuItemElementTitle = useTemplateRef<HTMLSpanElement[]>('menuItemElementTitles');
 const menuItemElementTitle2 = useTemplateRef<HTMLSpanElement[]>('menuItemElementTitles2');
-
 const menuItemElementContent = useTemplateRef<HTMLSpanElement[]>('menuItemElementContents');
 const menuItemElementContent2 = useTemplateRef<HTMLSpanElement[]>('menuItemElementContents2');
 
@@ -107,15 +106,17 @@ function handleCategoryClick(data: ExpandingMenuItemData) {
     <div
       v-for="item in props.itemData"
       :key="item.id"
-      class="container h-100 rounded p-2"
+      class="container h-100 rounded p-0 overflow-hidden"
       :class="focusedId === item.id ? 'flex-fill' : 'col-2'"
+      ref="menuItemElements"
       style="
         transition: all 0.5s ease-in-out;
         background-blend-mode: multiply;
         background-color: rgb(0, 0, 0, 0.5);
+        background-size: cover;
+        background-position: center;
       "
       :style="{ backgroundImage: `url(${item.bgImage})` }"
-      ref="menuItemElements"
       @mouseenter="(e) => OnMouseEnter(e, item.id)"
       @transitionend="(e) => OnExpandEnd(e)"
       @transitionstart="(e) => OnExpandStart(e)"
