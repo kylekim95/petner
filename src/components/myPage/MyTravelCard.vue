@@ -10,12 +10,11 @@ const dummyImageSrc = "https://media.istockphoto.com/id/1853686056/ko/%EC%82%AC%
     <div class="d-flex flex-row align-items-center justify-content-between">
       <div class="d-flex flex-row align-items-center gap-3">
         <!-- 이미지 -->
-        <div class="postCardImg overflow-hidden" style="border-radius: 85px">
+        <div class="overflow-hidden" style="border-radius: 85px">
           <img
             src="https://cdn.pixabay.com/photo/2016/04/19/15/13/minion-1338858_1280.jpg"
-            width="auto"
-            height="100%"
             alt=""
+            class="postCardImg"
           />
         </div>
         <!-- 내 정보 텍스 -->
@@ -31,8 +30,9 @@ const dummyImageSrc = "https://media.istockphoto.com/id/1853686056/ko/%EC%82%AC%
       <img
         :src="dummyImageSrc"
         alt=""
-        width="100%"
-        height="auto"
+
+        class="card-img-top"
+
       />
     </div>
     <!--소개글 -->
@@ -96,11 +96,16 @@ const dummyImageSrc = "https://media.istockphoto.com/id/1853686056/ko/%EC%82%AC%
   width: 80%;
   height: 95%;
 }
+.card-img-top {
+  height: 300px;
+  object-fit: cover;
+}
 
 /* 리스트 카드 이미지 영역 */
 .postCardImg {
   width: 70px;
   height: 70px;
+  object-fit: cover;
 }
 
 .mainImg {
