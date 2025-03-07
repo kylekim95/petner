@@ -20,7 +20,10 @@ const props = defineProps<{
 }>();
 
 function handleCategoryClick(shopping: ShoppingAndCulture) {
-  router.push(shopping.path);
+  router.push({
+    path: shopping.path,
+    query: { contenttypeid: '38' },
+  });
 }
 </script>
 

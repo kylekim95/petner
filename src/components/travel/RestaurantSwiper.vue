@@ -34,7 +34,13 @@ const props = defineProps<{
             :src="item.img"
             class="card-img-top"
             alt="이미지"
-            style="width: 400px; height: 400px; object-fit: cover; border-radius: 3%"
+            style="
+              width: 400px;
+              height: 400px;
+              filter: brightness(70%);
+              object-fit: cover;
+              border-radius: 3%;
+            "
           />
           <div class="card-img-overlay d-flex flex-column justify-content-end mb-0 ms-3">
             <div class="text-start">

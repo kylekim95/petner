@@ -4,110 +4,17 @@ import ShelterCard from '@/components/adoption/shelter/ShelterCard.vue';
 import ShelterModal from '@/components/adoption/shelter/ShelterModal.vue';
 import { KOR_ORG } from '@/constants/api/korOrg';
 import CITY_ORG from '@/constants/api/cityOrg';
-import { ref, computed } from 'vue';
+import { ref, computed, watch, reactive } from 'vue';
 import ShelterKakaoMap from '@/components/adoption/shelter/ShelterKakaoMap.vue';
+import { useQuery } from '@tanstack/vue-query';
+import { getShelterListApi, getShelterInfo } from '@/apis/adoption/shelter';
+import {
+  type UpperOrgType,
+  type OrgType,
+  type ShelterWithRegNo,
+  initialShelter,
+} from '@/types/shelter';
 
-const MOCK_SHELTERLIST_RESULT = [
-  {
-    careRegNo: '311311201100001',
-    careNm: '한국동물구조관리협회',
-    orgNm: '서울특별시 은평구',
-    divisionNm: '법인',
-    saveTrgtAnimal: '개+고양이+기타',
-    careAddr: '경기도 양주시 남면 감악산로 63-48  ',
-    jibunAddr: '경기도 양주시 남면 상수리 536-11 ',
-    lat: 37.870117,
-    lng: 126.98354,
-    dsignationDate: '2020-03-01',
-    weekOprStime: '09:00',
-    weekOprEtime: '18:00',
-    weekCellStime: '09:00',
-    weekCellEtime: '18:00',
-    weekendOprStime: '09:00',
-    weekendOprEtime: '16:00',
-    weekendCellStime: '09:00',
-    weekendCellEtime: '16:00',
-    closeDay: '공휴일+일요일',
-    vetPersonCnt: 1,
-    specsPersonCnt: 8,
-    medicalCnt: 1,
-    breedCnt: 6,
-    quarabtineCnt: 1,
-    feedCnt: 1,
-    careTel: '031-867-9119',
-    dataStdDt: '2024-11-29',
-  },
-  {
-    careRegNo: '311311201100001',
-    careNm: '한국동물구조관리협회2',
-    orgNm: '서울특별시 은평구',
-    divisionNm: '법인',
-    saveTrgtAnimal: '개+고양이+기타',
-    careAddr: '경기도 양주시 남면 감악산로 63-48  ',
-    jibunAddr: '경기도 양주시 남면 상수리 536-11 ',
-    lat: 37.870117,
-    lng: 126.98354,
-    dsignationDate: '2020-03-01',
-    weekOprStime: '09:00',
-    weekOprEtime: '18:00',
-    weekCellStime: '09:00',
-    weekCellEtime: '18:00',
-    weekendOprStime: '09:00',
-    weekendOprEtime: '16:00',
-    weekendCellStime: '09:00',
-    weekendCellEtime: '16:00',
-    closeDay: '공휴일+일요일',
-    vetPersonCnt: 1,
-    specsPersonCnt: 8,
-    medicalCnt: 1,
-    breedCnt: 6,
-    quarabtineCnt: 1,
-    feedCnt: 1,
-    careTel: '031-867-9119',
-    dataStdDt: '2024-11-29',
-  },
-];
-
-interface UpperOrgType {
-  orgCd: string;
-  orgdownNm: string;
-}
-
-interface OrgType {
-  uprCd: string;
-  orgCd: string;
-  orgdownNm: string;
-}
-
-interface ShelterWithRegNo {
-  careRegNo: string | null;
-  careNm: string | null;
-  orgNm: string | null;
-  divisionNm: string | null;
-  saveTrgtAnimal: string | null;
-  careAddr: string | null;
-  jibunAddr: string | null;
-  lat: number | null;
-  lng: number | null;
-  dsignationDate: string | null;
-  weekOprStime: string | null;
-  weekOprEtime: string | null;
-  weekCellStime: string | null;
-  weekCellEtime: string | null;
-  weekendOprStime: string | null;
-  weekendOprEtime: string | null;
-  weekendCellStime: string | null;
-  weekendCellEtime: string | null;
-  closeDay: string | null;
-  vetPersonCnt: number | null;
-  specsPersonCnt: number | null;
-  medicalCnt: number | null;
-  breedCnt: number | null;
-  quarabtineCnt: number | null;
-  feedCnt: number | null;
-  careTel: string | null;
-  dataStdDt: string | null;
-}
 const upperOrg = ref<UpperOrgType>({
   orgCd: '6110000',
   orgdownNm: '서울특별시',
@@ -115,49 +22,101 @@ const upperOrg = ref<UpperOrgType>({
 
 // 최종적으로 선택된 지역 상태
 const org = ref<OrgType>({
-  uprCd: '',
-  orgCd: '',
+  uprCd: '6110000',
+  orgCd: '3220000',
   orgdownNm: '하위 지역 선택',
 });
 
-//  📍 여기서 org가 달라질때마다 보호소 목록 조회를 하면 됨.
+// 선택된 동물 상태 리스트
+const animals = reactive({
+  dog: false,
+  cat: false,
+  etc: false,
+});
 
-const orgList = computed(() => CITY_ORG[upperOrg.value?.orgdownNm]);
-const handleButtonClick = (upperOrgItem: UpperOrgType) => {
-  upperOrg.value = upperOrgItem; // 현재 상태를 업데이트하고
-  org.value = CITY_ORG[upperOrg.value?.orgdownNm][0]; // 하위 지역중 첫번재 지역을 자동 선택
+//  📍 여기서 org가 달라질때마다 보호소 목록 조회를 하면 됨.
+// 1. 해당 지역내 모든 보호소를 조회
+const {
+  data: shelters,
+  isLoading: isLoadingShelters,
+  refetch,
+} = useQuery({
+  queryKey: ['shelters', 'list', org.value.uprCd, org.value.orgCd],
+  queryFn: () => getShelterListApi(org.value.uprCd, org.value.orgCd),
+});
+
+// 다음쿼리가 실행될 준비가 되었는지 확인한다.
+const enabled = computed(() => {
+  if (shelters.value && (shelters.value.length > 0 || shelters.value !== undefined)) {
+    return true;
+  }
+  return false;
+});
+
+// 2. 보호소 별 상세정보를 조회
+const {
+  data: shelterDetails,
+  isLoading: isLoadingShelterDetails,
+  // refetch,
+} = useQuery({
+  queryKey: ['shelterDetails', org.value.uprCd, org.value.orgCd, shelters],
+  queryFn: () => {
+    console.log('두번째 쿼리가 작동');
+    return Promise.all(shelters.value.map((shelter) => getShelterInfo(shelter.careRegNo)));
+  },
+  enabled, // 준비 완료시 queryFn 실행
+});
+
+const converter = {
+  dog: '개',
+  cat: '고양이',
+  etc: '기타',
 };
+
+const orgList = computed(() => CITY_ORG[upperOrg.value?.orgdownNm]); // 드롭다운 리스트
+// 사이드바의 정보를 조합해서 필터에 맞는 정보만 반환
+const shelterList = computed(() => {
+  return shelterDetails.value
+    ?.filter((shelterData) => 'item' in shelterData.body.items)
+    .map((shelterData) => {
+      const careRegNoData = shelterData.header.reqNo;
+      const shelterInfoData = shelterData.body.items.item[0];
+      return {
+        careRegNo: careRegNoData,
+        ...shelterInfoData,
+      };
+    })
+    .filter((shelter) => {
+      const animalArray = shelter.saveTrgtAnimal.split('+');
+      const selectedAnimals = Object.keys(animals).filter((animal) => animals[animal]);
+      //console.log('selected', selectedAnimals);
+      return selectedAnimals.every((animal) => animalArray.includes(converter[animal]));
+    });
+});
+
+// 디버깅용
+// watch(shelterList, (newV, _) => {
+//   console.log('✅두번째 사이드바 shelterList', newV);
+// });
 
 const isOpenModal = ref<boolean>(false);
 const shelter = ref<ShelterWithRegNo | null>({
-  careRegNo: null,
-  careNm: null,
-  orgNm: null,
-  divisionNm: null,
-  saveTrgtAnimal: null,
-  careAddr: null,
-  jibunAddr: null,
-  lat: null,
-  lng: null,
-  dsignationDate: null,
-  weekOprStime: null,
-  weekOprEtime: null,
-  weekCellStime: null,
-  weekCellEtime: null,
-  weekendOprStime: null,
-  weekendOprEtime: null,
-  weekendCellStime: null,
-  weekendCellEtime: null,
-  closeDay: null,
-  vetPersonCnt: null,
-  specsPersonCnt: null,
-  medicalCnt: null,
-  breedCnt: null,
-  quarabtineCnt: null,
-  feedCnt: null,
-  careTel: null,
-  dataStdDt: null,
+  ...initialShelter,
 }); // 현재 보여지는 보호소 목록중 선택된 보호소정보
+
+// 상위 지역이 바뀔떄
+const handleButtonClick = (upperOrgItem: UpperOrgType) => {
+  upperOrg.value = upperOrgItem; // 현재 상태를 업데이트하고
+  org.value = CITY_ORG[upperOrg.value?.orgdownNm][0]; // 하위 지역중 첫번재 지역을 자동 선택
+  console.log('org', org.value);
+  refetch();
+};
+// 하위 지역이 바뀔때
+const handleDropDown = (orgItem) => {
+  org.value = orgItem;
+  console.log('org.value', org.value);
+  refetch();
+};
 
 const handleClose = () => {
   isOpenModal.value = false;
@@ -166,18 +125,12 @@ const handleCardClick = (shelterItem: ShelterWithRegNo) => {
   shelter.value = shelterItem;
   isOpenModal.value = true;
 };
-// 보호소 목록 조회 결과 다음과 같은 정보를 줘야 함
-// {
-//   careRegNo:"311311201100001", // 👉 목록 조회시 얻는 데이터
-//   // 📍 아래는 상세 조회시 얻는 데이터
-//   "careNm": "한국동물구조관리협회",
-//   "orgNm": "서울특별시 은평구",
-//   "divisionNm": "법인",
-//   "saveTrgtAnimal": "개+고양이+기타",
-//   "careAddr": "경기도 양주시 남면 감악산로 63-48  ",
-//   "jibunAddr": "경기도 양주시 남면 상수리 536-11 ",
 
-// }
+const handleCheckBox = (animal: keyof typeof animals) => {
+  const prev: boolean = animals[animal];
+  animals[animal] = !prev;
+  console.log(animals);
+};
 </script>
 
 <template>
@@ -218,7 +171,7 @@ const handleCardClick = (shelterItem: ShelterWithRegNo) => {
               </button>
               <ul class="dropdown-menu">
                 <li v-for="orgItem of orgList" :key="orgItem.orgCd">
-                  <a class="dropdown-item" href="#" @click="org = orgItem">{{
+                  <a class="dropdown-item" href="#" @click="handleDropDown(orgItem)">{{
                     orgItem.orgdownNm
                   }}</a>
                 </li>
@@ -232,32 +185,54 @@ const handleCardClick = (shelterItem: ShelterWithRegNo) => {
           <TitleText size="20px" weight="600" color="gray-10">구조대상동물</TitleText>
           <div class="ps-1 mt-2 text-gray-10">
             <div class="form-check mb-2">
-              <input class="form-check-input" type="checkbox" name="dog" id="dog" />
+              <input
+                class="form-check-input"
+                type="checkbox"
+                name="dog"
+                id="dog"
+                @change="handleCheckBox('dog')"
+              />
               <label class="form-check-label" for="dog"> 개 </label>
             </div>
             <div class="form-check mb-2">
-              <input class="form-check-input" type="checkbox" name="cat" id="cat" />
+              <input
+                class="form-check-input"
+                type="checkbox"
+                name="cat"
+                id="cat"
+                @change="handleCheckBox('cat')"
+              />
               <label class="form-check-label" for="cat"> 고양이 </label>
             </div>
             <div class="form-check mb-2">
-              <input class="form-check-input" type="checkbox" name="etc" id="etc" />
+              <input
+                class="form-check-input"
+                type="checkbox"
+                name="etc"
+                id="etc"
+                @change="handleCheckBox('etc')"
+              />
               <label class="form-check-label" for="etc"> 기타 </label>
             </div>
           </div>
         </div>
       </div>
+      <!-- 조회결과 사이드바 -->
       <div class="side-bar card-list">
         <TitleText size="16px" color="gray-6" weight="600"
           >'{{ upperOrg.orgdownNm }} {{ org.orgdownNm }}' 조회결과</TitleText
         >
         <ShelterCard
-          v-for="(shelterItem, index) of MOCK_SHELTERLIST_RESULT"
+          v-for="(shelterItem, index) of shelterList"
           :key="index"
           :shelter="shelterItem"
           @click="handleCardClick(shelterItem)"
+          :isSelected="shelterItem.careRegNo === shelter?.careRegNo"
         />
       </div>
     </div>
+
+    <!-- 지도 영역 -->
     <div class="map">
       <ShelterKakaoMap :lat="shelter.lat" :lng="shelter.lng" />
       <Transition name="fade">

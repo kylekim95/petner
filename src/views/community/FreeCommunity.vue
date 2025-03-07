@@ -1,10 +1,23 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import PostCard from '@/components/community/PostCard.vue';
 
 const filter = ref('latest');
 const currentPage = ref(1);
 const cardsPerPage = 6;
+
+// ---------- programmers api ----------
+
+import { getChannelPosts, type GetChannelPostsResponse } from '@/apis/devcourse/Post/getChannelPosts';
+import * as CHANID from '@/constants/communityConsts';
+const postsData = ref<GetChannelPostsResponse>();
+console.log(postsData);
+onMounted(async ()=>{
+  postsData.value = await getChannelPosts({channelId: CHANID.FreeChannelId, limit: 6, offset: 0});
+  console.log(postsData.value.posts);
+});
+
+// ---------- programmers api ----------
 
 // 카드 데이터 (임시로 12개의 데이터 사용)
 const cards = new Array(12).fill(0).map((_, index) => ({

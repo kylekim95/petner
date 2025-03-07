@@ -6,6 +6,8 @@ import { login, type LoginRequest, type LoginResponse } from '@/apis/devcourse/A
 import { logout } from '@/apis/devcourse/Auth/logout';
 import { getUser, type GetUserRequest, type GetUserResponse } from '@/apis/devcourse/User/getUser';
 import { signup, type SignupRequest } from '@/apis/devcourse/Auth/signup';
+import { updateUser } from '@/apis/devcourse/User/updateUser';
+import { uploadPhoto } from '@/apis/devcourse/User/uploadPhoto';
 
 export const useAuthStore = defineStore('auth', ()=>{
   const user = ref<devUser | null>(null);
@@ -13,6 +15,14 @@ export const useAuthStore = defineStore('auth', ()=>{
   const userId = ref<string | null>(localStorage.getItem('uid'));
   const isAuth = ref<boolean>(false);
 
+  async function GetUser() {
+    if(token.value && userId.value){
+      const request : GetUserRequest = { id: userId.value };
+      const response : GetUserResponse = await getUser(request);
+      user.value = response.user;
+      isAuth.value = true;
+    }
+  }
   async function Login(email: string, password: string){
     try{
       const request : LoginRequest = { email, password };
@@ -51,15 +61,34 @@ export const useAuthStore = defineStore('auth', ()=>{
       throw e;
     }
   }
+  async function UpdateUser(fullName : string, username : string){
+    try{
+      updateUser({
+        fullName : fullName,
+        username : username
+      });
+      if(user.value) user.value.fullName = fullName;
+    }
+    catch(e){
+      console.log(e);
+      throw e;
+    }
+  }
+  async function UploadPhoto(image : File, isCover : boolean){
+    try{
+      await uploadPhoto({image: image, isCover : isCover});
+      GetUser();
+    }
+    catch(e){
+      console.log(e);
+      throw e;
+    }
+  }
+
 
   // 유저 아이디를 token 값에서 추출 할 수 있나?
   onMounted(async ()=>{
-    if(token.value && userId.value){
-      const request : GetUserRequest = { id: userId.value };
-      const response : GetUserResponse = await getUser(request);
-      user.value = response.user;
-      isAuth.value = true;
-    }
+    GetUser();
   });
 
   return {
@@ -68,6 +97,8 @@ export const useAuthStore = defineStore('auth', ()=>{
     isAuth,
     Login,
     Logout,
-    Signup
+    Signup,
+    UpdateUser,
+    UploadPhoto
   };
 });

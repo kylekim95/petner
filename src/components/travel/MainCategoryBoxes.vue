@@ -30,7 +30,7 @@ function handleCategoryClick(category: Category) {
         :src="item.img"
         alt=""
         class="box-card-img rounded-4 img-fluid"
-        style="width: 300px; height: 300px"
+        style="width: 300px; height: 300px; filter: brightness(85%)"
       />
       <div
         class="box-card-text position-absolute bottom-0 start-0 p-2 text-gray-1 mb-2 ms-2"
