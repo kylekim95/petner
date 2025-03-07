@@ -67,3 +67,33 @@ export interface ShelterWithRegNo {
   careTel: string | null;
   dataStdDt: string | null;
 }
+
+export const initialShelter = {
+  careRegNo: null,
+  careNm: null,
+  orgNm: null,
+  divisionNm: null,
+  saveTrgtAnimal: null,
+  careAddr: null,
+  jibunAddr: null,
+  lat: null,
+  lng: null,
+  dsignationDate: null,
+  weekOprStime: null,
+  weekOprEtime: null,
+  weekCellStime: null,
+  weekCellEtime: null,
+  weekendOprStime: null,
+  weekendOprEtime: null,
+  weekendCellStime: null,
+  weekendCellEtime: null,
+  closeDay: null,
+  vetPersonCnt: null,
+  specsPersonCnt: null,
+  medicalCnt: null,
+  breedCnt: null,
+  quarabtineCnt: null,
+  feedCnt: null,
+  careTel: null,
+  dataStdDt: null,
+};
