@@ -4,6 +4,7 @@ import PopularTravelSwiperComponent from '@/components/homeMain/PopularTravelSwi
 import PlannerBanner from '@/components/homeMain/PlannerBanner.vue';
 import AbandonedBanner from '@/components/homeMain/AbandonedBanner.vue';
 import PopularShoppingSwiperComponent from '@/components/homeMain/PopularShoppingSwiperComponent.vue';
+import GridMenu from '@/components/homeMain/GridMenu.vue';
 
 // import { onMounted } from 'vue';
 // import { getAnimalList, getAnimalListBykindCd } from '@/apis/supabase';
@@ -46,13 +47,15 @@ onMounted(async ()=>{
     const promises = popularIds.map((e)=>detailCommon({contentId: parseInt(e[1]), contentTypeId: parseInt(e[0])}));
     const responses = (await Promise.allSettled(promises)).filter((e)=>e.status==='fulfilled');
     console.log(responses);
-    popularTravelData.value = responses.map<PopularTravelData>((e)=>{
+    popularTravelData.value = responses.map<PopularTravelData>((e, index)=>{
       const item = e.value[0];
       return {
         title: item.title,
         content: item.overview,
         image: item.firstimage,
-        location: item.addr1
+        location: item.addr1,
+        contentId: popularIds[index][1],
+        contentTypeId: popularIds[index][0]
       }
     });
     console.log(popularTravelData);

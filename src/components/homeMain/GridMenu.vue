@@ -62,18 +62,18 @@ const gridItemTexts : TextBlockDescriptor[][][] = [
       <div class="d-flex flex-column gap-3" style="width: 67%;">
         <div class="d-flex gap-3" style="height: 50%;">
           <div class="grid-menu-item rounded-4 overflow-hidden" style="width: 50%;">
-            <GalleryItem :bg-image="gridImages[0]" :title="gridItemTexts[0]" />
+            <GalleryItem :bg-image="gridImages[0]" :title="gridItemTexts[0]" link-to="#" />
           </div>
           <div class="grid-menu-item rounded-4 overflow-hidden" style="width: 50%;">
-            <GalleryItem :bg-image="gridImages[1]" :title="gridItemTexts[1]" />
+            <GalleryItem :bg-image="gridImages[1]" :title="gridItemTexts[1]" link-to="#" />
           </div>
         </div>
         <div class="grid-menu-item rounded-4 overflow-hidden" style="height: 50%;">
-          <GalleryItem :bg-image="gridImages[2]" :title="gridItemTexts[2]" />
+          <GalleryItem :bg-image="gridImages[2]" :title="gridItemTexts[2]" link-to="#" />
         </div>
       </div>
       <div class="grid-menu-item rounded-4 overflow-hidden" style="width: 33%;">
-        <GalleryItem :bg-image="gridImages[3]" :title="gridItemTexts[3]" />
+        <GalleryItem :bg-image="gridImages[3]" :title="gridItemTexts[3]" link-to="#" />
       </div>
     </div>
   </div>

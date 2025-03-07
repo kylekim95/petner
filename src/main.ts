@@ -1,5 +1,5 @@
 import './assets/main.css';
-
+import { VueQueryPlugin } from '@tanstack/vue-query';
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import { MotionPlugin } from '@vueuse/motion';
@@ -21,6 +21,7 @@ const app = createApp(App);
 app.use(createPinia());
 app.use(router);
 app.use(MotionPlugin);
+app.use(VueQueryPlugin);
 
 // axios instance를 전역으로 제공
 app.config.globalProperties.$devAPI = devAPI;
