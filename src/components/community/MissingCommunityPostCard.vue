@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import useFetchUser from '@/composibles/tanstack-query/useFetchUser';
 import type { devPost } from '@/types/devcourse/devPost';
 import dateGap from '@/utils/dateGap';
 import { defineProps } from 'vue';
@@ -10,6 +11,12 @@ const AVATAR_WIDTH = '40px';
 const AVATART_HEIGHT = '40px';
 const data = JSON.parse(props.card.title);
 const { fullName: userName, _id: userId } = props.card.author; // 사용자 정보 가져오기
+const userData = useFetchUser(userId);
+const profileImgUrl =
+  userData.value?.user.image === undefined
+    ? '/PNG-Image/images/default-profile1.png'
+    : userData.value?.user.image;
+console.log('profile', profileImgUrl);
 </script>
 <template>
   <div class="border border-gray-7" :style="{ width: '100%', borderRadius: '10px' }">
@@ -56,11 +63,10 @@ const { fullName: userName, _id: userId } = props.card.author; // 사용자 정�
           :style="{ width: AVATAR_WIDTH, height: AVATART_HEIGHT, borderRadius: '40px' }"
         >
           <img
-            src="https://cdn.pixabay.com/photo/2016/04/19/15/13/minion-1338858_1280.jpg"
-            alt="강아지"
+            :src="profileImgUrl"
+            alt="프로필 사진"
             :width="AVATAR_WIDTH"
             :height="AVATART_HEIGHT"
-            style="filter: brightness(0.7)"
           />
         </div>
         <span class="text-gray-7 fw-medium" :style="{ fontSize: '24px', fontWeight: '500' }">{{
