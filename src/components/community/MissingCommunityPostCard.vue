@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { devPost } from '@/types/devcourse/devPost';
+import dateGap from '@/utils/dateGap';
 import { defineProps } from 'vue';
 // Props 정의
 const props = defineProps<{
@@ -8,6 +9,7 @@ const props = defineProps<{
 const AVATAR_WIDTH = '40px';
 const AVATART_HEIGHT = '40px';
 const data = JSON.parse(props.card.title);
+const { fullName: userName, _id: userId } = props.card.author; // 사용자 정보 가져오기
 </script>
 <template>
   <div class="border border-gray-7" :style="{ width: '100%', borderRadius: '10px' }">
@@ -34,7 +36,7 @@ const data = JSON.parse(props.card.title);
           fontWeight: '400',
         }"
       >
-        D+20
+        {{ dateGap(data.date) }}
       </div>
       <div
         class="z-1 text-white position-absolute d-flex flex-column"
@@ -61,9 +63,9 @@ const data = JSON.parse(props.card.title);
             style="filter: brightness(0.7)"
           />
         </div>
-        <span class="text-gray-7 fw-medium" :style="{ fontSize: '24px', fontWeight: '500' }"
-          >jungseok</span
-        >
+        <span class="text-gray-7 fw-medium" :style="{ fontSize: '24px', fontWeight: '500' }">{{
+          userName
+        }}</span>
       </div>
       <div class="fw-bold" :style="{ fontSize: '20px' }">
         {{ data.region }} / {{ data.age }}/ {{ data.species }}

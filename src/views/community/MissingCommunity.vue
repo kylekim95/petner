@@ -6,7 +6,7 @@ import useFetchMissingPost from '@/composibles/tanstack-query/useFetchMissingPos
 
 // 여기서 missing community post들을 호출
 const { postCards, isLoading } = useFetchMissingPost();
-console.log('missingpost', postCards.value?.posts[0]);
+console.log('missingpost', postCards.value);
 
 // 필터
 const sortBy = ref<'recent' | 'comment'>('recent');
