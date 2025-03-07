@@ -1,14 +1,16 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
+import { useRouter } from 'vue-router';
 import { createPost, type CreatePostResponse } from '@/apis/devcourse/Post/createPost';
 import * as CHANID from '@/constants/communityConsts';
+
+const router = useRouter();
 
 const title = ref('');
 const content = ref('');
 const image = ref<File | null>(null);
 const imagePreview = ref<string | null>(null);
 
-// 파일 선택 후 미리보기 업데이트 및 File 객체 저장
 const handleImageChange = (event: Event) => {
   const input = event.target as HTMLInputElement;
   if (input?.files && input.files.length > 0) {
@@ -28,6 +30,7 @@ const isFormValid = computed(() => {
 });
 
 // 폼 제출: createPost API 함수를 사용하여 요청 전송 (파일을 그대로 전달)
+// 등록 성공 후 상세 페이지로 이동
 const handleSubmit = async () => {
   try {
     // 제목과 내용을 JSON 문자열로 번들링
@@ -38,7 +41,8 @@ const handleSubmit = async () => {
       image: image.value ? image.value : undefined,
     });
     console.log('등록 성공:', res);
-    // 추가 처리 (예: 페이지 이동, 성공 알림 등)
+    // 상세 페이지로 이동 (postId를 URL에 반영)
+    router.push(`/community/free/${res.post._id}`);
   } catch (error) {
     console.error('등록 에러:', error);
   }
