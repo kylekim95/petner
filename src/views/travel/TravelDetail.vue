@@ -14,6 +14,7 @@ import DetailInfoComponent from '@/components/travel/travelDetail/DetailInfoComp
 // import { computed } from 'vue';
 // import type{AccommodationDetail,RestaurantDetail} from '@/components/travel/travelDetail/TravelInfoCard.vue';
 
+import { fetchTourImageData } from '@/apis/tour/detailImage';
 // 쿼리 파라미터
 const route = useRoute();
 const contenttypeid = (route.query.contenttypeid as string) || '';
