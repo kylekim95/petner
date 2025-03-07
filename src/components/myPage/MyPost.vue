@@ -70,7 +70,6 @@ const changeContent = (content: string) => {
     <!-- 카드 리스트 섹션 -->
     <div v-motion-pop class="container myPostListSection" v-if="currentContent === '게시글'">
       <MyTravelCard />
-      <MyTravelCard />
     </div>
     <div v-motion-pop class="w-100" v-if="currentContent === '입양신청서'">
       <AdoptionRequestDisplay :data="data" />

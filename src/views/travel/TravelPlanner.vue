@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import draggable from 'vuedraggable';
 import TravelDestCard from '@/components/travel/planner/TravelDestCard.vue';
 
@@ -39,6 +39,24 @@ function ColorChangeOnHoverRestore(e : MouseEvent) {
   elem.classList.remove('trashcan-danger');
   elem.classList.add('trashcan-default');
 }
+
+// import { getChannelPosts, type GetChannelPostsRequest, type GetChannelPostsResponse } from '@/apis/devcourse/Post/getChannelPosts';
+// import * as CHANID from '@/constants/communityConsts';
+// const route = useRoute();
+// const destData = ref<TravelDestData[]>();
+// onMounted(async ()=>{
+//   try{
+//     const response = await getChannelPosts({channelId: CHANID.PlannerChannelId});
+//     const index = response.posts.findIndex((e)=>e._id === route.params.id);
+//     if(index !== -1){
+//       console.log(response.posts[index]);
+//     }
+//   }
+//   catch(e){
+//     console.log(e);
+//   }
+// });
+
 </script>
 
 <template>
