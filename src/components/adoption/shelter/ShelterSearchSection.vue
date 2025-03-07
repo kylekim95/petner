@@ -227,6 +227,7 @@ const handleCheckBox = (animal: keyof typeof animals) => {
           :key="index"
           :shelter="shelterItem"
           @click="handleCardClick(shelterItem)"
+          :isSelected="shelterItem.careRegNo === shelter?.careRegNo"
         />
       </div>
     </div>

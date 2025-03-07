@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { formatOperatingHours } from '@/utils/timeFormat';
 interface Shelter {
+  careRegNo: string;
   careNm: string;
   orgNm: string;
   divisionNm: string;
@@ -29,11 +30,11 @@ interface Shelter {
   dataStdDt: string;
 }
 
-defineProps<{ shelter: Shelter }>();
+defineProps<{ shelter: Shelter; isSelected: boolean }>();
 </script>
 
 <template>
-  <div class="card-wrapper">
+  <div class="card-wrapper" :class="{ selected: isSelected }">
     <div class="title">{{ shelter.careNm }}</div>
     <div class="info">
       <i class="bi bi-brightness-high"></i>
@@ -60,6 +61,10 @@ defineProps<{ shelter: Shelter }>();
 }
 .card-wrapper:hover {
   background-color: var(--gray-2);
+}
+
+.selected {
+  border: 2px solid var(--secondary-green);
 }
 
 .title {
