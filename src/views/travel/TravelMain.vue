@@ -39,6 +39,7 @@ const shoppingAndCulture: ShoppingAndCulture[] = [
     id: 3432213,
     img: 'http://tong.visitkorea.or.kr/cms/resource/56/3431756_image2_1.jpg',
     path: PATH.travelDetail.replace(':contentId', '3432213'),
+    customQuery: { contenttypeid: '14' },
   },
   {
     id: 2609837,
@@ -54,11 +55,13 @@ const shoppingAndCulture: ShoppingAndCulture[] = [
     id: 2639878,
     img: 'http://tong.visitkorea.or.kr/cms/resource/66/3336266_image2_1.jpg',
     path: PATH.travelDetail.replace(':contentId', '2639878'),
+    customQuery: { contenttypeid: '14' },
   },
   {
     id: 2553929,
     img: 'http://tong.visitkorea.or.kr/cms/resource/67/3340967_image2_1.jpg',
     path: PATH.travelDetail.replace(':contentId', '2553929'),
+    customQuery: { contenttypeid: '14' },
   },
   {
     id: 2756702,
@@ -70,6 +73,7 @@ const shoppingAndCulture: ShoppingAndCulture[] = [
     id: 1754453,
     img: 'http://tong.visitkorea.or.kr/cms/resource/28/3465428_image2_1.jpg',
     path: PATH.travelDetail.replace(':contentId', '1754453'),
+    customQuery: { contenttypeid: '14' },
   },
 ];
 const accommodations: Accommodation[] = [
@@ -121,30 +125,35 @@ const restaurants: Restaurant[] = [
     img: 'http://tong.visitkorea.or.kr/cms/resource/83/2844883_image2_1.JPG',
     type: '카페인덕동',
     location: '경남',
+    path: PATH.travelDetail.replace(':contentId', '2844892'),
   },
   {
     id: 2603720,
     img: 'http://tong.visitkorea.or.kr/cms/resource/58/2603758_image2_1.jpg',
     type: '누닝 펫푸드카페',
     location: '인천',
+    path: PATH.travelDetail.replace(':contentId', '2603720'),
   },
   {
     id: 2603467,
     img: 'http://tong.visitkorea.or.kr/cms/resource/68/2603468_image2_1.jpg',
     type: '(유)헤세의정원',
     location: '경기도',
+    path: PATH.travelDetail.replace(':contentId', '2603467'),
   },
   {
     id: 2848931,
     img: 'http://tong.visitkorea.or.kr/cms/resource/76/2848776_image2_1.jpg',
     type: '개떼놀이터',
     location: '강원도',
+    path: PATH.travelDetail.replace(':contentId', '2848931'),
   },
   {
     id: 2938673,
     img: 'http://tong.visitkorea.or.kr/cms/resource/73/2938273_image2_1.JPG',
     type: '태조밥상',
     location: '전북',
+    path: PATH.travelDetail.replace(':contentId', '2938673'),
   },
 ];
 
@@ -214,7 +223,7 @@ const itemData: ExpandingMenuItemData[] = [
 
       <div class="container" style="width: 100%; margin-bottom: 5%">
         <div class="gray-10 fw-bold mt-5" style="font-size: 36px">관광 & 체험</div>
-        <div class="gray-10 text-gray-7" style="font-size: 24px">펫트너의 맛있는 여정</div>
+        <div class="gray-10 text-gray-7" style="font-size: 24px">펫트너가 추천하는 액티비티</div>
         <div style="height: 500px">
           <ExpandingMenu :item-data="itemData" class="mt-3" />
         </div>

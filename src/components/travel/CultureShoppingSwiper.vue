@@ -9,6 +9,7 @@ export interface ShoppingAndCulture {
   id: number | string;
   img: string;
   path: string;
+  customQuery?: Record<string, string>;
 }
 
 const router = useRouter();
@@ -20,9 +21,10 @@ const props = defineProps<{
 }>();
 
 function handleCategoryClick(shopping: ShoppingAndCulture) {
+  const query = shopping.customQuery ? shopping.customQuery : { contenttypeid: '38' };
   router.push({
     path: shopping.path,
-    query: { contenttypeid: '38' },
+    query,
   });
 }
 </script>
