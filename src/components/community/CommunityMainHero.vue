@@ -6,8 +6,7 @@
       <img
         src="https://cdn.pixabay.com/photo/2015/05/30/19/53/playing-puppies-790638_1280.jpg"
         alt=""
-        width="100%"
-        height="400px"
+        class="card-img-top"
       />
       <div
         class="heroLeftText d-flex flex-column position-absolute"
@@ -112,6 +111,10 @@
 .heroRight {
   width: 35%;
   height: 400px;
+}
+.card-img-top {
+  height: 400px;
+  object-fit: cover;
 }
 
 .postNavigation {

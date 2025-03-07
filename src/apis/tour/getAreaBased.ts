@@ -3,8 +3,9 @@ import { AREABASED } from '@/apis/tour/tourEndpoints';
 
 interface AreaData {
   pageNo?: number;
-  contentTypeId?: number | string;
+  contentTypeId?: string;
   areaCode?: number | string;
+  cat3?: number | string;
   category?: number | string;
 }
 

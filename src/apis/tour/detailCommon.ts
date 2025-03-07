@@ -2,8 +2,8 @@ import { COMMON } from '@/apis/tour/tourEndpoints';
 import tourAPI from '@/config/axiosTourConfig';
 
 interface DataId {
-  contentTypeId: number;
-  contentId: number;
+  contentTypeId: string;
+  contentId: string;
 }
 
 // 공통정보 조회
@@ -22,8 +22,9 @@ export async function detailCommon(dataId: DataId) {
         overviewYN: 'Y',
       },
     });
+    // console.log(response);
     const data = response.data.response.body.items.item;
-    console.log(data);
+    // console.log(data);
     return data; // API 응답 데이터를 반환
   } catch (error) {
     console.error('Error fetching tour data:', error);
