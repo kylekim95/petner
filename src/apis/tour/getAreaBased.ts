@@ -18,6 +18,7 @@ export async function fetchAreaBasedData({
       params: {
         contentTypeId,
         areaCode,
+        cat1:
         cat3: category,
       },
     });

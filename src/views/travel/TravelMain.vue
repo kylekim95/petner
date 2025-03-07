@@ -123,10 +123,10 @@ const restaurants: Restaurant[] = [
     location: '제주도',
   },
   {
-    id: 2,
-    img: '/forSwipers/restaurant2.png',
-    type: '몰디브모히또',
-    location: '제주도',
+    id: 2603720,
+    img: 'http://tong.visitkorea.or.kr/cms/resource/58/2603758_image2_1.jpg',
+    type: '애견 카페',
+    location: '인천',
   },
   {
     id: 3,
@@ -135,10 +135,10 @@ const restaurants: Restaurant[] = [
     location: '제주도',
   },
   {
-    id: 4,
-    img: '/forSwipers/restaurant1.png',
-    type: '바닷가카페',
-    location: '제주도',
+    id: 2848931,
+    img: 'http://tong.visitkorea.or.kr/cms/resource/76/2848776_image2_1.jpg',
+    type: '애견 카페',
+    location: '강원도',
   },
   {
     id: 5,
