@@ -1,4 +1,7 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const dummyImageSrc = "https://media.istockphoto.com/id/1853686056/ko/%EC%82%AC%EC%A7%84/%EC%A7%91%EC%97%90%EC%84%9C-%ED%9C%B4%EC%8B%9D%EC%9D%84-%EC%B7%A8%ED%95%98%EB%8A%94-%EA%B3%A8%EB%93%A0-%EB%A6%AC%ED%8A%B8%EB%A6%AC%EB%B2%84.jpg?s=1024x1024&w=is&k=20&c=qrl0V8QEo7JzTYnGk7hPuSKhmryWD5vnLnrWy0C3XzU="
+
+</script>
 
 <template>
   <!-- 카드 리스트 섹션 -->
@@ -10,8 +13,8 @@
         <div class="postCardImg overflow-hidden" style="border-radius: 85px">
           <img
             src="https://cdn.pixabay.com/photo/2016/04/19/15/13/minion-1338858_1280.jpg"
-            width="70px"
-            height="70px"
+            width="auto"
+            height="100%"
             alt=""
           />
         </div>
@@ -26,10 +29,10 @@
     <!-- 메인 이미지 -->
     <div class="mainImg overflow-hidden">
       <img
-        src="https://media.istockphoto.com/id/1853686056/ko/%EC%82%AC%EC%A7%84/%EC%A7%91%EC%97%90%EC%84%9C-%ED%9C%B4%EC%8B%9D%EC%9D%84-%EC%B7%A8%ED%95%98%EB%8A%94-%EA%B3%A8%EB%93%A0-%EB%A6%AC%ED%8A%B8%EB%A6%AC%EB%B2%84.jpg?s=1024x1024&w=is&k=20&c=qrl0V8QEo7JzTYnGk7hPuSKhmryWD5vnLnrWy0C3XzU="
+        :src="dummyImageSrc"
         alt=""
         width="100%"
-        height="256px"
+        height="auto"
       />
     </div>
     <!--소개글 -->

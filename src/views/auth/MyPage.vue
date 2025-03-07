@@ -8,7 +8,7 @@ import MyPost from '@/components/myPage/MyPost.vue';
   <div class="myPageSection" :style="{ paddingTop: '97px', paddingBottom: '97px' }">
     <div class="container" :style="{ minWidth: '1280px', width: '66%' }">
       <HeroSection style="" />
-      <div class="contentSection d-flex flex-row gap-4" :style="{ marginTop: '20px' }">
+      <div class="contentSection d-flex flex-row gap-4 mb-5" :style="{ marginTop: '20px' }">
         <MyPlan />
         <MyPost />
       </div>

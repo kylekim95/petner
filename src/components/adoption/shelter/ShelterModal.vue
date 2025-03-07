@@ -104,7 +104,7 @@ const animalCategoryArray = computed(() =>
           >{{ animal.name }}</span
         >
       </div>
-      <div class="d-flex justify-content-end">
+      <div class="d-flex justify-content-end mb-2">
         <ShowMoreButton
           text="보호소 유기동물"
           :linkTo="{ path: PATH.adoptionSearch, query: { shelterId: careRegNo } }"
@@ -121,7 +121,7 @@ const animalCategoryArray = computed(() =>
   top: 5%;
 
   width: 400px;
-  height: 340px;
+  /* height: 340px; */
   background-color: var(--gray-1);
   border-radius: 26px;
   padding: 20px 40px;

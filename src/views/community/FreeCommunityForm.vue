@@ -2,6 +2,9 @@
 import { ref, computed } from 'vue';
 import axios from 'axios';
 
+import { createPost, type CreatePostRequest, type CreatePostResponse } from '@/apis/devcourse/Post/createPost';
+import * as CHANID from '@/constants/communityConsts';
+
 const title = ref('');
 const content = ref('');
 const images = ref<File[]>([]); // 이미지 담을 배열
@@ -36,23 +39,38 @@ const isFormValid = computed(() => {
 // 폼 제출
 const handleSubmit = async () => {
   // Form 데이터 준비
-  const formData = new FormData();
-  formData.append('title', title.value);
-  formData.append('content', content.value);
+  // const formData = new FormData();
+  // formData.append('title', title.value);
+  // formData.append('content', content.value);
 
   // 이미지 데이터를 formData에 추가
-  images.value.forEach((image) => {
-    formData.append('images', image);
-  });
+  // images.value.forEach((image) => {
+  //   formData.append('images', image);
+  // });
+  // if(images.value.length > 0) formData.append('images', images.value[0]);
 
   // POST 요청 보내기
   try {
-    const response = await axios.post('API_ENDPOINT_URL', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
+    // const response = await axios.post('API_ENDPOINT_URL', formData, {
+    //   headers: {
+    //     'Content-Type': 'multipart/form-data',
+    //   },
+    // });
+    // console.log('성공:', response.data);
+
+    // ---------- programmers api ----------
+
+    const bundle = JSON.stringify({title:title.value, content:content.value});
+    createPost({
+      channelId: CHANID.FreeChannelId,
+      title: bundle,
+      image: images.value.length > 0 ? images.value[0] : undefined
+    }).then((res : CreatePostResponse)=>{
+      console.log(res);
     });
-    console.log('성공:', response.data);
+
+    // ---------- programmers api ----------
+
   } catch (error) {
     console.error('에러:', error);
   }
