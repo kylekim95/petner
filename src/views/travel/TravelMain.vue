@@ -159,22 +159,28 @@ const restaurants: Restaurant[] = [
 
 const itemData: ExpandingMenuItemData[] = [
   {
-    id: 2705409,
+    id: 0,
     bgImage: 'http://tong.visitkorea.or.kr/cms/resource/84/3082584_image2_1.jpg',
     title: '강아지 숲 ',
     content: '강원도',
+    contentId: 2705409,
+    contentTypeId: 12,
   },
   {
-    id: 2702507,
+    id: 1,
     bgImage: 'http://tong.visitkorea.or.kr/cms/resource/67/2739267_image2_1.jpg',
     title: '해파랑길 44코스',
     content: '강원도',
+    contentId: 2702507,
+    contentTypeId: 28,
   },
   {
-    id: 125534,
+    id: 2,
     bgImage: 'http://tong.visitkorea.or.kr/cms/resource/24/3422224_image2_1.jpg',
     title: '강화 전등사',
     content: '인천',
+    contentId: 125534,
+    contentTypeId: 12,
   },
 ];
 </script>
