@@ -125,7 +125,7 @@ const shopping = ref([
 ]);
 onMounted(async () => {
   fetchPetTourData({ contentId: 1720749 });
-  fetchAreaBasedData({ areaCode: 1 });
+  fetchAreaBasedData({ areaCode: 1 ,});
   fetchTourImageData({ contentId: 1720749 });
   fetchDetailInfoData({ contentId: 1865597, contentTypeId: 32 });
 });
