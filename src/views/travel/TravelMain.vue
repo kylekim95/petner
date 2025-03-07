@@ -117,55 +117,55 @@ const accommodations: Accommodation[] = [
 ];
 const restaurants: Restaurant[] = [
   {
-    id: 1,
-    img: '/forSwipers/restaurant1.png',
-    type: '바닷가카페',
-    location: '제주도',
+    id: 2844892,
+    img: 'http://tong.visitkorea.or.kr/cms/resource/83/2844883_image2_1.JPG',
+    type: '카페인덕동',
+    location: '경남',
   },
   {
     id: 2603720,
     img: 'http://tong.visitkorea.or.kr/cms/resource/58/2603758_image2_1.jpg',
-    type: '애견 카페',
+    type: '누닝 펫푸드카페',
     location: '인천',
   },
   {
-    id: 3,
-    img: '/forSwipers/restaurant3.png',
-    type: '흑돼지맛집',
-    location: '제주도',
+    id: 2603467,
+    img: 'http://tong.visitkorea.or.kr/cms/resource/68/2603468_image2_1.jpg',
+    type: '(유)헤세의정원',
+    location: '경기도',
   },
   {
     id: 2848931,
     img: 'http://tong.visitkorea.or.kr/cms/resource/76/2848776_image2_1.jpg',
-    type: '애견 카페',
+    type: '개떼놀이터',
     location: '강원도',
   },
   {
-    id: 5,
-    img: '/forSwipers/restaurant2.png',
-    type: '몰디브모히또',
-    location: '제주도',
+    id: 2938673,
+    img: 'http://tong.visitkorea.or.kr/cms/resource/73/2938273_image2_1.JPG',
+    type: '태조밥상',
+    location: '전북',
   },
 ];
 
 const itemData: ExpandingMenuItemData[] = [
   {
-    id: 0,
-    bgImage: 'http://tong.visitkorea.or.kr/cms/resource/82/3364482_image2_1.JPG',
-    title: '둘레길 트래킹 ',
-    content: '제주도',
+    id: 2705409,
+    bgImage: 'http://tong.visitkorea.or.kr/cms/resource/84/3082584_image2_1.jpg',
+    title: '강아지 숲 ',
+    content: '강원도',
   },
   {
-    id: 1,
-    bgImage: 'http://tong.visitkorea.or.kr/cms/resource/82/3364482_image2_1.JPG',
-    title: '둘레길 트래킹',
-    content: '제주도',
+    id: 2702507,
+    bgImage: 'http://tong.visitkorea.or.kr/cms/resource/67/2739267_image2_1.jpg',
+    title: '해파랑길 44코스',
+    content: '강원도',
   },
   {
-    id: 2,
-    bgImage: 'http://tong.visitkorea.or.kr/cms/resource/82/3364482_image2_1.JPG',
-    title: '둘레길 트래킹',
-    content: '제주도',
+    id: 125534,
+    bgImage: 'http://tong.visitkorea.or.kr/cms/resource/24/3422224_image2_1.jpg',
+    title: '강화 전등사',
+    content: '인천',
   },
 ];
 </script>
@@ -208,14 +208,14 @@ const itemData: ExpandingMenuItemData[] = [
 
       <RestaurantSwiper
         :restaurants="restaurants"
-        section-title="레스토랑"
+        section-title="음식점 & 카페"
         section-subtitle="펫트너의 맛있는 여정"
       />
 
       <div class="container" style="width: 100%; margin-bottom: 5%">
         <div class="gray-10 fw-bold mt-5" style="font-size: 36px">관광 & 체험</div>
         <div class="gray-10 text-gray-7" style="font-size: 24px">펫트너의 맛있는 여정</div>
-        <div style="height: 400px; margin-left: -2%">
+        <div style="height: 500px">
           <ExpandingMenu :item-data="itemData" class="mt-3" />
         </div>
       </div>
