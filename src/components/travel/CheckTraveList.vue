@@ -1,7 +1,52 @@
 <script setup lang="ts">
 import { travelListEffect } from '@/constants/travel/motion';
-import { defineModel } from 'vue';
+import { defineModel, ref, onMounted } from 'vue';
 const currentPage = defineModel<string>();
+import TravelListCard from './TravelListCard.vue';
+import { fetchAreaBasedData } from '@/apis/tour/getAreaBased';
+
+// API에서 불러온 데이터를 저장할 변수
+// API에서 불러온 데이터를 저장할 변수
+const stayData = ref<any[]>([]); // 배열 형태로 데이터 저장
+const isLoading = ref(false); // 로딩 상태
+const pageNo = ref(1); // 페이지 번호
+const observerTarget = ref<HTMLElement | null>(null); // Intersection Observer 감지 대상
+
+// API 호출 함수
+const loadStayData = async () => {
+  try {
+    isLoading.value = true;
+    const data = await fetchAreaBasedData({ pageNo: pageNo.value });
+    stayData.value.push(...data); // 기존 데이터에 추가
+    pageNo.value++; // ✅ 다음 페이지 증가
+  } catch (error) {
+    console.error('데이터 로드 실패:', error);
+  } finally {
+    isLoading.value = false; // 로딩 완료
+  }
+};
+
+// **Intersection Observer 설정**
+const setupIntersectionObserver = () => {
+  if (!observerTarget.value) return;
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      if (entries[0].isIntersecting) {
+        loadStayData(); // ✅ 추가 데이터 로드
+      }
+    },
+    { threshold: 1.0 },
+  );
+
+  observer.observe(observerTarget.value);
+};
+
+// 컴포넌트가 마운트될 때 데이터 로드 및 옵저버 설정
+onMounted(() => {
+  loadStayData();
+  setupIntersectionObserver();
+});
 </script>
 
 <template>
@@ -11,53 +56,14 @@ const currentPage = defineModel<string>();
     <!-- <div class="searchResult title" :style="{}">검색결과 : 2000개</div> -->
     <div class="searchResult title" :style="{}">{{ currentPage }}</div>
     <!-- 카드 컴포넌트 -->
-    <div
-      class="d-flex flex-row gap-1 position-relative"
-      :style="{ width: '100%', height: '295px', marginTop: '20px' }"
-    >
-      <div class="card overflow-hidden">
-        <img
-          src="https://cdn.pixabay.com/photo/2017/03/09/06/30/pool-2128578_1280.jpg"
-          height="295px"
-          alt=""
-          :style="{ objectFit: 'cover' }"
-        />
-      </div>
-      <div class="d-flex flex-column justify-content-between ms-4" :style="{ width: '55%' }">
-        <!-- 카테고리 -->
-        <div class="text-primary-blue" :style="{ fontSize: '16px' }">호텔</div>
-        <!-- 이름 및 아이콘 -->
-        <div class="d-flex flex-wrap justify-content-lg-between align-items-center">
-          <div class="subTitle">소노문 단양</div>
-          <div class="d-flex flex-row gap-2">
-            <!-- 아이콘 -->
-            <i class="bi bi-journal-plus" :style="{ fontSize: '30px' }"></i>
-            <i class="bi bi-heart" :style="{ fontSize: '30px' }"></i>
-          </div>
-        </div>
-        <!-- 주소 -->
-        <div>단양군 단양읍 삼봉로 187-17</div>
-        <div>02-1234-5678</div>
-        <div class="" style="width: 100%">
-          <p
-            class="mb-0"
-            style="
-              display: -webkit-box;
-              -webkit-box-orient: vertical;
-              -webkit-line-clamp: 3;
-              line-clamp: 3;
-              overflow: hidden;
-              max-width: 100%;
-            "
-          >
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eum, corrupti? Numquam minima
-            odio labore quo voluptas, sequi nam culpa delectus quod neque tempora enim, doloremque
-            nostrum eos qui, sed rerum? nostrum eos qui, sed rerum?
-          </p>
-        </div>
-        <div class="title">110000원/박</div>
-      </div>
+    <div v-for="(item, index) in stayData" :key="index">
+      <TravelListCard :data="item" />
     </div>
+    <!-- 감지용 div -->
+    <div ref="observerTarget" style="height: 10px"></div>
+
+    <!-- 로딩 상태 표시 -->
+    <div v-if="isLoading" class="loading-text">데이터 로딩 중...</div>
   </div>
 </template>
 
@@ -77,6 +83,7 @@ const currentPage = defineModel<string>();
   width: 75%;
   flex-direction: column;
   align-items: start;
+  margin-bottom: 50px;
 }
 
 .card {

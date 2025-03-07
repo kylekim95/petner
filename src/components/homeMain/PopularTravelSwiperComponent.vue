@@ -3,14 +3,11 @@ import { Swiper, SwiperSlide } from 'swiper/vue';
 import 'swiper/css';
 import PopularTravelCard, { type PopularTravelData } from '@/components/homeMain/atoms/PopularTravelCard.vue';
 
-const dummyData : PopularTravelData[] = [
-  { image: 'https://tong.visitkorea.or.kr/cms/resource/80/3109380_image2_1.jpg', location: '웨이뷰', title: '제목제목', content: '내용내용' },
-  { image: 'https://tong.visitkorea.or.kr/cms/resource/80/3109380_image2_1.jpg', location: '웨이뷰', title: '제목제목', content: '내용내용' },
-  { image: 'https://tong.visitkorea.or.kr/cms/resource/80/3109380_image2_1.jpg', location: '웨이뷰', title: '제목제목', content: '내용내용' },
-  { image: 'https://tong.visitkorea.or.kr/cms/resource/80/3109380_image2_1.jpg', location: '웨이뷰', title: '제목제목', content: '내용내용' },
-  { image: 'https://tong.visitkorea.or.kr/cms/resource/80/3109380_image2_1.jpg', location: '웨이뷰', title: '제목제목', content: '내용내용' },
-  { image: 'https://tong.visitkorea.or.kr/cms/resource/80/3109380_image2_1.jpg', location: '웨이뷰', title: '제목제목', content: '내용내용' },
-];
+interface PopularTravelDataProps {
+  data : PopularTravelData[];
+}
+const props = defineProps<PopularTravelDataProps>();
+
 </script>
 
 <template>
@@ -20,7 +17,13 @@ const dummyData : PopularTravelData[] = [
     :scrollbar="{ el: '.swiper-scrollbar', draggable: true, enabled: true }"
     style="height: 500px"
   >
-    <swiper-slide v-for="(item, index) in dummyData" :key="index"><PopularTravelCard class="h-100" :data="item" /></swiper-slide>
+    <swiper-slide v-for="(item, index) in props.data" :key="index"><PopularTravelCard class="h-100" :data="item" /></swiper-slide>
+    <template v-if="props.data.length < 3">
+      <swiper-slide><div class="bg-gray-3 h-100 rounded-5"></div></swiper-slide>
+      <swiper-slide><div class="bg-gray-3 h-100 rounded-5"></div></swiper-slide>
+      <swiper-slide><div class="bg-gray-3 h-100 rounded-5"></div></swiper-slide>
+      <swiper-slide><div class="bg-gray-3 h-100 rounded-5"></div></swiper-slide>
+    </template>
   </swiper>
 </template>
 
