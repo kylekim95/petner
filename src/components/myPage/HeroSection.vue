@@ -26,16 +26,10 @@ const coverImageInput = ref<File>();
   <div class="heroSection overflow-hidden position-relative z-0">
     <!-- 아바타 이미지 -->
     <div
-      class="position-absolute overflow-hidden z-1"
-      :style="{ top: '155px', left: '79px' }"
-      style="border-radius: 85px"
+      class="position-absolute overflow-hidden z-1 bg-primary"
+      style="border-radius: 100%; width: 175px; height: 175px; top: 155px; left: 79px;"
     >
-      <img
-        :src="auth.user?.image"
-        width="180px"
-        height="180px"
-        alt=""
-      />
+      <img :src="auth.user?.image" alt="" style="height:100%; width: auto;"/>
       <i v-if="updating.value"
         class="bi-images position-absolute translate-middle text-gray-1" style="top: 50%; left: 50%; font-size: 1.5rem"
       >
@@ -54,8 +48,10 @@ const coverImageInput = ref<File>();
         if(coverImageInput) auth.UploadPhoto(coverImageInput, true);
       }" />
     </i>
-    <img v-if="auth.user?.coverImage" :src="auth.user?.coverImage" alt="" width="100%" height="280px" />
-    <div v-if="!(auth.user?.coverImage)" class="bg-primary-red w-100" style="height: 280px;"></div>
+    <div class="overflow-hidden" style="height: 280px; width:100%">
+      <img v-if="auth.user?.coverImage" :src="auth.user?.coverImage" alt="" style="height: auto; width: 100%"/>
+      <div v-if="!(auth.user?.coverImage)" class="bg-primary-red w-100"></div>
+    </div>
     <!-- 내 정보 텍스트 섹션 -->
     <div class="myInformation position-relative">
       <!-- 왼쪽 텍스 -->
