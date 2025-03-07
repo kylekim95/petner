@@ -1,104 +1,153 @@
 <script setup lang="ts">
 import FacilitiesCategory from './FacilitiesCategory.vue';
 import RadioCategory from './RadioCategory.vue';
-import { computed, ref } from 'vue';
-import { defineModel } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { travelCategoryEffect } from '@/constants/travel/motion';
+import { useRoute, useRouter } from 'vue-router';
+import { useFacilitiesStore } from '@/stores/facilitiesStore';
+const facilitiesStore = useFacilitiesStore();
 
-// props
+// 쿼리스트링
+const route = useRoute();
+const router = useRouter();
 
-const currentPage = defineModel<string>();
+const categoryParam = route.params.category;
+const currentContentTypeId = ref<string>(
+  Array.isArray(categoryParam) ? categoryParam[0] : categoryParam || '',
+);
 
-// 지역 정보
-const area = ref([
-  '서울',
-  '인천',
-  '대전',
-  '대구',
-  '광주',
-  '부산',
-  '울산',
-  '세종',
-  '경기',
-  '강원',
-  '충북',
-  '충남',
-  '경북',
-  '경남',
-  '전북',
-  '전남',
-  '제주',
-]);
+// 초기 렌더링 시 currentContentTypeId의 값을 할당
+facilitiesStore.setContentTypeIdCode(currentContentTypeId.value);
+
+// URL 업데이트 + 부모에게 contentTypeId 전달
+watch(currentContentTypeId, (newValue) => {
+  router.push({ params: { category: newValue } }); // URL 동기화
+  facilitiesStore.setContentTypeIdCode(newValue);
+});
 
 // 현재 페이지
 const pageCategoryData = ref({
   title: '카테고리',
-  options: ['문화 & 쇼핑', '숙소', '레스토랑', '관광 & 체험'],
+
+  options: [
+    { category: '문화 & 쇼핑', contentTypeId: '38' },
+    { category: '숙소', contentTypeId: '32' },
+    { category: '레스토랑', contentTypeId: '39' },
+    { category: '관광 & 체험', contentTypeId: '28' },
+  ],
 });
 
-// 지역
-const currentArea = ref('서울');
-const handleArea = (selected: string) => {
-  currentArea.value = selected;
-};
+// 지역 정보
+const areaInfo = ref([
+  { area: '서울', areaCode: '1' },
+  { area: '인천', areaCode: '2' },
+  { area: '대전', areaCode: '3' },
+  { area: '대구', areaCode: '4' },
+  { area: '광주', areaCode: '5' },
+  { area: '부산', areaCode: '6' },
+  { area: '울산', areaCode: '7' },
+  { area: '세종', areaCode: '8' },
+  { area: '경기', areaCode: '31' },
+  { area: '강원', areaCode: '32' },
+  { area: '충북', areaCode: '33' },
+  { area: '충남', areaCode: '34' },
+  { area: '경북', areaCode: '35' },
+  { area: '경남', areaCode: '36' },
+  { area: '전북', areaCode: '37' },
+  { area: '전남', areaCode: '38' },
+  { area: '제주', areaCode: '39' },
+]);
 
 // 유형 정보
 // 숙소 옵션
 
 const stayCategoryData = ref({
   title: '숙소 유형',
-  options: ['전체', '모텔', '호텔,리조트', '펜션', '한옥'],
+  options: [
+    { category: '전체', code: '' },
+    { category: '콘도미니엄', code: 'B02010500' },
+    { category: '유스호스텔', code: 'B02010600' },
+    { category: '펜션', code: 'B02010700' },
+    { category: '모텔', code: 'B02010900' },
+    { category: '민박', code: 'B02011000' },
+    { category: '게스트하우스', code: 'B02011100' },
+    { category: '홈스테이', code: 'B02011200' },
+    { category: '한옥', code: 'B02011600' },
+  ],
 });
 
 // 식당 옵션
 const restaurantCategoryData = ref({
   title: '음식 유형',
-  options: ['전체', '한식', '양식', '일식', '중식', '이색', '카페'],
+  options: [
+    { category: '전체', code: '' },
+    { category: '한식', code: 'A05020100' },
+    { category: '양식', code: 'A05020200' },
+    { category: '일식', code: 'A05020300' },
+    { category: '중식', code: 'A05020400' },
+    { category: '이색', code: 'A05020700' },
+    { category: '카페', code: 'A05020900' },
+  ],
 });
-
 // 쇼핑 옵션
 const shoppingCategoryData = ref({
   title: '쇼핑 유형',
   options: [
-    '전체',
-    '5일장',
-    '시장',
-    '백화점',
-    '면세점',
-    '대형마트',
-    '전문매장',
-    '공예 / 공방',
-    '특산물 판매점',
-    '사후 면세점',
+    { category: '전체', code: '' },
+    { category: '5일장', code: '' },
+    { category: '시장', code: '' },
+    { category: '백화점', code: '' },
+    { category: '면세점', code: '' },
+    { category: '대형마트', code: '' },
+    { category: '전문매장', code: '' },
+    { category: '공예 / 공방', code: '' },
+    { category: '특산물 판매점', code: '' },
+    { category: '사후 면세점', code: '' },
   ],
 });
-
 // 레포츠
 const reportsCategoryData = ref({
   title: '레포츠 유형',
-  options: ['전체', '육상', '수상', '항공'],
+  options: [
+    { category: '전체', code: '' },
+    { category: '육상', code: 'A0302' },
+    { category: '수상', code: 'A0303' },
+    { category: '항공', code: 'A0304' },
+  ],
 });
 
 // 현재 페이지에 따른 카테고리 데이터를 반환하는 computed
 const currentCategoryData = computed(() => {
-  switch (currentPage.value) {
-    case '숙소':
+  switch (currentContentTypeId.value) {
+    // 숙소
+    case '32':
       return stayCategoryData.value;
-    case '레스토랑':
+    // 레스토랑
+    case '39':
       return restaurantCategoryData.value;
-    case '문화 & 쇼핑':
+    // 문화 & 쇼핑
+    case '38':
       return shoppingCategoryData.value;
-    case '관광 & 체험':
+    // 관광 & 체험
+    case '28':
       return reportsCategoryData.value;
     // 기본값 (예시로 '문화 & 쇼핑'에 대한 데이터가 있다면 추가)
     default:
       return { title: '기본', category: '', options: [] };
   }
 });
+
+// 부모에서 자식으로 전달할 변수
+const facilitiesData = ref<{ common: string[]; room: string[] }>({ common: [], room: [] });
+
+// 이벤트 핸들러를 통해 선택된 데이터를 업데이트
+const handleFacilitiesUpdate = (data: { common: string[]; room: string[] }) => {
+  facilitiesData.value = data;
+  console.log('업데이트된 시설 데이터:', facilitiesData.value);
+};
 </script>
 
 <template>
-  <AppHeader />
   <!-- Top 검색창, 검색 결과 -->
   <div v-motion="travelCategoryEffect" class="mainLeft container position-sticky-top">
     <!-- search -->
@@ -115,11 +164,10 @@ const currentCategoryData = computed(() => {
           type="radio"
           name="category"
           :id="`category-${index}`"
-          v-model="currentPage"
-          :value="item"
-          :checked="'문화 & 쇼핑' === item"
+          v-model="currentContentTypeId"
+          :value="item.contentTypeId"
         />
-        <label :for="`category-${index}`">{{ item }}</label>
+        <label :for="`category-${index}`">{{ item.category }}</label>
       </div>
     </div>
 
@@ -128,20 +176,20 @@ const currentCategoryData = computed(() => {
     <div class="areaContainer mt-4">
       <div
         class="areaButton"
-        v-for="(item, index) in area"
+        v-for="(item, index) in areaInfo"
         :key="index"
-        :class="{ selectedButton: currentArea === item }"
-        @click="handleArea(item)"
+        :class="{ selectedButton: facilitiesStore.areaCode === item.areaCode }"
+        @click="facilitiesStore.setAreaCode(item.areaCode)"
       >
-        <span>{{ item }}</span>
+        <span>{{ item.area }}</span>
       </div>
     </div>
 
     <!-- 시설 정보 및 유형 -->
-    <div :key="`checkTravel-${currentPage}`" v-motion-pop>
+    <div :key="`checkTravel-${currentContentTypeId}`" v-motion-pop>
       <RadioCategory v-model="currentCategoryData" />
-      <div v-if="currentPage === '숙소'">
-        <FacilitiesCategory />
+      <div v-if="currentContentTypeId === '32'">
+        <!-- <FacilitiesCategory @update:selectedFacilities="handleFacilitiesUpdate" /> -->
       </div>
     </div>
   </div>

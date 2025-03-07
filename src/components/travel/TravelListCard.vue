@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { travelListEffect } from '@/constants/travel/motion';
-import { defineModel } from 'vue';
-
+import { detailCommon } from '@/apis/tour/detailCommon';
+import { ref, onMounted } from 'vue';
 interface TourData {
   addr1: string;
   addr2: string;
@@ -25,9 +24,47 @@ interface TourData {
   zipcode: string;
 }
 
-defineProps<{
-  data: TourData;
-}>();
+interface DetailData {
+  addr1: string;
+  addr2: string;
+  areacode: string;
+  cat1: string;
+  cat2: string;
+  cat3: string;
+  contentid: string;
+  contenttypeid: string;
+  cpyrhtDivCd: string;
+  createdtime: string;
+  firstimage: string;
+  firstimage2: string;
+  homepage: string;
+  mapx: string;
+  mapy: string;
+  mlevel: string;
+  modifiedtime: string;
+  overview?: string;
+  sigungucode: string;
+  tel: string;
+  telname: string;
+  title: string;
+  zipcode: string;
+}
+
+const { data } = defineProps<{ data: TourData }>();
+
+const contentData = ref({
+  contentId: data.contentid,
+  contentTypeId: data.contenttypeid,
+});
+
+// detailCommon의 결과가 배열이므로, ref의 초기값은 빈 배열로 설정
+const overviewData = ref<DetailData>();
+
+onMounted(async () => {
+  // detailCommon이 반환하는 배열을 overviewData에 할당합니다.
+  overviewData.value = await detailCommon(contentData.value);
+  console.log(overviewData.value);
+});
 </script>
 
 <template>
@@ -37,7 +74,7 @@ defineProps<{
     :style="{ width: '100%', height: '295px', marginTop: '20px' }"
   >
     <div class="card overflow-hidden">
-      <img :src="data.firstimage" height="295px" alt="" :style="{ objectFit: 'cover' }" />
+      <img :src="data.firstimage" class="card-img-top" />
     </div>
     <div class="d-flex flex-column justify-content-between ms-4" :style="{ width: '55%' }">
       <!-- 카테고리 -->
@@ -66,9 +103,7 @@ defineProps<{
             max-width: 100%;
           "
         >
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eum, corrupti? Numquam minima
-          odio labore quo voluptas, sequi nam culpa delectus quod neque tempora enim, doloremque
-          nostrum eos qui, sed rerum? nostrum eos qui, sed rerum?
+          {{ overviewData[0] ? overviewData[0].overview : '' }}
         </p>
       </div>
       <div class="title">110000원/박</div>
@@ -98,5 +133,10 @@ defineProps<{
   width: 45%;
   height: 295px;
   border-radius: 15px;
+}
+
+.card-img-top {
+  height: 300px;
+  object-fit: cover;
 }
 </style>
