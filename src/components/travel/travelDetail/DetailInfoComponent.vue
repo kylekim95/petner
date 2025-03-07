@@ -1,24 +1,24 @@
 <script setup lang="ts">
 export interface DetailInfoData {
-  infoname : string;
-  infotext : string;
+  infoname: string;
+  infotext: string;
 }
 interface DetailInfoComponentProps {
-  data : DetailInfoData[];
+  data: DetailInfoData[];
 }
 const props = defineProps<DetailInfoComponentProps>();
-const formattedData = props.data.map((e)=>{
+const formattedData = props.data.map((e) => {
   return {
-    infoname : e.infoname,
-    infotext : e.infotext.replace('<br />', ''),
-  }
+    infoname: e.infoname,
+    infotext: e.infotext.replace('<br />', ''),
+  };
 });
 </script>
 
 <template>
   <div v-for="(item, index) in formattedData" :key="index" class="mb-1">
-    <p class="p-0 m-0 title-text ">{{ item.infoname ?? 'ERROR' }}</p>
-    <p class="p-0 m-0 content-text">{{ item.infotext ?? 'ERROR' }}</p>
+    <p class="p-0 m-0 title-text">{{ item.infoname || '정보 없음' }}</p>
+    <p class="p-0 m-0 content-text mt-2 fs-5">{{ item.infotext || '정보 없음' }}</p>
   </div>
 </template>
 
@@ -34,6 +34,5 @@ const formattedData = props.data.map((e)=>{
   font-size: 16px;
   font-weight: 400;
   white-space: pre-wrap;
-
 }
 </style>

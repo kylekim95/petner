@@ -96,7 +96,7 @@ function handleCategoryClick(data: ExpandingMenuItemData) {
   router.push({
     name: 'travelDetail',
     params: { contentId: data.contentId },
-    query: { contentTypeId: data.contentTypeId },
+    query: { contenttypeid: data.contentTypeId },
   });
 }
 </script>

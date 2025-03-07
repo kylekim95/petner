@@ -4,8 +4,8 @@ import tourAPI from '@/config/axiosTourConfig';
 import { INTRO } from '@/apis/tour/tourEndpoints';
 
 interface DataId {
-  contentTypeId: number;
-  contentId: number;
+  contentTypeId: string | number;
+  contentId: string | number;
 }
 
 // 소개정보조회 조회
@@ -19,7 +19,7 @@ export async function detailIntro(dataId: DataId) {
     });
 
     const data = response.data.response.body.items.item;
-    console.log(data);
+    console.log(response.data);
     return data; // API 응답 데이터를 반환
   } catch (error) {
     console.error('Error fetching tour data:', error);

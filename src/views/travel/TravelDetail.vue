@@ -1,7 +1,10 @@
 <script setup lang="ts">
+import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
+
 import PhotoGrid from '@/components/travel/travelDetail/PhotoGrid.vue';
 import InfoCard from '@/components/travel/travelDetail/TravelInfoCard.vue';
+
 import { type DetailCard } from '@/components/travel/travelDetail/TravelInfoCard.vue';
 import { type PetTravelDetail } from '@/components/travel/travelDetail/withPetsInfo.vue';
 import { type RoomItem } from '@/components/travel/travelDetail/AccommodationCard.vue';
@@ -11,55 +14,98 @@ import WithPetsInfo from '@/components/travel/travelDetail/withPetsInfo.vue';
 import AccommodationCard from '@/components/travel/travelDetail/AccommodationCard.vue';
 import CommunityPosts from '@/components/travel/travelDetail/CommunityPosts.vue';
 import DetailInfoComponent from '@/components/travel/travelDetail/DetailInfoComponent.vue';
-// import { computed } from 'vue';
-// import type{AccommodationDetail,RestaurantDetail} from '@/components/travel/travelDetail/TravelInfoCard.vue';
-
+//API 함수들
 import { fetchTourImageData } from '@/apis/tour/detailImage';
-// 쿼리 파라미터
+import { fetchPetTourData } from '@/apis/tour/detailPetTour';
+import { fetchDetailInfoData } from '@/apis/tour/detailInfo';
+import { detailIntro } from '@/apis/tour/detailIntro';
+import { detailCommon } from '@/apis/tour/detailCommon';
+
+const imageArray = ref<string[]>([]);
+const detailInfoData = ref<string[] | null>([]);
+const detailCommonData = ref<DetailCard | null>(null);
+const detailIntroData = ref<DetailCard | null>(null);
+const detailMergedData = ref<DetailCard | null>(null);
+const detailPetTourData = ref<PetTravelDetail | null>(null);
+
 const route = useRoute();
-const contenttypeid = (route.query.contenttypeid as string) || '';
-// *** 예시 코드 (API로 받아서 contenttypeid 별로 prop을 지정해야합니다.)
-// function parseDetail(apiResponse: any): DetailCard {
-//   // 예를 들어, API 응답이 JSON 객체라고 가정
-//   if (apiResponse.contenttypeid === 32) {
-//     // 숙소 타입으로 변환
-//     return {
-//       contenttypeid: 32,
-//       title: apiResponse.title,
-//       addr1: apiResponse.addr1,
-//       tel: apiResponse.tel,
-//       overview: apiResponse.overview,
-//       homepage: apiResponse.homepage,
-//       mapx: apiResponse.mapx,
-//       mapy: apiResponse.mapy,
-//       // 숙소 전용 필드가 있다면 여기서 추가
-//     } as AccommodationDetail;
-//   } else if (apiResponse.contenttypeid === 39) {
-//     // 음식점 타입으로 변환
-//     return {
-//       contenttypeid: 39,
-//       title: apiResponse.title,
-//       addr1: apiResponse.addr1,
-//       tel: apiResponse.tel,
-//       overview: apiResponse.overview,
-//       homepage: apiResponse.homepage,
-//       mapx: apiResponse.mapx,
-//       mapy: apiResponse.mapy,
-//       // 음식점 전용 필드가 있다면 여기서 추가
-//     } as RestaurantDetail;
-//   } else {
-//     throw new Error('알 수 없는 contenttypeid: ' + apiResponse.contenttypeid);
+const contentIdRaw = route.params.contentId;
+const contentTypeIdRaw = route.query.contenttypeid;
+
+//  슬러그를 배열에서 string으로 반환하는 함수
+let contentId: string;
+if (Array.isArray(contentIdRaw)) {
+  contentId = contentIdRaw[0];
+} else if (typeof contentIdRaw === 'string') {
+  contentId = contentIdRaw;
+} else {
+  console.warn('ContentId가 없습니다.');
+}
+//쿼리 스트링으로 변환
+let contentTypeId: string;
+if (Array.isArray(contentTypeIdRaw)) {
+  contentTypeId = contentTypeIdRaw[0] as string;
+} else if (typeof contentTypeIdRaw === 'string') {
+  contentTypeId = contentTypeIdRaw;
+} else {
+  console.warn('ContentId가 없습니다.');
+}
+
+// result 배열에서 이미지만 추출후 배열로 전달
+// onMounted(async () => {
+//   try {
+//     const result = await fetchTourImageData({ contentId });
+//     if (Array.isArray(result)) {
+//       imageArray.value = result.map((item: any) => item.originimgurl);
+//     } else {
+//       console.warn('API 응답 결과가 배열이 아닙니다.', result);
+//     }
+//   } catch (error) {
+//     console.error('이미지 데이터를 불러오는 중 오류 발생:', error);
 //   }
-// }
+// });
 
-// *** HTML 태그 없이 플레인 텍스트 렌더링하는 함수 필요!!!
+onMounted(async () => {
+  if (!contentId) return;
+  try {
+    //detailImage 호출 => 배열로 반환
+    const imageResult = await fetchTourImageData({ contentId: contentId });
+    if (Array.isArray(imageResult)) {
+      imageArray.value = imageResult.map((item: { originimgurl: string }) => item.originimgurl);
+    } else {
+      console.warn('API 응답 결과가 배열이 아닙니다.', imageResult);
+    }
+    // detailCommon 호출
+    const CommonData = await detailCommon({ contentId, contentTypeId });
+    detailCommonData.value = CommonData[0];
+    console.log('COMMON 데이터:', detailCommonData.value);
 
-//이미지 API요청의의 RES
-const imageArray = [
-  '/travelDetail/Accommodation2.png',
-  '/travelDetail/Accommodation3.png',
-  '/travelDetail/Accommodation4.png',
-];
+    //detailInfo 호출
+    const fetchedDetailInfoData = await fetchDetailInfoData({ contentId, contentTypeId });
+    detailInfoData.value = fetchedDetailInfoData;
+    console.log('INFO 데이터:', detailInfoData.value);
+
+    //detailIntro 호출
+    const fetchedDetailIntroData = await detailIntro({ contentId, contentTypeId });
+    detailIntroData.value = fetchedDetailIntroData[0];
+    console.log('INTRO 데이터:', detailIntroData.value);
+
+    //detailPetTour 호출
+    const fetchedDetailPetTour = await fetchPetTourData({ contentId });
+    detailPetTourData.value = fetchedDetailPetTour[0];
+    console.log('PETTOUR 데이터:', detailPetTourData.value);
+
+    //Common,Info,Intro를 InfoCard컴포넌트 프로퍼티에 넘기기위해 하나의 객체에 저장
+    if (detailCommonData.value && detailIntroData.value) {
+      detailMergedData.value = {
+        ...detailCommonData.value,
+        ...detailIntroData.value,
+      };
+    }
+  } catch (error) {
+    console.error('상세 데이터를 불러오는 중 오류 발생: ', error);
+  }
+});
 
 const DummyAccData: DetailCard = {
   contenttypeid: '32',
@@ -258,20 +304,20 @@ const data: DetailInfoData[] = dummyData1.map((e) => {
 </script>
 
 <template>
-  <div class="my-5">
-    <PhotoGrid :firstimage="DummyAccData.firstimage" :images="imageArray" />
+  <div v-if="detailCommonData && imageArray" class="my-5">
+    <PhotoGrid :firstimage="detailCommonData.firstimage" :images="imageArray" />
   </div>
-  <div class="mb-3">
-    <InfoCard :detail="DummyAccData" />
+  <div v-if="detailMergedData" class="mb-3">
+    <InfoCard :detail="detailMergedData" />
   </div>
-  <div>
-    <WithPetsInfo :detail="DummyWithPetsInfo" />
+  <div v-if="detailPetTourData">
+    <WithPetsInfo :detail="detailPetTourData" />
   </div>
-  <div v-if="contenttypeid === '32'" class="my-5">
-    <AccommodationCard :rooms="roomsData" />
+  <div v-if="contentTypeId === '32'" class="my-5">
+    <AccommodationCard :rooms="detailInfoData" />
   </div>
-  <div v-else class="container my-5">
-    <DetailInfoComponent :data="data" />
+  <div class="container my-5">
+    <DetailInfoComponent :data="detailInfoData" />
   </div>
   <div class="container mb-5">
     <CommunityPosts :name="dummyData.name" :data="[]" />
