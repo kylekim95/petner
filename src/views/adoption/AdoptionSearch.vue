@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, watch } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
 import AdoptionAnimalCard from '@/components/adoption/AdoptionAnimalCard.vue';
 import Pagination from '@/components/common/Pagination.vue';
 import {
@@ -9,6 +10,25 @@ import {
   fetchStateOptions,
   fetchBreedAllList,
 } from '@/apis/supabase';
+
+// 라우터 인스턴스
+const router = useRouter();
+const route = useRoute();
+
+// 카테고리 매핑: 내부 한글 → URL 영어
+const categoryMapping: Record<string, string> = {
+  전체: 'all',
+  개: 'dog',
+  고양이: 'cat',
+  기타동물: 'etc',
+};
+// URL 영어 → 내부 한글
+const reverseCategoryMapping: Record<string, string> = {
+  all: '전체',
+  dog: '개',
+  cat: '고양이',
+  etc: '기타동물',
+};
 
 // 1) 카테고리
 const categories = ref(['전체', '개', '고양이', '기타동물']);
@@ -127,12 +147,21 @@ function sexLabel(code: string): string {
 
 // 5) 마운트 시 옵션+데이터 조회
 onMounted(async () => {
+  // URL에 category 쿼리 파라미터가 있으면 영어 값을 한글로 변환하여 초기 activeCategory에 반영
+  if (route.query.category) {
+    const queryCategory = route.query.category as string;
+    activeCategory.value = reverseCategoryMapping[queryCategory] || activeCategory.value;
+  }
   fetchAnimals();
-
   regionOptions.value = await fetchRegionOptions();
   sexOptions.value = await fetchSexOptions();
   stateOptions.value = await fetchStateOptions();
   breedAllList.value = await fetchBreedAllList();
+});
+
+// activeCategory가 바뀔 때마다 URL 쿼리 파라미터를 영어 값으로 업데이트
+watch(activeCategory, (newVal) => {
+  router.replace({ query: { ...route.query, category: categoryMapping[newVal] } });
 });
 </script>
 
@@ -302,7 +331,7 @@ onMounted(async () => {
         justify-items: center;
       "
     >
-      <AdoptionAnimalCard v-for="(card, index) in animalCards" :key="index" :animal="card" />
+      <AdoptionAnimalCard v-for="card in animalCards" :key="card.desertionNo" :animal="card" />
     </div>
 
     <!-- 페이지네이션 -->

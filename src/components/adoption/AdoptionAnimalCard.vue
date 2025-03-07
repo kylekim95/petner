@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import { defineProps } from 'vue';
-import { dateAddBarFormatter } from '@/utils/dateFormat';
-import SEX_CODE_TO_KOR from '@/constants/sexCodeMap';
+import { useRouter } from 'vue-router';
 
-const { animal } = defineProps<{
+const props = defineProps<{
   animal: {
+    desertionNo: string;
     popfile: string;
     kindCd: string;
-    desertionNo: string;
     noticeSdt: string;
     noticeEdt: string;
     sexCd: string;
@@ -15,21 +14,20 @@ const { animal } = defineProps<{
   };
 }>();
 
-function getSexLabel(code: string): string {
-  if (code === 'M' || code === 'F') {
-    return SEX_CODE_TO_KOR[code as 'M' | 'F'];
-  }
-  return '미상';
+const router = useRouter();
+
+// 카드 전체를 클릭하면 상세 페이지로 이동하도록 함
+function goToDetail() {
+  // desertionNo를 animalId로 사용
+  router.push({ name: 'adoptionDetail', params: { animalId: props.animal.desertionNo } });
 }
 </script>
 
 <template>
-  <div class="card animal-card">
+  <div class="card animal-card" @click="goToDetail">
     <img :src="animal.popfile" alt="animal image" class="card-img-top" />
     <div class="card-body">
-      <slot name="tags">
-        <!-- 유기동물찾기공고 태그 -->
-      </slot>
+      <!-- 태그, 제목, 정보 등 기존 내용 -->
       <h5 class="card-title">{{ animal.kindCd }}</h5>
       <div class="info-row">
         <span class="info-label">공고번호</span>
@@ -37,15 +35,16 @@ function getSexLabel(code: string): string {
       </div>
       <div class="info-row">
         <span class="info-label">공고시작일</span>
-        <span class="info-value">{{ dateAddBarFormatter(animal.noticeSdt.toString()) }}</span>
+        <span class="info-value">{{ animal.noticeSdt }}</span>
       </div>
       <div class="info-row">
         <span class="info-label">공고종료일</span>
-        <span class="info-value">{{ dateAddBarFormatter(animal.noticeEdt.toString()) }}</span>
+        <span class="info-value">{{ animal.noticeEdt }}</span>
       </div>
       <div class="info-row">
         <span class="info-label">성별</span>
         <span class="info-value">
+          <!-- 성별 아이콘 및 레이블 -->
           <template v-if="animal.sexCd === 'M'">
             <i class="fa-solid fa-mars male-icon"></i>
           </template>
@@ -55,15 +54,16 @@ function getSexLabel(code: string): string {
           <template v-else>
             <i class="fa-solid fa-genderless unknown-icon"></i>
           </template>
-          {{ getSexLabel(animal.sexCd) }}
+          {{ animal.sexCd === 'M' ? '수컷' : animal.sexCd === 'F' ? '암컷' : '미상' }}
         </span>
       </div>
       <div class="info-row">
         <span class="info-label">특징</span>
         <span class="info-value">{{ animal.specialMark.slice(0, 20) }}</span>
       </div>
+      <!-- 버튼 클릭 시에도 같은 동작을 원한다면 버튼에 @click.stop="goToDetail" 추가 -->
       <slot name="detail-button">
-        <button class="detail-button">상세정보 확인</button>
+        <button class="detail-button" @click.stop="goToDetail">상세정보 확인</button>
       </slot>
     </div>
   </div>
