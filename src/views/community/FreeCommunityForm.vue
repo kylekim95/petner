@@ -2,33 +2,31 @@
 import { ref, computed } from 'vue';
 import axios from 'axios';
 
-import { createPost, type CreatePostRequest, type CreatePostResponse } from '@/apis/devcourse/Post/createPost';
+import {
+  createPost,
+  type CreatePostRequest,
+  type CreatePostResponse,
+} from '@/apis/devcourse/Post/createPost';
 import * as CHANID from '@/constants/communityConsts';
 
 const title = ref('');
 const content = ref('');
-const images = ref<File[]>([]); // 이미지 담을 배열
-const imagePreviews = ref<string[]>([]); // 이미지 미리보기 배열
+const image = ref<File | null>(null);
+const imagePreview = ref<string | null>(null);
 
 // 파일 선택 후 미리보기 업데이트
 const handleImageChange = (event: Event) => {
   const input = event.target as HTMLInputElement;
-  if (input?.files) {
-    const files = Array.from(input.files);
-    images.value = [...images.value, ...files];
-
-    // 미리보기 배열 업데이트
-    imagePreviews.value = [
-      ...imagePreviews.value,
-      ...files.map((file) => URL.createObjectURL(file)),
-    ];
+  if (input?.files && input.files.length > 0) {
+    image.value = input.files[0];
+    imagePreview.value = URL.createObjectURL(input.files[0]);
   }
 };
 
 // 이미지 삭제
-const removeImage = (index: number) => {
-  images.value.splice(index, 1);
-  imagePreviews.value.splice(index, 1);
+const removeImage = () => {
+  image.value = null;
+  imagePreview.value = null;
 };
 
 // "등록하기" 버튼 활성화 여부 계산
@@ -60,17 +58,14 @@ const handleSubmit = async () => {
 
     // ---------- programmers api ----------
 
-    const bundle = JSON.stringify({title:title.value, content:content.value});
+    const bundle = JSON.stringify({ title: title.value, content: content.value });
     createPost({
       channelId: CHANID.FreeChannelId,
       title: bundle,
-      image: images.value.length > 0 ? images.value[0] : undefined
-    }).then((res : CreatePostResponse)=>{
+      image: image.value ? image.value : undefined,
+    }).then((res: CreatePostResponse) => {
       console.log(res);
     });
-
-    // ---------- programmers api ----------
-
   } catch (error) {
     console.error('에러:', error);
   }
@@ -82,7 +77,13 @@ const handleSubmit = async () => {
     <!-- 배너 섹션 -->
     <div
       class="banner d-flex justify-content-center align-items-center bg-cover"
-      style="background-image: url('/PNG-Image/images/FreeCommunityForm.png'); height: 384px; background-size: cover; background-position: center; position: relative;"
+      style="
+        background-image: url('/PNG-Image/images/FreeCommunityForm.png');
+        height: 384px;
+        background-size: cover;
+        background-position: center;
+        position: relative;
+      "
     >
       <div class="container text-start">
         <div class="text-white px-4 py-8" style="max-width: 1280px; margin: 0 auto">
@@ -130,29 +131,29 @@ const handleSubmit = async () => {
 
         <!-- 사진 첨부 -->
         <div class="mb-5">
-          <label for="images" class="form-label" style="font-size: 20px">사진 첨부</label>
+          <label for="image-upload" class="form-label" style="font-size: 20px">사진 첨부</label>
           <div class="d-flex gap-3 mb-2">
             <!-- 사진 추가 -->
             <label
               for="image-upload"
               class="d-flex justify-content-center align-items-center border rounded-3"
-              style="width: 200px; height: 200px; cursor: pointer; background-color: var(--gray-3); border: 2px dashed var(--gray-7);"
+              style="
+                width: 200px;
+                height: 200px;
+                cursor: pointer;
+                background-color: var(--gray-3);
+                border: 2px dashed var(--gray-7);
+              "
             >
               <span class="text-center" style="font-size: 20px; color: #6c757d">+</span><br />
               <span style="font-size: 18px; color: #6c757d">이미지 업로드</span>
             </label>
-            <input
-              type="file"
-              id="image-upload"
-              @change="handleImageChange"
-              class="d-none"
-              multiple
-            />
+            <input type="file" id="image-upload" @change="handleImageChange" class="d-none" />
             <!-- 이미지 미리보기 -->
-            <div v-for="(preview, index) in imagePreviews" :key="index" class="position-relative">
+            <div v-if="imagePreview" class="position-relative">
               <div class="d-flex justify-content-center align-items-center position-relative">
                 <img
-                  :src="preview"
+                  :src="imagePreview"
                   alt="Image preview"
                   style="width: 200px; height: 200px; object-fit: cover; border-radius: 8px"
                 />
