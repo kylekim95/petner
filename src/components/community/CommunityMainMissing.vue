@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import CommunityMainFindCard from '@/components/community/CommunityMainFindCard.vue';
-
 import { ref } from 'vue';
 
 const cards = ref(
@@ -23,8 +22,10 @@ const cards = ref(
     >
       <div class="title">🚨 반려동물을 찾아주세요</div>
       <div class="postNavigation d-flex flex-row justify-content-center align-items-center gap-2">
-        <span style="font-weight: 600">반려동물 찾기 게시판 </span>
-        <span class="text-primary-blue" style="font-weight: 700">더보기</span>
+        <span style="font-weight: 600">실종공고 게시판 </span>
+        <router-link to="/community/missing" style="text-decoration: none">
+          <span class="text-primary-blue" style="font-weight: 700">더보기</span>
+        </router-link>
       </div>
     </div>
     <div class="d-flex flex-wrap gap-2 justify-content-between">
@@ -46,6 +47,15 @@ const cards = ref(
 .freePostSection {
   width: 100%;
   margin: 83px 0;
+}
+.postNavigation {
+  width: 250px;
+  height: 65px;
+  border: 1px solid var(--gray-3);
+  border-radius: 100px;
+  font-size: 20px;
+  color: var(--gray-10);
+  box-shadow: 2px 6px 6px #f3f3f3;
 }
 
 .freePostCard {
