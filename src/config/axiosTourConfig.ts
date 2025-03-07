@@ -7,6 +7,7 @@ const tourAPI = axios.create({
   baseURL,
   timeout: 5000,
   params: {
+    numOfRows: 10,
     serviceKey,
     MobileOS: 'WIN',
     MobileApp: 'PETNER',

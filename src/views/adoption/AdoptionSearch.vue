@@ -1,140 +1,148 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
 import AdoptionAnimalCard from '@/components/adoption/AdoptionAnimalCard.vue';
 import Pagination from '@/components/common/Pagination.vue';
+import {
+  getAnimalListQuery,
+  fetchRegionOptions,
+  fetchSexOptions,
+  fetchStateOptions,
+  fetchBreedAllList,
+} from '@/apis/supabase';
 
+// 1) 카테고리
 const categories = ref(['전체', '개', '고양이', '기타동물']);
 const activeCategory = ref('전체');
 
+// 2) 검색 조건
+const region = ref('');
+const sex = ref('');
+const status = ref('');
 const startDate = ref('');
 const endDate = ref('');
+const breed = ref('');
 
-const updateEndDate = () => {
+// 3) 옵션 배열
+const regionOptions = ref<string[]>([]);
+const sexOptions = ref<string[]>([]);
+const stateOptions = ref<string[]>([]);
+const breedAllList = ref<string[]>([]);
+
+// 3-1) 품종 옵션은 category에 따라 필터링
+const breedOptions = computed(() => {
+  let prefix = '';
+  if (activeCategory.value === '개') prefix = '[개]';
+  else if (activeCategory.value === '고양이') prefix = '[고양이]';
+  else if (activeCategory.value === '기타동물') prefix = '[기타축종]';
+  else return [];
+
+  return breedAllList.value
+    .filter((item) => item.startsWith(prefix))
+    .map((item) => item.replace(prefix, '').trim());
+});
+
+// activeCategory 바뀌면 품종 초기화
+watch(activeCategory, () => {
+  breed.value = '';
+});
+
+// 날짜 유효성
+function updateEndDate() {
   if (endDate.value && endDate.value < startDate.value) {
     endDate.value = startDate.value;
   }
-};
+}
 
-// 동물 카드 데이터 예시
-const animalCards = ref([
-  {
-    name: '토끼',
-    imgSrc: '/path/to/image1.jpg',
-    desertionNo: '0101234566897',
-    noticeSdt: '2024.01.01',
-    noticeEdt: '2025.01.01',
-    sexCd: 'M',
-    specialMark: '귀여움',
-  },
-  {
-    name: '고양이',
-    imgSrc: '/path/to/image2.jpg',
-    desertionNo: '0101234566897',
-    noticeSdt: '2024.01.01',
-    noticeEdt: '2025.01.01',
-    sexCd: 'F',
-    specialMark: '귀여움',
-  },
-  {
-    name: '고양이',
-    imgSrc: '/path/to/image2.jpg',
-    desertionNo: '0101234566897',
-    noticeSdt: '2024.01.01',
-    noticeEdt: '2025.01.01',
-    sexCd: 'F',
-    specialMark: '귀여움',
-  },
-  {
-    name: '고양이',
-    imgSrc: '/path/to/image2.jpg',
-    desertionNo: '0101234566897',
-    noticeSdt: '2024.01.01',
-    noticeEdt: '2025.01.01',
-    sexCd: 'F',
-    specialMark: '귀여움',
-  },
-  {
-    name: '고양이',
-    imgSrc: '/path/to/image2.jpg',
-    desertionNo: '0101234566897',
-    noticeSdt: '2024.01.01',
-    noticeEdt: '2025.01.01',
-    sexCd: 'F',
-    specialMark: '귀여움',
-  },
-  {
-    name: '고양이',
-    imgSrc: '/path/to/image2.jpg',
-    desertionNo: '0101234566897',
-    noticeSdt: '2024.01.01',
-    noticeEdt: '2025.01.01',
-    sexCd: 'F',
-    specialMark: '귀여움',
-  },
-  {
-    name: '고양이',
-    imgSrc: '/path/to/image2.jpg',
-    desertionNo: '0101234566897',
-    noticeSdt: '2024.01.01',
-    noticeEdt: '2025.01.01',
-    sexCd: 'F',
-    specialMark: '귀여움',
-  },
-  {
-    name: '고양이',
-    imgSrc: '/path/to/image2.jpg',
-    desertionNo: '0101234566897',
-    noticeSdt: '2024.01.01',
-    noticeEdt: '2025.01.01',
-    sexCd: 'F',
-    specialMark: '귀여움',
-  },
-  {
-    name: '고양이',
-    imgSrc: '/path/to/image2.jpg',
-    desertionNo: '0101234566897',
-    noticeSdt: '2024.01.01',
-    noticeEdt: '2025.01.01',
-    sexCd: 'F',
-    specialMark: '귀여움',
-  },
-  {
-    name: '고양이',
-    imgSrc: '/path/to/image2.jpg',
-    desertionNo: '0101234566897',
-    noticeSdt: '2024.01.01',
-    noticeEdt: '2025.01.01',
-    sexCd: 'F',
-    specialMark: '귀여움',
-  },
-]);
-
-// 페이지네이션 기능
+// 4) 동물 카드 & 페이징
+const animalCards = ref<any[]>([]);
 const currentPage = ref(1);
 const itemsPerPage = 9;
-const totalPages = Math.ceil(animalCards.value.length / itemsPerPage);
+const totalPages = ref(1);
 
-const paginatedCards = computed(() => {
-  const start = (currentPage.value - 1) * itemsPerPage;
-  const end = currentPage.value * itemsPerPage;
-  return animalCards.value.slice(start, end);
-});
-
-const goToPage = (page: number) => {
-  if (page >= 1 && page <= totalPages) {
-    currentPage.value = page;
+// 4-1) 조회
+async function fetchAnimals() {
+  let kindCdParam: '개' | '고양이' | '기타축종' | undefined;
+  if (activeCategory.value === '전체') {
+    kindCdParam = undefined;
+  } else if (activeCategory.value === '개') {
+    kindCdParam = '개';
+  } else if (activeCategory.value === '고양이') {
+    kindCdParam = '고양이';
+  } else {
+    kindCdParam = '기타축종';
   }
-};
+
+  let stateParam: boolean | undefined;
+  if (status.value === '보호중') {
+    stateParam = true;
+  } else if (status.value && status.value !== '보호중') {
+    stateParam = false;
+  }
+
+  const queryStartParam = startDate.value ? startDate.value.replace(/-/g, '') : undefined;
+  const queryEndParam = endDate.value ? endDate.value.replace(/-/g, '') : undefined;
+
+  let speciesParam: string | undefined;
+  if (breed.value) {
+    let prefix = '';
+    if (activeCategory.value === '개') prefix = '[개] ';
+    else if (activeCategory.value === '고양이') prefix = '[고양이] ';
+    else if (activeCategory.value === '기타동물') prefix = '[기타축종] ';
+    speciesParam = prefix + breed.value;
+  }
+
+  const params = {
+    kindCd: kindCdParam,
+    orgName: region.value || undefined,
+    sexCd: sex.value || undefined,
+    state: stateParam,
+    species: speciesParam,
+    page: currentPage.value,
+    queryStart: queryStartParam,
+    queryEnd: queryEndParam,
+  };
+
+  const data = await getAnimalListQuery(params);
+  if (Array.isArray(data)) {
+    animalCards.value = data;
+    totalPages.value = data.length < itemsPerPage ? currentPage.value : currentPage.value + 1;
+  } else {
+    console.error('동물 조회 에러:', data);
+  }
+}
+
+// 4-2) 페이지 이동
+function goToPage(page: number) {
+  if (page >= 1 && page <= totalPages.value) {
+    currentPage.value = page;
+    fetchAnimals();
+  }
+}
+
+function sexLabel(code: string): string {
+  if (code === 'F') return '암컷';
+  else if (code === 'M') return '수컷';
+  else return '미상';
+}
+
+// 5) 마운트 시 옵션+데이터 조회
+onMounted(async () => {
+  fetchAnimals();
+
+  regionOptions.value = await fetchRegionOptions();
+  sexOptions.value = await fetchSexOptions();
+  stateOptions.value = await fetchStateOptions();
+  breedAllList.value = await fetchBreedAllList();
+});
 </script>
 
 <template>
   <div>
-    <!-- 배너 섹션 -->
-
+    <!-- 배너 -->
     <div
       class="banner d-flex justify-content-end align-items-center bg-cover"
       style="
-        background-image: url('/PNG-Image/images/adoptionSearch.png');
+        background-image: url('/PNG-Image/images/adoptionSearch.jpg');
         height: 575px;
         background-size: cover;
         background-position: center;
@@ -165,7 +173,13 @@ const goToPage = (page: number) => {
         v-for="category in categories"
         :key="category"
         :class="['category-item', { active: activeCategory === category }]"
-        @click="activeCategory = category"
+        @click="
+          () => {
+            activeCategory = category;
+            currentPage = 1;
+            fetchAnimals();
+          }
+        "
         class="category-item py-3 px-6 rounded-full fs-6 transition-all flex flex-col items-center"
         style="flex: 1; text-align: center; margin: 0 5px"
       >
@@ -192,57 +206,60 @@ const goToPage = (page: number) => {
         />
         <span
           :style="{ fontWeight: activeCategory === category ? '700' : '400', fontSize: '20px' }"
-          >{{ category }}</span
         >
+          {{ category }}
+        </span>
       </div>
     </div>
 
     <!-- 검색창 섹션 -->
-    <div class="search-bar d-flex justify-content-center mt-5 mb-12">
+    <div class="search-bar d-flex justify-content-center mt-4 mb-12">
       <div
         class="search-container d-flex flex-column gap-4 bg-light rounded shadow-sm"
         style="max-width: 1280px; width: 100%; padding: 30px; margin-bottom: 40px"
       >
         <div class="d-flex justify-content-center gap-5">
+          <!-- 지역 (시/도) -->
           <div class="d-flex align-items-center gap-2 py-2">
             <div class="form-label" style="font-size: 1.2rem">지역</div>
-            <select class="form-select w-auto" id="region" aria-label="지역">
-              <option selected>지역을 선택하세요</option>
-              <option value="1">서울</option>
-              <option value="2">경기</option>
-              <option value="3">부산</option>
+            <select class="form-select w-auto" v-model="region">
+              <option value="">지역을 선택하세요</option>
+              <option v-for="opt in regionOptions" :key="opt" :value="opt">{{ opt }}</option>
             </select>
           </div>
-
+          <!-- 품종: category+breed 형태로 쿼리 -->
           <div class="d-flex align-items-center gap-2">
             <div class="form-label" style="font-size: 1.2rem">품종</div>
-            <select class="form-select w-auto" id="breed" aria-label="품종">
-              <option selected>품종을 선택하세요</option>
-              <option value="1">소형견</option>
-              <option value="2">중형견</option>
-              <option value="3">대형견</option>
+            <select class="form-select w-auto" v-model="breed">
+              <option value="">품종을 선택하세요</option>
+              <option v-for="opt in breedOptions" :key="opt" :value="opt">
+                {{ opt }}
+              </option>
             </select>
           </div>
-
+          <!-- 성별 -->
           <div class="d-flex align-items-center gap-2">
             <div class="form-label" style="font-size: 1.2rem">성별</div>
-            <select class="form-select w-auto" id="sex" aria-label="성별">
-              <option selected>성별을 선택하세요</option>
-              <option value="M">수컷</option>
-              <option value="F">암컷</option>
+            <select class="form-select w-auto" v-model="sex">
+              <option value="">성별을 선택하세요</option>
+              <option v-for="opt in sexOptions" :key="opt" :value="opt">
+                {{ sexLabel(opt) }}
+              </option>
             </select>
           </div>
-
+          <!-- 상태 -->
           <div class="d-flex align-items-center gap-2">
             <div class="form-label" style="font-size: 1.2rem">상태</div>
-            <select class="form-select w-auto" id="status" aria-label="상태">
-              <option selected>상태를 선택하세요</option>
-              <option value="1">입양가능</option>
-              <option value="2">입양완료</option>
+            <select class="form-select w-auto" v-model="status">
+              <option value="">상태를 선택하세요</option>
+              <option v-for="opt in stateOptions" :key="opt" :value="opt">
+                {{ opt }}
+              </option>
             </select>
           </div>
         </div>
 
+        <!-- 공고기간 -->
         <div class="d-flex justify-content-center gap-3 py-3">
           <div class="form-label" style="font-size: 1.2rem">공고기간</div>
           <input
@@ -253,7 +270,6 @@ const goToPage = (page: number) => {
             @change="updateEndDate"
           />
           <span style="font-size: 1.5rem">~</span>
-
           <input
             class="form-control w-auto"
             type="date"
@@ -261,25 +277,22 @@ const goToPage = (page: number) => {
             v-model="endDate"
             :min="startDate"
           />
-          <button class="btn bg-primary-green text-gray-1 px-4">조회</button>
+          <button
+            class="btn bg-primary-green text-gray-1 px-4"
+            @click="
+              () => {
+                currentPage = 1;
+                fetchAnimals();
+              }
+            "
+          >
+            조회
+          </button>
         </div>
       </div>
     </div>
 
-    <!-- 입양공고중인 동물 및 정렬 버튼 -->
-    <div
-      class="info-section d-flex justify-content-between px-5 py-3"
-      style="max-width: 1280px; margin: 0 auto"
-    >
-      <h3 class="fs-3 fw-bold">입양공고중인 유기동물</h3>
-      <div class="sort-dropdown">
-        <select class="form-select">
-          <option>최신등록순</option>
-          <option>공고일마감순</option>
-        </select>
-      </div>
-    </div>
-
+    <!-- 카드 리스트 -->
     <div
       class="card-list d-grid gap-4 mb-5 px-5 py-4"
       style="
@@ -289,10 +302,10 @@ const goToPage = (page: number) => {
         justify-items: center;
       "
     >
-      <AdoptionAnimalCard v-for="(card, index) in paginatedCards" :key="index" :animal="card" />
+      <AdoptionAnimalCard v-for="(card, index) in animalCards" :key="index" :animal="card" />
     </div>
 
-    <!-- 페이지네이션 섹션 -->
+    <!-- 페이지네이션 -->
     <Pagination :currentPage="currentPage" :totalPages="totalPages" :goToPage="goToPage" />
   </div>
 </template>
