@@ -39,7 +39,7 @@
             <img src="/public/CommunityMain/Beach with umbrella.png" />
             <div class="d-flex flex-column gap-2">
               <div class="postNavTitle">자유게시판</div>
-              <div class="postNavContent">여행/일상을 공유해보아요</div>
+              <div class="postNavContent">반려동물과의 이야기, 같이 나눠요!</div>
             </div>
           </div>
         </div>
@@ -65,8 +65,8 @@
           >
             <img src="/public/CommunityMain/Megaphone.png" />
             <div class="d-flex flex-column gap-2">
-              <div class="postNavTitle">동물 찾기 게시판</div>
-              <div class="postNavContent">실종 동물을 찾도록 도와드려요</div>
+              <div class="postNavTitle">실종 신고 게시판</div>
+              <div class="postNavContent">실종된 반려동물을 함께 찾아봐요!</div>
             </div>
           </div>
         </div>
@@ -76,7 +76,6 @@
 </template>
 
 <style scoped>
-/* 제목 */
 .title {
   font-size: 36px;
   font-weight: 700;
@@ -105,7 +104,7 @@
   font-family: 'Paperlogy';
 }
 
-/*  히어로 섹션 */
+/* 히어로 섹션 */
 .heroSection {
   width: 100%;
   height: 400px;
@@ -133,5 +132,13 @@
   width: 100%;
   height: 190px;
   border-radius: 15px;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.postNavigation:hover {
+  transform: scale(1.03);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 </style>
