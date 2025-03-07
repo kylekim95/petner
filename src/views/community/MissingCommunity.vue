@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import MissingCommunityPostCard from '@/components/community/MissingCommunityPostCard.vue';
-import PATH from '@/constants/path';
-import { ref } from 'vue';
 import useFetchMissingPost from '@/composibles/tanstack-query/useFetchMissingPost';
-
+import PATH from '@/constants/path';
+import { useAuthStore } from '@/stores/auth';
+import { storeToRefs } from 'pinia';
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+const router = useRouter();
 // 여기서 missing community post들을 호출
 const { postCards, isLoading } = useFetchMissingPost();
-console.log('missingpost', postCards.value);
 
 // 필터
 const sortBy = ref<'recent' | 'comment'>('recent');
@@ -18,7 +20,20 @@ const cardsPerPage = 6;
 
 // 페이지에 표시할 카드 계산
 const startIndex = (currentPage.value - 1) * cardsPerPage;
-const currentCards = postCards.value?.posts.slice(startIndex, startIndex + cardsPerPage); // TODO 자유게시판과 중복되는 로직 컴포지블로 분리
+const currentCards = postCards.value?.posts.slice(startIndex, startIndex + cardsPerPage);
+// TODO 자유게시판과 중복되는 로직 컴포지블로 분리
+
+const handleWriteClick = () => {
+  // 유저의 로그인 여부 판단
+  const store = useAuthStore();
+  const { isAuth } = storeToRefs(store);
+  if (isAuth) {
+    router.push(PATH.communityMissingForm); // 로그인✅ -> 실종신고 폼으로 이동
+  } else {
+    alert('로그인 후 글을 작성할 수 있습니다.');
+    router.push(PATH.login); // 로그인❌ -> 로그인 창으로 이동
+  }
+};
 </script>
 
 <template>
@@ -26,7 +41,7 @@ const currentCards = postCards.value?.posts.slice(startIndex, startIndex + cards
     <!-- 배너 -->
     <div class="banner">
       <img
-        src="/public/PNG-Image/images/missingCommunityBanner.png"
+        src="/PNG-Image/images/missingCommunityBanner.png"
         class="banner-img"
         alt="missing comuunity banner image"
       />
@@ -62,14 +77,10 @@ const currentCards = postCards.value?.posts.slice(startIndex, startIndex + cards
             </button>
           </div>
           <!-- 글 작성 버튼 -->
-          <RouterLink :to="PATH.communityForm" class="write-button">
-            <img
-              src="/public/PNG-Image/images/car-light.png"
-              alt="siren icon image"
-              class="siren"
-            />
+          <div @click="handleWriteClick" class="write-button">
+            <img src="/PNG-Image/images/car-light.png" alt="siren icon image" class="siren" />
             <span>글 작성하기</span>
-          </RouterLink>
+          </div>
         </div>
 
         <!-- 카드 리스트 -->
@@ -189,5 +200,6 @@ button.dark {
   font-size: 16px;
   color: var(--gray-10);
   font-weight: 600;
+  cursor: pointer;
 }
 </style>
