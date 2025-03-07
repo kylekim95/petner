@@ -3,6 +3,7 @@ import { useRoute } from 'vue-router';
 import { onMounted, ref } from 'vue';
 import draggable from 'vuedraggable';
 import TravelDestCard from '@/components/travel/planner/TravelDestCard.vue';
+import ShelterKakaoMap from '@/components/adoption/shelter/ShelterKakaoMap.vue';
 
 interface TravelDestData {
   id : number;
@@ -24,6 +25,7 @@ const dummyData : TravelData = {
   ]
 };
 const data = ref<TravelData>(dummyData);
+const currentFocus = ref<TravelDestData | null>(null);
 const isDragging = ref<boolean>(false);
 
 function AddNewDay() {
@@ -108,7 +110,9 @@ function ColorChangeOnHoverRestore(e : MouseEvent) {
         </button>
       </div>
     </div>
-    <div class="h-100 bg-primary" style="width: 80%"></div>
+    <div class="h-100 bg-primary" style="width: 80%">
+      <ShelterKakaoMap :lat="currentFocus?.locationX" :lng="currentFocus?.locationY" />
+    </div>
   </div>
 </template>
 
