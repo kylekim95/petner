@@ -10,7 +10,11 @@ import { reactive, ref, computed } from 'vue';
 import usePostMissingForm from '@/composibles/tanstack-query/usePostMissingForm';
 import { MissingChannelId } from '@/constants/communityConsts';
 import { useRouter } from 'vue-router';
+import { useQueryClient } from '@tanstack/vue-query';
 import PATH from '@/constants/path';
+import QUERY_KEY from '@/constants/queryKey';
+const router = useRouter();
+const queryClient = useQueryClient();
 
 const data = reactive({
   name: '',
@@ -29,7 +33,7 @@ const data = reactive({
 const imageRef = ref<File | null>(null); // 이미지 담을 배열
 const doroRef = ref('');
 const { postFormMutation } = usePostMissingForm();
-const router = useRouter();
+
 const isValid = computed(() => {
   // data 배열을 돌면서 하나라도 비어있는 것이 있다면 false
   const dataResult = Object.values(data).every((value) => value.trim().length > 0);
@@ -55,6 +59,8 @@ const handleSubmit = (e: SubmitEvent) => {
     // 성공
     if (postFormMutation.isSuccess) {
       alert('제출이 완료 되었습니다.');
+      // 쿼리 키를 무효화 & 실종 조회 페이지로 라우팅
+      queryClient.invalidateQueries({ queryKey: QUERY_KEY.missingList });
       router.push(PATH.communityMissing);
     } else {
       console.log('post 제출 실패');
