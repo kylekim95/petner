@@ -21,7 +21,7 @@ const ADOPTION_ROUTES = [
   },
   {
     path: PATH.adoptionDetail,
-    name: 'detail',
+    name: 'adoptionDetail',
     component: () => import('@/views/adoption/AdoptionDetail.vue'),
     meta: { headerVariant: 'header-green' },
   },
