@@ -1,58 +1,35 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-
-// 공용시설 정보
-const facilities = ref([
-  { option: '바비큐', selected: false },
-  { option: '뷰티시설', selected: false },
-  { option: '자전거 대여', selected: false },
-  { option: '캠프파이어', selected: false },
-  { option: '휘트니스', selected: false },
-  { option: '사우나', selected: false },
-  { option: '노래방', selected: false },
-  { option: '세미나실', selected: false },
-  { option: '스포츠시설', selected: false },
-]);
-// 객실 정보
-const roomFacilities = ref([
-  { option: 'TV', selected: false },
-  { option: 'PC', selected: false },
-  { option: '인터넷', selected: false },
-  { option: '세면도구', selected: false },
-  { option: '소파', selected: false },
-  { option: '취사용품', selected: false },
-  { option: '테이블', selected: false },
-  { option: '드라이기', selected: false },
-]);
-
-const handleFacilities = (facility: { option: string; selected: boolean }) => {
-  facility.selected = !facility.selected;
-};
+import { useFacilitiesStore } from '@/stores/facilitiesStore';
+const facilitiesStore = useFacilitiesStore();
 </script>
 
 <template>
-  <!-- 시설 옵션 -->
+  <!-- 제목 -->
   <div class="title" :style="{ marginTop: '70px' }">시설</div>
+
+  <!-- 공용시설 -->
   <div class="facilitiesContainer ms-1">
     <div class="mb-1 mt-4" :style="{ fontSize: '16px' }">공용시설</div>
     <div
       class="facilities"
-      v-for="(item, index) in facilities"
+      v-for="(item, index) in facilitiesStore.facilities"
       :key="index"
       :class="{ selectedButton: item.selected }"
-      @click="handleFacilities(item)"
+      @click="facilitiesStore.toggleFacility(item)"
     >
       <span>{{ item.option }}</span>
     </div>
   </div>
+
+  <!-- 객실 시설 -->
   <div class="facilitiesContainer mt-4 ms-1">
     <div class="mb-1 mt-4" :style="{ fontSize: '16px' }">객실 시설</div>
     <span
       class="facilities"
-      v-for="(item, index) in roomFacilities"
+      v-for="(item, index) in facilitiesStore.roomFacilities"
       :key="index"
       :class="{ selectedButton: item.selected }"
-      @click="handleFacilities(item)"
+      @click="facilitiesStore.toggleFacility(item)"
     >
       {{ item.option }}
     </span>

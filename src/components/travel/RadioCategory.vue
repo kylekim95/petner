@@ -1,23 +1,29 @@
 <script setup lang="ts">
 import { defineModel } from 'vue';
+import { useFacilitiesStore } from '@/stores/facilitiesStore';
+const facilitiesStore = useFacilitiesStore();
 
 // defineModel()을 사용하여 부모에서 전달된 `currentCategoryData` 받기
-const model = defineModel<{ category?: string; title: string; options: string[] }>();
+const model = defineModel<{ title?: string; options: { category: string; code: string }[] }>();
 </script>
 
 <template>
   <!-- 옵션 카테고리 -->
   <div class="title" :style="{ marginTop: '70px' }">{{ model?.title }}</div>
   <div class="PageCategorySection mt-4 gap-5">
-    <div v-for="(item, index) in model?.options" :key="index">
+    <div
+      v-for="(item, index) in model?.options"
+      :key="index"
+      @click="facilitiesStore.setTypeCode(item.code)"
+    >
       <input
         class="me-2"
         type="radio"
         name="option"
         :id="`option-${index}`"
-        :checked="'전체' === item"
+        :checked="'' === item.code"
       />
-      <label :for="`option-${index}`">{{ item }}</label>
+      <label :for="`option-${index}`">{{ item.category }}</label>
     </div>
   </div>
 </template>
