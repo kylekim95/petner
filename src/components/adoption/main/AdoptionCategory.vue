@@ -1,24 +1,23 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
-import PNG_IMAGES from '../../../../public/PNG-Image/image';
 import PATH from '@/constants/path';
 
 const animalCategory = [
   {
     name: '개',
-    imageURL: PNG_IMAGES.dog,
+    imageURL: '/PNG-Image/images/dog.png',
     imageALT: 'dog image',
     category: 'dog',
   },
   {
     name: '고양이',
-    imageURL: PNG_IMAGES.categoryCat,
+    imageURL: '/PNG-Image/images/category-cat.png',
     imageALT: 'cat image',
     category: 'cat',
   },
   {
     name: '기타 동물들',
-    imageURL: PNG_IMAGES.categoryEtc,
+    imageURL: '/PNG-Image/images/animalEtc.png',
     imageALT: 'etc animal image',
     category: 'etc',
   },
@@ -41,7 +40,11 @@ const handleCategoryClick = (category: string) => {
           :key="item.name"
           @click="handleCategoryClick(item.category)"
         >
-          <img :src="item.imageURL" :alt="item.imageALT" />
+          <img
+            :src="item.imageURL"
+            :alt="item.imageALT"
+            :stlye="{ width: '330px', height: '330px' }"
+          />
           <span> {{ item.name }}</span>
         </button>
       </div>

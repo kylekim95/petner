@@ -1,10 +1,12 @@
-<script setup lang="ts">
-import PNG_IMAGES from '../../../../public/PNG-Image/image.ts';
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <div class="hero-wrapper">
-    <img :src="PNG_IMAGES.adoptionHero" alt="wish adoption top banner" class="hero-img" />
+    <img
+      src="/PNG-Image/images/adoption-main-hero.png"
+      alt="wish adoption top banner"
+      class="hero-img"
+    />
 
     <div class="hero-message-wrapper">
       <div class="hero-message">
