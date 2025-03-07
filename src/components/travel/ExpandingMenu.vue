@@ -114,7 +114,7 @@ function handleCategoryClick(data: ExpandingMenuItemData) {
         background-blend-mode: multiply;
         background-color: rgb(0, 0, 0, 0.5);
         background-size: cover;
-        background-position-x: center;
+        background-position: center;
       "
       :style="{ backgroundImage: `url(${item.bgImage})` }"
       @mouseenter="(e) => OnMouseEnter(e, item.id)"
