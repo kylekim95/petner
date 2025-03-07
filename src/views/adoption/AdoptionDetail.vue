@@ -1,49 +1,67 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
-// supabase.ts 파일에 정의된 getAnimalInfo 함수를 import 합니다.
 import { getAnimalInfo } from '@/apis/supabase';
+import AdoptionAnimalCard from '@/components/adoption/AdoptionAnimalCard.vue';
+
+// 날짜 포맷 함수: YYYYMMDD -> YYYY-MM-DD
+function formatDate(dateStr: string): string {
+  if (dateStr && dateStr.length === 8) {
+    return `${dateStr.substring(0, 4)}-${dateStr.substring(4, 6)}-${dateStr.substring(6, 8)}`;
+  }
+  return dateStr;
+}
 
 const route = useRoute();
+console.log('Route params:', route.params);
+
 const animalDetail = ref<any>(null);
 const rescueData = ref<any>(null);
 const shelterData = ref<any>(null);
 const error = ref<string | null>(null);
 
 async function fetchAnimalDetail(id: string) {
+  console.log('Fetching animal detail for id:', id);
   try {
-    // supabase를 통해 동물 상세 정보를 가져옴 (반환값은 배열로 가정)
     const data = await getAnimalInfo(id);
+    console.log('API response:', data);
     if (Array.isArray(data) && data.length > 0) {
       animalDetail.value = data[0];
-      // 데이터에 구조 정보와 보호소 정보가 포함되어 있다고 가정하여 분리
+      console.log('Animal detail:', animalDetail.value);
       rescueData.value = {
-        happenDt: data[0].happenDt || '',
+        happenDt: formatDate(data[0].happenDt || ''),
         happenPlace: data[0].happenPlace || '',
-        noticeSdt: data[0].noticeSdt || '',
-        noticeEdt: data[0].noticeEdt || ''
+        noticeSdt: formatDate(data[0].noticeSdt || ''),
+        noticeEdt: formatDate(data[0].noticeEdt || ''),
       };
       shelterData.value = {
-        careNm: data[0].careNm || '',
-        cardTel: data[0].cardTel || '',
-        cardAddr: data[0].cardAddr || '',
-        ornNm: data[0].ornNm || '',
-        chargeNm: data[0].chargeNm || '',
-        officetel: data[0].officetel || ''
+        careNm: data[0].careNm || '-',
+        careTel: data[0].careTel || '-',
+        careAddr: data[0].careAddr || '-',
+        orgNm: data[0].orgNm || '-',
+        chargeNm: data[0].chargeNm || '-',
+        officetel: data[0].officetel || '-',
       };
+      console.log('Rescue data:', rescueData.value);
+      console.log('Shelter data:', shelterData.value);
     } else {
       error.value = '동물 정보를 찾을 수 없습니다.';
+      console.error('No animal data found.');
     }
   } catch (err: any) {
-    console.error(err);
+    console.error('Error fetching animal detail:', err);
     error.value = '정보를 불러오는 도중 오류가 발생했습니다.';
   }
 }
 
 onMounted(() => {
-  const id = route.params.id as string;
+  const id = route.params.animalId as string;
+  console.log('Animal ID from route:', id);
   if (id) {
     fetchAnimalDetail(id);
+  } else {
+    error.value = '동물 ID가 제공되지 않았습니다.';
+    console.error('No animal ID provided in route params.');
   }
 });
 </script>
@@ -51,7 +69,7 @@ onMounted(() => {
 <template>
   <div v-if="error" class="alert alert-danger">{{ error }}</div>
   <div v-else>
-    <!-- 동물 상세 페이지 상단 배너 -->
+    <!-- 상단 배너 영역 (변경 없음) -->
     <div class="container-fluid p-0">
       <div class="position-relative">
         <div class="position-absolute top-50 start-0 translate-middle-y p-5 text-white ms-5">
@@ -71,112 +89,121 @@ onMounted(() => {
       </div>
     </div>
 
-    <!-- Supabase로 받아온 동물 상세 정보 표시 -->
+    <!-- 동물 상세 정보 영역 -->
     <div class="container py-5" v-if="animalDetail">
       <div class="row">
-        <!-- 동물 큰 이미지 섹션 -->
+        <!-- 좌측: 동물 이미지 -->
         <div class="col-md-6 mb-4">
-          <img
-            :src="animalDetail.imageUrl || '/PNG-Image/images/cat.png'"
-            alt="Animal Image"
-            class="img-fluid rounded mb-3"
-            style="max-width: 100%; height: 420px; object-fit: cover"
-          />
-          <div class="d-flex gap-3">
-            <!-- 갤러리 이미지 클릭 시 이미지 변경 -->
+          <div class="d-flex flex-column align-items-center">
             <img
-              src="/PNG-Image/images/cat.png"
-              alt="Gallery Image"
-              class="img-thumbnail"
-              style="width: 100px; height: 100px; object-fit: cover"
-              @click="animalDetail.imageUrl = '/PNG-Image/images/cat.png'"
+              :src="animalDetail.popfile"
+              alt="Animal Image"
+              class="img-fluid rounded mb-3 shadow-sm"
+              style="width: 550px; height: 420px; object-fit: cover"
             />
-            <img
-              src="/PNG-Image/images/cat.png"
-              alt="Gallery Image"
-              class="img-thumbnail"
-              style="width: 100px; height: 100px; object-fit: cover"
-              @click="animalDetail.imageUrl = '/PNG-Image/images/cat.png'"
-            />
-            <img
-              src="/PNG-Image/images/dog.png"
-              alt="Gallery Image"
-              class="img-thumbnail"
-              style="width: 100px; height: 100px; object-fit: cover"
-              @click="animalDetail.imageUrl = '/PNG-Image/images/dog.png'"
-            />
-          </div>
-          <!-- 텍스트 섹션 -->
-          <div class="bg-secondary-green text-gray-1 p-3 my-3 text-center rounded">
-            <div class="d-flex justify-content-center align-items-center">
-              <i class="fa-solid fa-heart me-3" style="font-size: 20px"></i>
-              <span class="fs-6 text-center">
-                당신의 사랑을 기다리는 생명들에게 새로운 시작을 선물하세요.
-              </span>
+            <div
+              class="bg-primary-green text-gray-1 p-3 my-2 text-center rounded"
+              style="width: 550px"
+            >
+              <div class="d-flex justify-content-center align-items-center">
+                <i class="fa-solid fa-heart me-3" style="font-size: 20px"></i>
+                <span class="fs-6">
+                  당신의 사랑을 기다리는 생명들에게 새로운 시작을 선물하세요.
+                </span>
+              </div>
             </div>
           </div>
         </div>
 
-        <!-- 동물 정보 섹션 -->
+        <!-- 우측: 동물 정보 카드 -->
         <div class="col-md-6">
-          <h3 class="mb-4" style="font-family: 'Paperlogy'; font-weight: 600">동물 정보</h3>
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item">
-              유기번호
-              <span class="fw-bold text-center">{{ animalDetail.desertionNo }}</span>
-            </li>
-            <li class="list-group-item">
-              공고번호
-              <span class="fw-bold text-center">{{ animalDetail.noticeNo }}</span>
-            </li>
-            <li class="list-group-item">
-              동물 종류
-              <span class="fw-bold text-center">{{ animalDetail.kindCd }}</span>
-            </li>
-            <li class="list-group-item">
-              성별
-              <span
-                class="fw-bold text-center"
-                :style="{
-                  color:
-                    animalDetail.sexCd === 'M'
-                      ? 'var(--primary-blue)'
-                      : animalDetail.sexCd === 'F'
-                        ? 'var(--primary-red)'
-                        : 'var(--gray-1)',
-                  backgroundColor:
-                    animalDetail.sexCd === 'M'
-                      ? 'var(--secondary-blue)'
-                      : animalDetail.sexCd === 'F'
-                        ? 'var(--secondary-red)'
-                        : 'var(--secondary-green)',
-                  padding: '2px 8px',
-                  borderRadius: '5px',
-                  marginLeft: '10px'
-                }"
-              >
-                {{
-                  animalDetail.sexCd === 'M'
-                    ? '수컷'
-                    : animalDetail.sexCd === 'F'
-                      ? '암컷'
-                      : '미상'
-                }}
-              </span>
-            </li>
-            <li class="list-group-item">
-              특징
-              <span class="fw-bold text-center">{{ animalDetail.specialMark }}</span>
-            </li>
-          </ul>
+          <div class="card shadow-sm custom-card">
+            <div class="card-header bg-primary-green text-white">
+              <h4 class="mb-0" style="font-family: 'Paperlogy'; font-weight: 600">
+                <i class="fa-solid fa-paw me-2"></i>동물 정보
+              </h4>
+            </div>
+            <div class="card-body p-4">
+              <div class="info-row">
+                <div class="info-label">유기번호</div>
+                <div class="info-value">{{ animalDetail.desertionNo }}</div>
+              </div>
+              <div class="info-row">
+                <div class="info-label">공고번호</div>
+                <div class="info-value">{{ animalDetail.noticeNo }}</div>
+              </div>
+              <div class="info-row">
+                <div class="info-label">품종</div>
+                <div class="info-value">{{ animalDetail.kindCd }}</div>
+              </div>
+              <div class="info-row">
+                <div class="info-label">털색</div>
+                <div class="info-value">{{ animalDetail.colorCd }}</div>
+              </div>
+              <div class="info-row">
+                <div class="info-label">나이</div>
+                <div class="info-value">{{ animalDetail.age }}</div>
+              </div>
+              <div class="info-row">
+                <div class="info-label">체중</div>
+                <div class="info-value">{{ animalDetail.weight }}</div>
+              </div>
+              <div class="info-row">
+                <div class="info-label">상태</div>
+                <div class="info-value">{{ animalDetail.processState }}</div>
+              </div>
+              <div class="info-row">
+                <div class="info-label">성별</div>
+                <div class="info-value">
+                  <span
+                    class="gender-badge"
+                    :style="{
+                      color:
+                        animalDetail.sexCd === 'M'
+                          ? 'var(--primary-blue)'
+                          : animalDetail.sexCd === 'F'
+                            ? 'var(--primary-red)'
+                            : 'var(--gray-1)',
+                      backgroundColor:
+                        animalDetail.sexCd === 'M'
+                          ? 'var(--secondary-blue)'
+                          : animalDetail.sexCd === 'F'
+                            ? 'var(--secondary-red)'
+                            : 'var(--secondary-green)',
+                    }"
+                  >
+                    {{
+                      animalDetail.sexCd === 'M'
+                        ? '수컷'
+                        : animalDetail.sexCd === 'F'
+                          ? '암컷'
+                          : '미상'
+                    }}
+                  </span>
+                </div>
+              </div>
+              <div class="info-row">
+                <div class="info-label">중성화</div>
+                <div class="info-value">
+                  {{ animalDetail.neuterYn === 'Y' ? 'O' : 'X' }}
+                </div>
+              </div>
+              <div class="info-row">
+                <div class="info-label">특징</div>
+                <div class="info-value">{{ animalDetail.specialMark }}</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
     <!-- 구조 정보 섹션 -->
     <div class="container my-2" v-if="rescueData">
-      <h3 class="mb-4" style="font-weight: 700">구조 정보</h3>
-      <table class="table table-bordered text-center">
+      <h3 class="mb-4" style="font-weight: 700">
+        <i class="fa-solid fa-truck-medical me-3"></i>구조 정보
+      </h3>
+      <table class="table table-bordered text-center shadow-sm">
         <tbody>
           <tr>
             <th scope="row" class="th-gray-3">구조 접수일</th>
@@ -198,70 +225,147 @@ onMounted(() => {
       </div>
     </div>
 
-    <!-- 보호소 정보 섹션 -->
-    <div class="container my-5" v-if="shelterData">
-      <h3 class="mb-4" style="font-weight: 700">동물 보호소 정보</h3>
-      <table class="table table-bordered text-center">
-        <tbody>
-          <tr>
-            <th scope="row" class="th-gray-3">보호소명</th>
-            <td>{{ shelterData.careNm }}</td>
-          </tr>
-          <tr>
-            <th scope="row" class="th-gray-3">보호소 전화번호</th>
-            <td>{{ shelterData.cardTel }}</td>
-          </tr>
-          <tr>
-            <th scope="row" class="th-gray-3">보호소 장소</th>
-            <td>{{ shelterData.cardAddr }}</td>
-          </tr>
-          <tr>
-            <th scope="row" class="th-gray-3">관할 기관</th>
-            <td>{{ shelterData.ornNm }}</td>
-          </tr>
-          <tr>
-            <th scope="row" class="th-gray-3">담당자</th>
-            <td>{{ shelterData.chargeNm }}</td>
-          </tr>
-          <tr>
-            <th scope="row" class="th-gray-3">담당자 연락처</th>
-            <td>{{ shelterData.officetel }}</td>
-          </tr>
-        </tbody>
-      </table>
+    <!-- 입양 신청 섹션 -->
+    <div
+      class="container my-5 p-5 bg-cover bg-center rounded-3 adopt-form-section"
+      style="
+        background-image: url('/PNG-Image/images/adoptformbtn.png');
+        background-size: cover;
+        background-position: center;
+        height: 350px;
+      "
+    >
+      <div class="adopt-form-content text-left text-white">
+        <h3 class="fw-bold mb-4" style="font-family: 'Paperlogy'">
+          입양 신청서 작성하기
+          <i class="fa fa-paw" style="font-size: 2.5rem; margin-left: 10px"></i>
+        </h3>
+        <p style="font-weight: 300; font-size: 1.2rem; line-height: 1.8">
+          사랑과 책임감을 가지고 입양을 고려해 주셔서 감사합니다.
+          <br />
+          반려동물은 소중한 가족입니다.
+          <br />
+          신중하게 결정하시고, 입양 후에도 책임감을 다해주세요.
+        </p>
+        <a
+          href="/adotion/form"
+          class="btn btn-gray-1 text-primary-green mt-3"
+          style="font-size: 1.2rem"
+          >바로가기</a
+        >
+      </div>
+    </div>
+
+    <!-- 다른 입양 대기 중인 동물들 섹션 -->
+    <div class="container my-5 px-4" :style="{ marginTop: '100px !important' }">
+      <h5 class="text-start mb-2" style="font-weight: 700; color: #003459">
+        다른 입양 대기 중인 동물들도 여러분을 기다리고 있어요<br />
+      </h5>
+      <h4 class="text-start text-gray-7 mb-4">입양 가능한 친구들을 만나보세요 🐾</h4>
+      <!-- 카드 리스트 -->
+      <div class="row row-cols-1 row-cols-md-3 g-4 justify-content-center">
+        <div class="col">
+          <AdoptionAnimalCard
+            :animal="{
+              desertionNo: '12345',
+              popfile: '/PNG-Image/images/cat.png',
+              kindCd: '[고양이] 한국 고양이',
+              noticeSdt: '20250101',
+              noticeEdt: '20250110',
+              sexCd: 'F',
+              specialMark: '귀여운 고양이',
+            }"
+          />
+        </div>
+        <div class="col">
+          <AdoptionAnimalCard
+            :animal="{
+              desertionNo: '67890',
+              popfile: '/PNG-Image/images/dog.png',
+              kindCd: '[개] 믹스견',
+              noticeSdt: '20250201',
+              noticeEdt: '20250210',
+              sexCd: 'M',
+              specialMark: '활발한 강아지',
+            }"
+          />
+        </div>
+        <div class="col">
+          <AdoptionAnimalCard
+            :animal="{
+              desertionNo: '54321',
+              popfile: '/PNG-Image/images/cat.png',
+              kindCd: '[고양이] 길고양이',
+              noticeSdt: '20250301',
+              noticeEdt: '20250310',
+              sexCd: 'M',
+              specialMark: '수줍은 고양이',
+            }"
+          />
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-.list-group-item {
-  padding-top: 15px;
-  padding-bottom: 15px;
+.custom-card {
+  border-radius: 12px !important;
+  border: none !important;
 }
-span {
-  padding-left: 10px;
+.card-header {
+  border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+  font-size: 1.2rem;
 }
-
-.btn-gray-1 {
-  background-color: var(--gray-1);
-  padding: 10px 40px;
-  border-radius: 30px;
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px dashed #ddd;
+  font-size: 1.15rem;
+}
+.info-label {
+  flex: 0 0 120px;
   font-weight: 600;
-  transition:
-    background-color 0.2s,
-    color 0.2s;
+  color: #555;
+  display: flex;
+  align-items: center;
 }
-
-.btn-gray-1:hover {
-  background-color: var(--primary-green);
-  color: var(--gray-1) !important;
+.info-value {
+  flex: 1;
+  text-align: right;
+  font-weight: 500;
+  color: #333;
 }
-
+.gender-badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 5px;
+  text-align: center;
+}
 .th-gray-3 {
   background-color: var(--gray-3);
   padding: 10px;
+  font-weight: 600;
+  font-size: 18px;
 }
-td {
-  padding: 10px;
+.table td,
+.table th {
+  vertical-align: middle;
+  padding: 1rem;
+  font-size: 18px;
+}
+.shadow-sm {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+.adopt-form-section {
+  position: relative;
+  background-repeat: no-repeat;
+}
+.adopt-form-content {
+  position: relative;
+  z-index: 2;
 }
 </style>

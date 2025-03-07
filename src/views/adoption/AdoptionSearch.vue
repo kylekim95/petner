@@ -11,7 +11,6 @@ import {
   fetchBreedAllList,
 } from '@/apis/supabase';
 
-// 라우터 인스턴스
 const router = useRouter();
 const route = useRoute();
 
