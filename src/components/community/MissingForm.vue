@@ -7,6 +7,8 @@ import ImageUploader from '@/components/community/ImageUploader.vue';
 import KakaoMap from '@/components/community/KakaoMap.vue';
 import { ANIMAL_TYPE_ARRAY, GENDER_ARRAY } from '@/constants/mock/community/formOptions';
 import { reactive, ref, computed } from 'vue';
+import usePostMissingForm from '@/composibles/tanstack-query/usePostMissingForm';
+const MISSING_CHANNEL_ID = '67c935ddd7d24f73478d3481';
 
 const data = reactive({
   name: '',
@@ -22,21 +24,32 @@ const data = reactive({
   placeFeature: '', // 실종 장소 특징
   region: '', // 관할지
 });
-const images = ref<File[]>([]); // 이미지 담을 배열
+const imageRef = ref<File | null>(null); // 이미지 담을 배열
 const doroRef = ref('');
+const { postFormMutation } = usePostMissingForm();
+
 const isValid = computed(() => {
   // data 배열을 돌면서 하나라도 비어있는 것이 있다면 false
   const dataResult = Object.values(data).every((value) => value.trim().length > 0);
-  const imageResult = images.value.length > 0;
+  const imageResult = imageRef.value !== null; // 이미지가 있다면요
   const addressResult = doroRef.value.trim().length > 0;
   return dataResult && imageResult && addressResult;
 });
 
-const handleSubmit = (e) => {
+const handleSubmit = (e: SubmitEvent) => {
   e.preventDefault();
   if (isValid.value) {
-    // 여기에 폼 제출 로직
-    alert('제출되었습니다.');
+    const post = {
+      ...data,
+      address: doroRef.value,
+    };
+    if (imageRef.value !== null) {
+      postFormMutation.mutate({
+        title: post.toString(),
+        channelId: MISSING_CHANNEL_ID,
+        image: imageRef.value,
+      });
+    }
   } else {
     alert('작성하지 않은 제출란이 있습니다.');
   }
@@ -71,7 +84,7 @@ const handleSubmit = (e) => {
             🐻‍❄️ 실종동물 정보
           </TitleText>
           <!-- 이미지 업로드 -->
-          <ImageUploader v-model="images" />
+          <ImageUploader v-model="imageRef" />
 
           <SelecterInput
             label="동물분류"
