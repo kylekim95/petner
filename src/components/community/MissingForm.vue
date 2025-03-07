@@ -44,16 +44,17 @@ const isValid = computed(() => {
 
 const handleSubmit = (e: SubmitEvent) => {
   e.preventDefault();
-  if (isValid.value && imageRef.value !== null) {
+  if (isValid.value) {
+    // FormData만들기
     const post = {
       ...data,
       address: doroRef.value,
     };
-
+    console.log('이미지 확인', imageRef.value);
     postFormMutation.mutate({
-      title: post.toString(),
+      title: JSON.stringify(post),
       channelId: MissingChannelId,
-      image: imageRef.value,
+      image: imageRef.value ? imageRef.value : undefined,
     });
 
     // 성공

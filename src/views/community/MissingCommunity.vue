@@ -2,14 +2,11 @@
 import MissingCommunityPostCard from '@/components/community/MissingCommunityPostCard.vue';
 import PATH from '@/constants/path';
 import { ref } from 'vue';
-// 목업 데이터
-const missingPost = {
-  imageUrl: '/public/PNG-Image/images/cat.png',
-  avatarWidth: '40px',
-  avatarHeight: '40px',
-};
+import useFetchMissingPost from '@/composibles/tanstack-query/useFetchMissingPost';
 
-const MOCK_MISSING_POSTS = Array(6).fill(missingPost);
+// 여기서 missing community post들을 호출
+const { postCards, isLoading } = useFetchMissingPost();
+console.log('missingpost', postCards.value?.posts[0]);
 
 // 필터
 const sortBy = ref<'recent' | 'comment'>('recent');
@@ -21,7 +18,7 @@ const cardsPerPage = 6;
 
 // 페이지에 표시할 카드 계산
 const startIndex = (currentPage.value - 1) * cardsPerPage;
-const currentCards = MOCK_MISSING_POSTS.slice(startIndex, startIndex + cardsPerPage); // TODO 자유게시판과 중복되는 로직 컴포지블로 분리
+const currentCards = postCards.value?.posts.slice(startIndex, startIndex + cardsPerPage); // TODO 자유게시판과 중복되는 로직 컴포지블로 분리
 </script>
 
 <template>
@@ -76,18 +73,15 @@ const currentCards = MOCK_MISSING_POSTS.slice(startIndex, startIndex + cardsPerP
         </div>
 
         <!-- 카드 리스트 -->
-        <div class="container px-3">
+        <div v-if="isLoading">로딩중</div>
+        <div v-else class="container px-3">
           <div class="row row-cols-1 row-cols-2 justify-content-center">
             <div
-              v-for="(post, index) of MOCK_MISSING_POSTS"
+              v-for="(post, index) of postCards?.posts"
               :key="index"
               class="col d-flex g-3 justify-content-center"
             >
-              <MissingCommunityPostCard
-                :imageUrl="post.imageUrl"
-                :avatarWidth="post.avatarWidth"
-                :avatarHeight="post.avatarHeight"
-              />
+              <MissingCommunityPostCard :card="post" v-if="post.title !== '[object Object]'" />
             </div>
           </div>
         </div>
