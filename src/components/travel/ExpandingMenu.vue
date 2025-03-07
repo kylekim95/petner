@@ -1,19 +1,21 @@
 <script setup lang="ts">
 import { ref, useTemplateRef } from 'vue';
-// import { useRouter } from 'vue-router';
+import { useRouter } from 'vue-router';
 
 export interface ExpandingMenuItemData {
   id: number;
   bgImage: string;
   title: string;
   content: string;
-  path: string;
+
+  contentId : number;
+  contentTypeId : number;
 }
 interface ExpandingMenuProps {
   itemData: ExpandingMenuItemData[];
 }
 
-// const router = useRouter();
+const router = useRouter();
 const props = defineProps<ExpandingMenuProps>();
 const focusedId = ref(0);
 const prevFocusedId = ref(0);
@@ -91,19 +93,19 @@ function OnMouseEnter(e: Event, id: number) {
   prevFocusedId.value = focusedId.value;
   focusedId.value = id;
 }
-
-// function handleCategoryClick(data: ExpandingMenuItemData) {
-//   router.push({
-//     path: data.path,
-//     query: { contenttypeid: '12' },
-//   });
-// }
+function handleCategoryClick(data: ExpandingMenuItemData) {
+  router.push({
+    name: 'travelDetail',
+    params: { contentId: data.contentId },
+    query: { contentTypeId: data.contentTypeId },
+  });
+}
 </script>
 
 <template>
   <div class="container w-100 h-100 d-flex gap-1 position-relative p-0">
     <div
-      v-for="item in props.itemData"
+      v-for="(item) in props.itemData"
       :key="item.id"
       class="container h-100 rounded p-2"
       :class="focusedId === item.id ? 'flex-fill' : 'col-2'"
@@ -117,6 +119,7 @@ function OnMouseEnter(e: Event, id: number) {
       @mouseenter="(e) => OnMouseEnter(e, item.id)"
       @transitionend="(e) => OnExpandEnd(e)"
       @transitionstart="(e) => OnExpandStart(e)"
+      @click="(e)=>handleCategoryClick(item)"
     >
       <div class="p-2 position-absolute bottom-0">
         <span
