@@ -1,18 +1,17 @@
 import { createPost } from "@/apis/devcourse/Post/createPost";
 import { getChannelPosts } from "@/apis/devcourse/Post/getChannelPosts";
 import { updatePost } from "@/apis/devcourse/Post/updatePost";
-import { ref } from 'vue';
 import { useAuthStore } from "@/stores/auth";
 import * as CHANID from '@/constants/communityConsts';
 
-interface TravelDestData {
+export interface TravelDestData {
   contentid : string;
   contentTypeId : string;
   name : string;
   locationX : number;
   locationY : number;
 }
-interface TravelData {
+export interface TravelData {
   id: string;
   title: string;
   destData: TravelDestData[][];
@@ -38,17 +37,16 @@ export default function usePlanner() {
   async function UpdatePlanData(data : TravelData){
     await updatePost({channelId: CHANID.PlannerChannelId, title: JSON.stringify(data), postId: data.id});
   }
-  function ReadPlanData(){
-
-  }
-  function CreatePlanData(){
-
-  }
-  function AddLocationToPlan(){
-
+  async function CreatePlanData(title : string) : Promise<TravelData> {
+    const post = (await createPost({channelId: CHANID.PlannerChannelId, title: title})).post;
+    const parsed = JSON.parse(post.title);
+    return {
+      id: post._id,
+      title : parsed.title,
+      destData : parsed.destData
+    }
   }
   return {
-    myPlans,
-    GetMyPlans, UpdatePlanData, ReadPlanData, CreatePlanData, AddLocationToPlan
+    GetMyPlans, UpdatePlanData, CreatePlanData
   }
 }
