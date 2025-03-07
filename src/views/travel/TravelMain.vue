@@ -80,15 +80,15 @@ const accommodations: Accommodation[] = [
   {
     id: 2531222,
     img: 'http://tong.visitkorea.or.kr/cms/resource/56/3067856_image2_1.jpg',
-    type: '한옥 숙소',
+    type: '강릉오죽한옥마을',
     location: '강원도',
-    price: '8,0000 원',
+    price: '80,000 원',
     path: PATH.travelDetail.replace(':contentId', '2531222'),
   },
   {
     id: 2708661,
     img: 'http://tong.visitkorea.or.kr/cms/resource/01/2709101_image2_1.jpg',
-    type: '펜션',
+    type: '비브릿지',
     location: '강원도',
     price: '170,000 원',
     path: PATH.travelDetail.replace(':contentId', '2708661'),
@@ -96,7 +96,7 @@ const accommodations: Accommodation[] = [
   {
     id: 2446529,
     img: 'http://tong.visitkorea.or.kr/cms/resource/11/2635611_image2_1.jpg',
-    type: '한옥 숙소',
+    type: '경주수호정',
     location: '경주시',
     price: '80,000 원',
     path: PATH.travelDetail.replace(':contentId', '2446529'),
@@ -104,7 +104,7 @@ const accommodations: Accommodation[] = [
   {
     id: 628690,
     img: 'http://tong.visitkorea.or.kr/cms/resource/81/1853081_image2_1.jpg',
-    type: '펜션',
+    type: '곰펜션',
     location: '강원도',
     price: '120,000 원',
     path: PATH.travelDetail.replace(':contentId', '628690'),
@@ -113,7 +113,7 @@ const accommodations: Accommodation[] = [
   {
     id: 2725982,
     img: 'http://tong.visitkorea.or.kr/cms/resource/83/2725983_image2_1.jpg',
-    type: '호텔',
+    type: '그랜드 인투라온호텔 정선',
     location: '강원도',
     price: '100,000 원',
     path: PATH.travelDetail.replace(':contentId', '2725982'),

@@ -5,7 +5,7 @@ const serviceKey = import.meta.env.VITE_TOUR_API_KEY;
 
 const tourAPI = axios.create({
   baseURL,
-  timeout: 5000,
+  timeout: 10000,
   params: {
     numOfRows: 10,
     serviceKey,

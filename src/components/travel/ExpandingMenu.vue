@@ -8,8 +8,8 @@ export interface ExpandingMenuItemData {
   title: string;
   content: string;
 
-  contentId : number;
-  contentTypeId : number;
+  contentId: number;
+  contentTypeId: number;
 }
 interface ExpandingMenuProps {
   itemData: ExpandingMenuItemData[];
@@ -96,7 +96,7 @@ function handleCategoryClick(data: ExpandingMenuItemData) {
   router.push({
     name: 'travelDetail',
     params: { contentId: data.contentId },
-    query: { contentTypeId: data.contentTypeId },
+    query: { contenttypeid: data.contentTypeId },
   });
 }
 </script>
@@ -104,7 +104,7 @@ function handleCategoryClick(data: ExpandingMenuItemData) {
 <template>
   <div class="container w-100 h-100 d-flex gap-1 position-relative p-0">
     <div
-      v-for="(item) in props.itemData"
+      v-for="item in props.itemData"
       :key="item.id"
       class="container h-100 rounded p-0 overflow-hidden"
       :class="focusedId === item.id ? 'flex-fill' : 'col-2'"
@@ -120,7 +120,7 @@ function handleCategoryClick(data: ExpandingMenuItemData) {
       @mouseenter="(e) => OnMouseEnter(e, item.id)"
       @transitionend="(e) => OnExpandEnd(e)"
       @transitionstart="(e) => OnExpandStart(e)"
-      @click="(e)=>handleCategoryClick(item)"
+      @click="(e) => handleCategoryClick(item)"
     >
       <div class="p-2 position-absolute bottom-0">
         <span

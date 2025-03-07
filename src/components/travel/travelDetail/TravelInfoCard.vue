@@ -66,6 +66,11 @@ export type DetailCard =
   | ActivitiesDetail;
 
 const { detail } = defineProps<{ detail: DetailCard }>();
+
+// HTML 태그 제거 함수
+function stripHtmlTags(str: string) {
+  return str.replace(/<[^>]*>/g, '');
+}
 </script>
 
 <template>
@@ -91,19 +96,21 @@ const { detail } = defineProps<{ detail: DetailCard }>();
         <span class="ms-1 text-gray-7"> {{ detail?.tel ?? '연락처' }}</span>
       </div>
       <div class="bi bi-house fa-s text-secondary-red fs-5">
-        <span class="ms-1 text-gray-7">{{ detail?.homepage ?? '홈페이지' }}</span>
+        <span class="ms-1 text-gray-7">{{
+          detail?.homepage ? stripHtmlTags(detail.homepage) : '-'
+        }}</span>
       </div>
     </div>
     <div class="row mt-3 gy-3">
       <div class="col-6">
         <h2 class="mb-3 fs-5">소개</h2>
 
-        <p class="fs-7">
-          {{ detail?.overview ?? '소개글' }}
-        </p>
+        <p class="fs-7" v-if="detail?.overview" v-html="detail.overview"></p>
+        <p class="fs-7" v-else>정보가 없습니다.</p>
         <div class="d-flex align-items-center justify-content-between mt-5">
           <h2 class="fs-5">문의 및 안내</h2>
-          <span class="fs-6">{{ detail?.tel ?? '010-3524-6124' }}</span>
+          <span class="fs-6" v-if="detail?.tel">{{ detail.tel }}</span>
+          <span class="fs-6" v-else>010-3524-6124</span>
         </div>
         <div class="d-flex align-items-center justify-content-between mt-2">
           <h2 class="fs-5">객실 갯수</h2>
@@ -115,16 +122,25 @@ const { detail } = defineProps<{ detail: DetailCard }>();
             (detail?.checkintime ?? '15:00') + ' / ' + (detail?.checkouttime ?? '10:00')
           }}</span>
         </div>
-        <div class="d-flex align-items-center justify-content-between mt-2">
-          <h2 class="fs-5">환불 규정</h2>
-          <span class="fs-6">{{ detail.refundregulation ?? '예약 확정시 환불 불가' }}</span>
+        <div class="row mt-2">
+          <div class="col-auto">
+            <h2 class="fs-5">환불 규정</h2>
+          </div>
+          <div class="col text-end">
+            <span
+              class="fs-6"
+              v-if="detail?.refundregulation"
+              v-html="detail.refundregulation"
+            ></span>
+            <span class="fs-6" v-else>예약 확정시 환불 불가</span>
+          </div>
         </div>
       </div>
 
       <!-- 오른쪽: 지도 Placeholder -->
       <div class="col-6">
         <div class="map-placeholder d-flex align-items-center justify-content-center rounded-4">
-          <ShelterKakaoMap :lat="33.450701" :lng="126.570667" />
+          <ShelterKakaoMap :lat="detail.mapy" :lng="detail.mapx" />
         </div>
       </div>
     </div>
@@ -134,7 +150,7 @@ const { detail } = defineProps<{ detail: DetailCard }>();
   <div v-if="detail?.contenttypeid === '39'" class="container">
     <div class="row g-2">
       <h3 class="text-secondary-red fs-5" style="font-family: 'Paperlogy'; font-weight: 700">
-        레스토랑
+        레스토랑 & 카페
       </h3>
       <div class="d-flex align-items-center justify-content-between mb-3">
         <h1 class="mb-0 text-gray-10" style="font-family: 'Paperlogy'; font-weight: 700">
@@ -152,7 +168,9 @@ const { detail } = defineProps<{ detail: DetailCard }>();
         <span class="ms-1 text-gray-7"> {{ detail?.tel ?? '연락처' }}</span>
       </div>
       <div class="bi bi-house fa-s text-secondary-red fs-5">
-        <span class="ms-1 text-gray-7">{{ detail?.homepage ?? '홈페이지' }}</span>
+        <span class="ms-1 text-gray-7">{{
+          detail?.homepage ? stripHtmlTags(detail.homepage) : '-'
+        }}</span>
       </div>
     </div>
     <div class="row mt-3 gy-3">
@@ -160,7 +178,7 @@ const { detail } = defineProps<{ detail: DetailCard }>();
         <h2 class="mb-3 fs-4">소개</h2>
 
         <p class="fs-7">
-          {{ detail?.overview ?? '소개글' }}
+          {{ detail?.overview ? stripHtmlTags(detail.overview) : '-' }}
         </p>
         <div class="d-flex align-items-center justify-content-between mt-5">
           <h2 class="fs-5">문의 및 안내</h2>
@@ -168,7 +186,9 @@ const { detail } = defineProps<{ detail: DetailCard }>();
         </div>
         <div class="d-flex align-items-center justify-content-between mt-2">
           <h2 class="fs-5">영업시간</h2>
-          <span class="fs-6">{{ detail?.opentimefood }}</span>
+          <span class="fs-6">{{
+            detail?.opentimefood ? stripHtmlTags(detail.opentimefood) : '-'
+          }}</span>
         </div>
         <div class="d-flex align-items-center justify-content-between mt-2">
           <h2 class="fs-5">쉬는 날</h2>
@@ -191,13 +211,13 @@ const { detail } = defineProps<{ detail: DetailCard }>();
       <!-- 오른쪽: 지도 Placeholder -->
       <div class="col-6">
         <div class="map-placeholder d-flex align-items-center justify-content-center rounded-4">
-          <span class="text-muted">지도 영역 (Placeholder)</span>
+          <ShelterKakaoMap :lat="detail.mapy" :lng="detail.mapx" />
         </div>
       </div>
     </div>
   </div>
 
-  <!-- 문화  (contenttyepid === 14) -->
+  <!-- 문화  (contenttypeid === 14) -->
   <div v-if="detail?.contenttypeid === '14'" class="container">
     <div class="row g-2">
       <h3 class="text-secondary-red fs-5" style="font-family: 'Paperlogy'; font-weight: 700">
@@ -205,7 +225,7 @@ const { detail } = defineProps<{ detail: DetailCard }>();
       </h3>
       <div class="d-flex align-items-center justify-content-between mb-3">
         <h1 class="mb-0 text-gray-10" style="font-family: 'Paperlogy'; font-weight: 700">
-          {{ detail?.title ?? '가평현암 농경박물관' }}
+          {{ detail?.title ?? '-' }}
         </h1>
         <i class="bi bi-map fa-2x text-primary-green"></i>
       </div>
@@ -217,7 +237,9 @@ const { detail } = defineProps<{ detail: DetailCard }>();
         <span class="ms-1 text-gray-7"> {{ detail?.tel ?? '-' }}</span>
       </div>
       <div class="bi bi-house fa-s text-secondary-red fs-5">
-        <span class="ms-1 text-gray-7">{{ detail?.homepage ?? '정보 없음' }}</span>
+        <span class="ms-1 text-gray-7">{{
+          detail?.homepage ? stripHtmlTags(detail.homepage) : '-'
+        }}</span>
       </div>
     </div>
     <div class="row mt-3 gy-3">
@@ -225,16 +247,31 @@ const { detail } = defineProps<{ detail: DetailCard }>();
         <h2 class="mb-3 fs-4">소개</h2>
 
         <p class="fs-7">
-          {{ detail?.overview ?? '소개글 없음' }}
+          {{ detail?.overview ? stripHtmlTags(detail.overview) : '-' }}
         </p>
         <div class="d-flex align-items-center justify-content-between mt-5">
           <h2 class="fs-5">문의 및 안내</h2>
-          <span class="fs-6">{{ detail?.infocenterculture ?? '-' }}</span>
+          <span
+            class="fs-6"
+            style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis"
+            >{{ detail?.infocenterculture ? stripHtmlTags(detail.infocenterculture) : '-' }}</span
+          >
         </div>
-        <div class="d-flex align-items-center justify-content-between mt-2">
-          <h2 class="fs-5">영업시간</h2>
-          <span class="fs-6">{{ detail?.usetimeculture }}</span>
+        <div class="row mt-2">
+          <!-- 왼쪽 레이블: col-auto로 레이블 길이에 맞게 폭을 결정 -->
+          <div class="col-auto">
+            <h2 class="fs-5 mb-0">영업시간</h2>
+          </div>
+
+          <!-- 오른쪽 텍스트: 나머지 공간을 차지, 오른쪽 정렬, 길면 잘림 -->
+          <div
+            class="col text-end fs-6"
+            style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis"
+          >
+            {{ detail?.usetimeculture ? stripHtmlTags(detail.usetimeculture) : '-' }}
+          </div>
         </div>
+
         <div class="d-flex align-items-center justify-content-between mt-2">
           <h2 class="fs-5">쉬는 날</h2>
           <span class="fs-6">{{ detail?.restdateculture || '정보 없음' }}</span>
@@ -252,7 +289,7 @@ const { detail } = defineProps<{ detail: DetailCard }>();
       <!-- 오른쪽: 지도 Placeholder -->
       <div class="col-6">
         <div class="map-placeholder d-flex align-items-center justify-content-center rounded-4">
-          <span class="text-muted">지도 영역 (Placeholder)</span>
+          <ShelterKakaoMap :lat="detail.mapy" :lng="detail.mapx" />
         </div>
       </div>
     </div>
@@ -272,13 +309,16 @@ const { detail } = defineProps<{ detail: DetailCard }>();
       </div>
 
       <div class="bi bi-geo-alt fa-s text-secondary-red fs-5">
-        <span class="ms-1 text-gray-7"> {{ detail?.addr1 ?? '주소정보 없음' }}</span>
+        <span class="ms-1 text-gray-7"> {{ detail?.addr1 ?? '-' }}</span>
       </div>
       <div class="bi bi-telephone fa-s text-secondary-red fs-5">
         <span class="ms-1 text-gray-7"> {{ detail?.tel ?? '-' }}</span>
       </div>
       <div class="bi bi-house fa-s text-secondary-red fs-5">
-        <span class="ms-1 text-gray-7">{{ detail?.homepage ?? '정보 없음' }}</span>
+        <span class="ms-1 text-gray-7">
+          <!-- detail?.homepage가 있으면 stripHtmlTags로 태그 제거 후 표시, 없으면 "정보 없음" -->
+          {{ detail?.homepage ? stripHtmlTags(detail.homepage) : '-' }}
+        </span>
       </div>
     </div>
     <div class="row mt-3 gy-3">
@@ -290,11 +330,13 @@ const { detail } = defineProps<{ detail: DetailCard }>();
         </p>
         <div class="d-flex align-items-center justify-content-between mt-5">
           <h2 class="fs-5">문의 및 안내</h2>
-          <span class="fs-6">{{ detail?.infocentershopping ?? '-' }}</span>
+          <span class="fs-6">{{
+            detail?.infocentershopping ? stripHtmlTags(detail.infocentershopping) : '정보 없음'
+          }}</span>
         </div>
         <div class="d-flex align-items-center justify-content-between mt-2">
           <h2 class="fs-5">영업시간</h2>
-          <span class="fs-6">{{ detail?.fairday }}</span>
+          <span class="fs-6">{{ detail?.fairday ? stripHtmlTags(detail.fairday) : '-' }}</span>
         </div>
         <div class="d-flex align-items-center justify-content-between mt-2">
           <h2 class="fs-5">쉬는 날</h2>
@@ -309,7 +351,7 @@ const { detail } = defineProps<{ detail: DetailCard }>();
       <!-- 오른쪽: 지도 Placeholder -->
       <div class="col-6">
         <div class="map-placeholder d-flex align-items-center justify-content-center rounded-4">
-          <span class="text-muted">지도 영역 (Placeholder)</span>
+          <ShelterKakaoMap :lat="detail.mapy" :lng="detail.mapx" />
         </div>
       </div>
     </div>
@@ -335,7 +377,9 @@ const { detail } = defineProps<{ detail: DetailCard }>();
         <span class="ms-1 text-gray-7"> {{ detail?.tel ?? '-' }}</span>
       </div>
       <div class="bi bi-house fa-s text-secondary-red fs-5">
-        <span class="ms-1 text-gray-7">{{ detail?.homepage ?? '정보 없음' }}</span>
+        <span class="ms-1 text-gray-7">{{
+          detail?.homepage ? stripHtmlTags(detail.homepage) : '-'
+        }}</span>
       </div>
     </div>
     <div class="row mt-3 gy-3">
@@ -351,7 +395,7 @@ const { detail } = defineProps<{ detail: DetailCard }>();
         </div>
         <div class="d-flex align-items-center justify-content-between mt-2">
           <h2 class="fs-5">영업시간</h2>
-          <span class="fs-6">{{ detail?.usetime ?? '-' }}</span>
+          <span class="fs-6">{{ detail?.usetime ? stripHtmlTags(detail.usetime) : '-' }}</span>
         </div>
         <div class="d-flex align-items-center justify-content-between mt-2">
           <h2 class="fs-5">쉬는 날</h2>
@@ -361,16 +405,16 @@ const { detail } = defineProps<{ detail: DetailCard }>();
           <h2 class="fs-5">주차 정보</h2>
           <span class="fs-6">{{ detail.parking ?? '-' }}</span>
         </div>
-        <div class="d-block mt-2">
+        <div class="d-flex align-items-center justify-content-between mt-2">
           <h2 class="fs-5">체험 안내</h2>
-          <span class="fs-6">{{ detail.expguide ?? '-' }}</span>
+          <span class="fs-6">{{ detail.expguide ? stripHtmlTags(detail.usetime) : '-' }}</span>
         </div>
       </div>
 
       <!-- 오른쪽: 지도 Placeholder -->
       <div class="col-6">
         <div class="map-placeholder d-flex align-items-center justify-content-center rounded-4">
-          <span class="text-muted">지도 영역 (Placeholder)</span>
+          <ShelterKakaoMap :lat="detail.mapy" :lng="detail.mapx" />
         </div>
       </div>
     </div>
@@ -395,7 +439,9 @@ const { detail } = defineProps<{ detail: DetailCard }>();
         <span class="ms-1 text-gray-7"> {{ detail?.tel ?? '-' }}</span>
       </div>
       <div class="bi bi-house fa-s text-secondary-red fs-5">
-        <span class="ms-1 text-gray-7">{{ detail?.homepage ?? '정보 없음' }}</span>
+        <span class="ms-1 text-gray-7">{{
+          detail?.homepage ? stripHtmlTags(detail.homepage) : '-'
+        }}</span>
       </div>
     </div>
     <div class="row mt-3 gy-3">
@@ -411,7 +457,9 @@ const { detail } = defineProps<{ detail: DetailCard }>();
         </div>
         <div class="d-flex align-items-center justify-content-between mt-2">
           <h2 class="fs-5">영업시간</h2>
-          <span class="fs-6">{{ detail?.usetimeleports ?? '-' }}</span>
+          <span class="fs-6">{{
+            detail?.usetimeleports ? stripHtmlTags(detail.usetimeleports) : '-'
+          }}</span>
         </div>
         <div class="d-flex align-items-center justify-content-between mt-2">
           <h2 class="fs-5">쉬는 날</h2>
@@ -430,7 +478,7 @@ const { detail } = defineProps<{ detail: DetailCard }>();
       <!-- 오른쪽: 지도 Placeholder -->
       <div class="col-6">
         <div class="map-placeholder d-flex align-items-center justify-content-center rounded-4">
-          <span class="text-muted">지도 영역 (Placeholder)</span>
+          <ShelterKakaoMap :lat="detail.mapy" :lng="detail.mapx" />
         </div>
       </div>
     </div>
