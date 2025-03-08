@@ -2,6 +2,7 @@ import { createPost } from '@/apis/devcourse/Post/createPost';
 import { getChannelPosts } from '@/apis/devcourse/Post/getChannelPosts';
 import { updatePost } from '@/apis/devcourse/Post/updatePost';
 import { useAuthStore } from '@/stores/auth';
+import { deletePost } from "@/apis/devcourse/Post/deletePost";
 import * as CHANID from '@/constants/communityConsts';
 
 export interface TravelDestData {
@@ -55,12 +56,14 @@ export default function usePlanner() {
       id: post._id,
       title: parsed.title,
       destData: parsed.destData,
+      createdAt: post.createdAt
     };
     return newPlan;
   }
+  async function DeletePlan(id: string){
+    deletePost({id: id});
+  }
   return {
-    GetMyPlans,
-    UpdatePlanData,
-    CreatePlanData,
-  };
+    GetMyPlans, UpdatePlanData, CreatePlanData, DeletePlan
+  }
 }

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref, watch } from 'vue';
+import { onMounted, onUnmounted, ref, watch, reactive } from 'vue';
 import draggable from 'vuedraggable';
 import TravelDestCard from '@/components/travel/planner/TravelDestCard.vue';
 import usePlanner, {type TravelData, type TravelDestData} from '@/hooks/usePlanner';
@@ -22,30 +22,40 @@ function ColorChangeOnHoverRestore(e : MouseEvent) {
 }
 
 const data = ref<{title:string, destData:TravelDestData[][]}>({title : '', destData : [[]]});
-const currentPlan = ref<TravelData>();
-const currentFocus = ref<TravelDestData | null>(null);
+const mapData = reactive<{
+  currentPlan: TravelData,
+  currentFocus: TravelDestData,
+  currentFocusDay: number
+}>({
+  currentPlan: { createdAt:'', destData:[[]], id:'', title:'' },
+  currentFocus: { contentid:'', contentTypeId:'', mapx:0, mapy:0, name:'' },
+  currentFocusDay: 0
+});
+
 const isDragging = ref<boolean>(false);
+const prevFocused = ref<HTMLElement>();
 
 const planner = usePlanner();
 watch(
-  ()=>currentPlan.value,
+  ()=>mapData.currentPlan,
   ()=>{
-    if(currentPlan.value){
-      data.value.title = currentPlan.value.title;
-      data.value.destData = currentPlan.value.destData;
+    if(mapData.currentPlan){
+      data.value.title = mapData.currentPlan.title;
+      data.value.destData = mapData.currentPlan.destData;
     }
   }, { immediate: true }
 );
 onMounted(async ()=>{
   const myPlans = await planner?.GetMyPlans();
-  currentPlan.value = myPlans?.filter((e)=>e.id===params.plannerId)[0];
-
+  if(myPlans){
+    mapData.currentPlan = myPlans.filter((e)=>e.id===params.plannerId)[0];
+  }
 });
 onUnmounted(()=>{
-  if(planner && currentPlan.value){
+  if(planner && mapData.currentPlan){
     planner?.UpdatePlanData({
-    createdAt: currentPlan.value.createdAt,
-    id: currentPlan.value.id,
+    createdAt: mapData.currentPlan.createdAt,
+    id: mapData.currentPlan.id,
     title: data.value.title,
     destData: data.value.destData,
   });
@@ -55,7 +65,6 @@ function HandleTitleChange(e : Event) {
   const elem = e.target as HTMLInputElement;
   data.value.title = elem.value;
 }
-
 </script>
 
 <template>
@@ -90,12 +99,21 @@ function HandleTitleChange(e : Event) {
             @end="()=>{isDragging=false;}"
           >
             <template #item="{ element, index }">
-              <TravelDestCard :name="element.name" :index="index" :id="parseInt(element.contentid)" :-delete-dest-callback="(id : number)=>{
-                const temp = data.destData[index2].findIndex((e)=>e.contentid===id.toString());
-                const newDestData = [...data.destData[index2]];
-                newDestData.splice(temp, 1);
-                data.destData[index2] = newDestData;
-              }"/>
+              <div style="width: 100%; height: 100%; transition: all .2s;" @click="(e)=>{
+                const focused = e.currentTarget as HTMLElement;
+                if(prevFocused !== null){ prevFocused?.classList.remove('focused'); }
+                focused.classList.add('focused');
+                prevFocused = focused;
+                mapData.currentFocus = element;
+                mapData.currentFocusDay = index2;
+              }">
+                <TravelDestCard :name="element.name" :index="index" :id="parseInt(element.contentid)" :-delete-dest-callback="(id : number, index : number)=>{
+                  const temp = data.destData[index2].findIndex((e)=>e.contentid===id.toString());
+                  const newDestData = [...data.destData[index2]];
+                  newDestData.splice(temp, 1);
+                  data.destData[index2] = newDestData;
+                }"/>
+              </div>
             </template>
           </draggable>
         </div>
@@ -108,7 +126,7 @@ function HandleTitleChange(e : Event) {
       </div>
     </div>
     <div class="h-100 bg-primary" style="width: 80%">
-      <PlannerMapComponent :positions="currentPlan" />
+      <PlannerMapComponent :travelData="mapData.currentPlan" :currentFocused="mapData.currentFocus" :currentFocusedDay="mapData.currentFocusDay" />
     </div>
   </div>
 </template>
@@ -136,5 +154,8 @@ function HandleTitleChange(e : Event) {
 }
 .transition {
   transition: color 0.25s ease-in-out;
+}
+.focused {
+  padding-left: 20px;
 }
 </style>
