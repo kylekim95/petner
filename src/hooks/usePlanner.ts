@@ -1,15 +1,15 @@
-import { createPost } from "@/apis/devcourse/Post/createPost";
-import { getChannelPosts } from "@/apis/devcourse/Post/getChannelPosts";
-import { updatePost } from "@/apis/devcourse/Post/updatePost";
-import { useAuthStore } from "@/stores/auth";
+import { createPost } from '@/apis/devcourse/Post/createPost';
+import { getChannelPosts } from '@/apis/devcourse/Post/getChannelPosts';
+import { updatePost } from '@/apis/devcourse/Post/updatePost';
+import { useAuthStore } from '@/stores/auth';
 import * as CHANID from '@/constants/communityConsts';
 
 export interface TravelDestData {
-  contentid : string;
-  contentTypeId : string;
-  name : string;
-  locationX : number;
-  locationY : number;
+  contentid: string;
+  contentTypeId: string;
+  name: string;
+  mapx: number;
+  mapy: number;
 }
 export interface TravelData {
   id: string;
@@ -20,36 +20,47 @@ export interface TravelData {
 
 export default function usePlanner() {
   const auth = useAuthStore();
-  if(!auth.isAuth) return null;
+  if (!auth.isAuth) return null;
 
-  async function GetMyPlans() : Promise<TravelData[]> {
-    const allPlannerPosts = (await getChannelPosts({channelId: CHANID.PlannerChannelId})).posts;
-    const myPlannerPosts = allPlannerPosts.filter((post)=>post.author._id===auth.user?._id);
-    const travelData : TravelData[] = myPlannerPosts.map((post)=>{
+  async function GetMyPlans(): Promise<TravelData[]> {
+    const allPlannerPosts = (await getChannelPosts({ channelId: CHANID.PlannerChannelId })).posts;
+    const myPlannerPosts = allPlannerPosts.filter((post) => post.author._id === auth.user?._id);
+    const travelData: TravelData[] = myPlannerPosts.map((post) => {
       const parsed = JSON.parse(post.title);
       return {
         id: post._id,
-        title : parsed.title,
-        destData : parsed.destData,
-        createdAt : post.createdAt
+        title: parsed.title,
+        destData: parsed.destData,
+        createdAt: post.createdAt,
       } as TravelData;
     });
     return travelData;
   }
-  async function UpdatePlanData(data : TravelData){
-    await updatePost({channelId: CHANID.PlannerChannelId, title: JSON.stringify({title: data.title, destData: data.destData}), postId: data.id});
+  async function UpdatePlanData(data: TravelData) {
+    await updatePost({
+      channelId: CHANID.PlannerChannelId,
+      title: JSON.stringify({ title: data.title, destData: data.destData }),
+      postId: data.id,
+    });
   }
-  async function CreatePlanData(title : string) : Promise<TravelData> {
-    const post = (await createPost({channelId: CHANID.PlannerChannelId, title: JSON.stringify({ title: title, destData: [[]] })})).post;
+  async function CreatePlanData(title: string): Promise<TravelData> {
+    const post = (
+      await createPost({
+        channelId: CHANID.PlannerChannelId,
+        title: JSON.stringify({ title: title, destData: [[]] }),
+      })
+    ).post;
     const parsed = JSON.parse(post.title);
-    const newPlan : TravelData = {
+    const newPlan: TravelData = {
       id: post._id,
-      title : parsed.title,
-      destData : parsed.destData
-    }
+      title: parsed.title,
+      destData: parsed.destData,
+    };
     return newPlan;
   }
   return {
-    GetMyPlans, UpdatePlanData, CreatePlanData
-  }
+    GetMyPlans,
+    UpdatePlanData,
+    CreatePlanData,
+  };
 }
