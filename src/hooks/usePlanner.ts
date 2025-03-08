@@ -15,6 +15,7 @@ export interface TravelData {
   id: string;
   title: string;
   destData: TravelDestData[][];
+  createdAt: string;
 }
 
 export default function usePlanner() {
@@ -29,22 +30,24 @@ export default function usePlanner() {
       return {
         id: post._id,
         title : parsed.title,
-        destData : parsed.destData
-      }
+        destData : parsed.destData,
+        createdAt : post.createdAt
+      } as TravelData;
     });
     return travelData;
   }
   async function UpdatePlanData(data : TravelData){
-    await updatePost({channelId: CHANID.PlannerChannelId, title: JSON.stringify(data), postId: data.id});
+    await updatePost({channelId: CHANID.PlannerChannelId, title: JSON.stringify({title: data.title, destData: data.destData}), postId: data.id});
   }
   async function CreatePlanData(title : string) : Promise<TravelData> {
-    const post = (await createPost({channelId: CHANID.PlannerChannelId, title: title})).post;
+    const post = (await createPost({channelId: CHANID.PlannerChannelId, title: JSON.stringify({ title: title, destData: [[]] })})).post;
     const parsed = JSON.parse(post.title);
-    return {
+    const newPlan : TravelData = {
       id: post._id,
       title : parsed.title,
       destData : parsed.destData
     }
+    return newPlan;
   }
   return {
     GetMyPlans, UpdatePlanData, CreatePlanData
