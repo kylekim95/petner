@@ -5,7 +5,7 @@ interface TravelDestCardProp{
   id: number;
   name : string;
   index : number;
-  DeleteDestCallback : (id : number)=>void;
+  DeleteDestCallback : (id : number, index: number)=>void;
 }
 const props = defineProps<TravelDestCardProp>();
 function ColorChangeOnHover(e : MouseEvent) {
@@ -25,7 +25,7 @@ const element = useTemplateRef<HTMLDivElement>('this-element');
     <div ref="this-element" class="bg-gray-3 d-flex rounded opacity-transition"
       @transitionend="(e)=>{
         if(e.propertyName === 'opacity'){
-          props.DeleteDestCallback(id);
+          props.DeleteDestCallback(id, index);
         }
       }"
       style="height: 75px; align-items: center; cursor: pointer; user-select: none;">
@@ -40,6 +40,7 @@ const element = useTemplateRef<HTMLDivElement>('this-element');
           @mouseenter="ColorChangeOnHover"
           @mouseleave="ColorChangeOnHoverRestore"
           @click="(e)=>{
+            e.stopPropagation();
             if(!element) return;
             element.classList.add('opacity-0');
           }"
@@ -69,6 +70,10 @@ const element = useTemplateRef<HTMLDivElement>('this-element');
 .trashcan-danger {
   color: #FF4444;
   font-size: 1.5rem;
+}
+.focused {
+  border: 2px;
+  border-color: var(--primary-red);
 }
 .transition {
   transition: color 0.25s ease-in-out;

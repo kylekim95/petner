@@ -17,7 +17,7 @@ const props = defineProps<PopularTravelCardProps>();
 </script>
 
 <template>
-  <RouterLink :to="`/travel/detail/1?1`" class="text-decoration-none">
+  <RouterLink :to="`/travel/detail/${props.data.contentId}?contenttypeid=${props.data.contentTypeId}`" class="text-decoration-none">
       <div
         class="rounded-top-5 align-content-end"
         style="height: 70%;"
