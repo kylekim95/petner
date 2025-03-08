@@ -12,13 +12,13 @@ const props = defineProps<PlannerModalProps>();
 watch(()=>props.visible, async ()=>{
   propsStyle.top = props.positionTop;
   propsStyle.left = props.positionLeft;
-  propsStyle.display = props.visible ? 'block' : 'none';
+  propsStyle.opacity = props.visible ? 100 : 0;
   myPlans.value = await planner?.GetMyPlans();
 });
 const propsStyle = reactive({
   top: '0px',
   left: '500px',
-  display: 'none',
+  opacity: 0,
 });
 
 const emit = defineEmits(['toggle-visibility']);
@@ -35,7 +35,7 @@ function HandleClick(data : TravelData){
 <template>
   <div
     class="bg-gray-3 position-absolute p-1 rounded"
-    style="width:fit-content;"
+    style="width:fit-content; min-width:150px ;transition: opacity .2s ease-in-out;"
     :style="{...propsStyle}"
   >
     <div style="overflow: hidden; overflow-y: scroll; max-height: 200px; scrollbar-width: none; cursor: pointer">
