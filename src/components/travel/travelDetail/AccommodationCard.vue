@@ -18,7 +18,6 @@ export interface RoomItem {
 // 부모 컴포넌트에서 rooms 배열을 전달받음
 const { rooms } = defineProps<{
   rooms: RoomItem[];
-  capacity: string;
 }>();
 
 //평 -> 제곱미터
@@ -80,8 +79,6 @@ function pyeongToSquareMeter(pyeong: string | null) {
               <i class="bi bi-pc" style="font-style: normal"> PC</i>
             </div>
           </div>
-
-          
 
           <!-- 가격 영역 (하단) -->
           <div class="mt-auto text-end position-absolute" style="bottom: -0.25rem; right: 2rem">

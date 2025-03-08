@@ -68,8 +68,15 @@ export type DetailCard =
 const { detail } = defineProps<{ detail: DetailCard }>();
 
 // HTML 태그 제거 함수
-function stripHtmlTags(str: string) {
-  return str.replace(/<[^>]*>/g, '');
+function formatPolicy(text: string | null): string {
+  if (!text) return '';
+  return (
+    text
+      // <br />, <br>, <br/> 등 다양한 형식을 공백으로 대체
+      .replace(/<br\s*\/?>/gi, ' ')
+      // 나머지 HTML 태그는 제거
+      .replace(/<[^>]*>/g, '')
+  );
 }
 </script>
 
@@ -96,9 +103,10 @@ function stripHtmlTags(str: string) {
         <span class="ms-1 text-gray-7"> {{ detail?.tel ?? '연락처' }}</span>
       </div>
       <div class="bi bi-house fa-s text-secondary-red fs-5">
-        <span class="ms-1 text-gray-7">{{
-          detail?.homepage ? stripHtmlTags(detail.homepage) : '-'
-        }}</span>
+        <span
+          class="ms-1 text-gray-7"
+          v-html="detail?.homepage ? formatPolicy(detail.homepage) : '-'"
+        ></span>
       </div>
     </div>
     <div class="row mt-3 gy-3">
@@ -130,7 +138,7 @@ function stripHtmlTags(str: string) {
             <span
               class="fs-6"
               v-if="detail?.refundregulation"
-              v-html="detail.refundregulation"
+              v-html="formatPolicy(detail.refundregulation)"
             ></span>
             <span class="fs-6" v-else>예약 확정시 환불 불가</span>
           </div>
@@ -140,7 +148,7 @@ function stripHtmlTags(str: string) {
       <!-- 오른쪽: 지도 Placeholder -->
       <div class="col-6">
         <div class="map-placeholder d-flex align-items-center justify-content-center rounded-4">
-          <ShelterKakaoMap :lat="detail.mapy" :lng="detail.mapx" />
+          <ShelterKakaoMap :lat="Number(detail.mapy)" :lng="Number(detail.mapx)" />
         </div>
       </div>
     </div>
@@ -169,7 +177,7 @@ function stripHtmlTags(str: string) {
       </div>
       <div class="bi bi-house fa-s text-secondary-red fs-5">
         <span class="ms-1 text-gray-7">{{
-          detail?.homepage ? stripHtmlTags(detail.homepage) : '-'
+          detail?.homepage ? formatPolicy(detail.homepage) : '-'
         }}</span>
       </div>
     </div>
@@ -178,40 +186,40 @@ function stripHtmlTags(str: string) {
         <h2 class="mb-3 fs-4">소개</h2>
 
         <p class="fs-7">
-          {{ detail?.overview ? stripHtmlTags(detail.overview) : '-' }}
+          {{ detail?.overview ? formatPolicy(detail.overview) : '-' }}
         </p>
         <div class="d-flex align-items-center justify-content-between mt-5">
           <h2 class="fs-5">문의 및 안내</h2>
-          <span class="fs-6">{{ detail?.tel ?? '010-3524-6124' }}</span>
+          <span class="fs-6">{{ formatPolicy(detail?.tel) ?? '010-3524-6124' }}</span>
         </div>
         <div class="d-flex align-items-center justify-content-between mt-2">
           <h2 class="fs-5">영업시간</h2>
           <span class="fs-6">{{
-            detail?.opentimefood ? stripHtmlTags(detail.opentimefood) : '-'
+            detail?.opentimefood ? formatPolicy(detail.opentimefood) : '-'
           }}</span>
         </div>
         <div class="d-flex align-items-center justify-content-between mt-2">
           <h2 class="fs-5">쉬는 날</h2>
-          <span class="fs-6">{{ detail.restdatefood || '연중무휴' }}</span>
+          <span class="fs-6">{{ formatPolicy(detail.restdatefood) || '연중무휴' }}</span>
         </div>
         <div class="d-flex align-items-center justify-content-between mt-2">
           <h2 class="fs-5">주차 정보</h2>
-          <span class="fs-6">{{ detail.parkingfood || '유료 주차장' }}</span>
+          <span class="fs-6">{{ formatPolicy(detail.parkingfood) || '유료 주차장' }}</span>
         </div>
         <div class="d-flex align-items-center justify-content-between mt-2">
           <h2 class="fs-5">취급 메뉴</h2>
-          <span class="fs-6">{{ detail.treatmenu || '정보 없음' }}</span>
+          <span class="fs-6">{{ formatPolicy(detail.treatmenu) || '정보 없음' }}</span>
         </div>
         <div class="d-flex align-items-center justify-content-between mt-2">
           <h2 class="fs-5">대표 메뉴</h2>
-          <span class="fs-6">{{ detail.firstmenu || '정보 없음' }}</span>
+          <span class="fs-6">{{ formatPolicy(detail.firstmenu) || '정보 없음' }}</span>
         </div>
       </div>
 
       <!-- 오른쪽: 지도 Placeholder -->
       <div class="col-6">
         <div class="map-placeholder d-flex align-items-center justify-content-center rounded-4">
-          <ShelterKakaoMap :lat="detail.mapy" :lng="detail.mapx" />
+          <ShelterKakaoMap :lat="Number(detail.mapy)" :lng="Number(detail.mapx)" />
         </div>
       </div>
     </div>
@@ -231,14 +239,14 @@ function stripHtmlTags(str: string) {
       </div>
 
       <div class="bi bi-geo-alt fa-s text-secondary-red fs-5">
-        <span class="ms-1 text-gray-7"> {{ detail?.addr1 ?? '주소정보 없음' }}</span>
+        <span class="ms-1 text-gray-7"> {{ formatPolicy(detail?.addr1) ?? '주소정보 없음' }}</span>
       </div>
       <div class="bi bi-telephone fa-s text-secondary-red fs-5">
-        <span class="ms-1 text-gray-7"> {{ detail?.tel ?? '-' }}</span>
+        <span class="ms-1 text-gray-7"> {{ formatPolicy(detail?.tel) ?? '-' }}</span>
       </div>
       <div class="bi bi-house fa-s text-secondary-red fs-5">
         <span class="ms-1 text-gray-7">{{
-          detail?.homepage ? stripHtmlTags(detail.homepage) : '-'
+          detail?.homepage ? formatPolicy(detail.homepage) : '-'
         }}</span>
       </div>
     </div>
@@ -247,14 +255,14 @@ function stripHtmlTags(str: string) {
         <h2 class="mb-3 fs-4">소개</h2>
 
         <p class="fs-7">
-          {{ detail?.overview ? stripHtmlTags(detail.overview) : '-' }}
+          {{ detail?.overview ? formatPolicy(detail.overview) : '-' }}
         </p>
         <div class="d-flex align-items-center justify-content-between mt-5">
           <h2 class="fs-5">문의 및 안내</h2>
           <span
             class="fs-6"
             style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis"
-            >{{ detail?.infocenterculture ? stripHtmlTags(detail.infocenterculture) : '-' }}</span
+            >{{ detail?.infocenterculture ? formatPolicy(detail.infocenterculture) : '-' }}</span
           >
         </div>
         <div class="row mt-2">
@@ -268,7 +276,7 @@ function stripHtmlTags(str: string) {
             class="col text-end fs-6"
             style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis"
           >
-            {{ detail?.usetimeculture ? stripHtmlTags(detail.usetimeculture) : '-' }}
+            {{ detail?.usetimeculture ? formatPolicy(detail.usetimeculture) : '-' }}
           </div>
         </div>
 
@@ -280,7 +288,7 @@ function stripHtmlTags(str: string) {
           <h2 class="fs-5">주차 정보</h2>
           <span class="fs-6">{{
             detail?.parkingculture || detail?.parkingfee
-              ? `${detail?.parkingculture ?? '주차정보 없음'}/${detail?.parkingfee ?? '주차요금 정보 없음'}`
+              ? `${formatPolicy(detail.parkingculture) ?? '주차정보 없음'}/${formatPolicy(detail.parkingculture) ?? '주차요금 정보 없음'}`
               : '주차정보 없음'
           }}</span>
         </div>
@@ -289,7 +297,7 @@ function stripHtmlTags(str: string) {
       <!-- 오른쪽: 지도 Placeholder -->
       <div class="col-6">
         <div class="map-placeholder d-flex align-items-center justify-content-center rounded-4">
-          <ShelterKakaoMap :lat="detail.mapy" :lng="detail.mapx" />
+          <ShelterKakaoMap :lat="Number(detail.mapy)" :lng="Number(detail.mapx)" />
         </div>
       </div>
     </div>
@@ -316,8 +324,7 @@ function stripHtmlTags(str: string) {
       </div>
       <div class="bi bi-house fa-s text-secondary-red fs-5">
         <span class="ms-1 text-gray-7">
-          <!-- detail?.homepage가 있으면 stripHtmlTags로 태그 제거 후 표시, 없으면 "정보 없음" -->
-          {{ detail?.homepage ? stripHtmlTags(detail.homepage) : '-' }}
+          {{ detail?.homepage ? formatPolicy(detail.homepage) : '-' }}
         </span>
       </div>
     </div>
@@ -331,27 +338,29 @@ function stripHtmlTags(str: string) {
         <div class="d-flex align-items-center justify-content-between mt-5">
           <h2 class="fs-5">문의 및 안내</h2>
           <span class="fs-6">{{
-            detail?.infocentershopping ? stripHtmlTags(detail.infocentershopping) : '정보 없음'
+            detail?.infocentershopping ? formatPolicy(detail.infocentershopping) : '정보 없음'
           }}</span>
         </div>
         <div class="d-flex align-items-center justify-content-between mt-2">
           <h2 class="fs-5">영업시간</h2>
-          <span class="fs-6">{{ detail?.fairday ? stripHtmlTags(detail.fairday) : '-' }}</span>
+          <span class="fs-6">{{ detail?.fairday ? formatPolicy(detail.fairday) : '-' }}</span>
         </div>
         <div class="d-flex align-items-center justify-content-between mt-2">
           <h2 class="fs-5">쉬는 날</h2>
-          <span class="fs-6">{{ detail?.restdateshopping || '정보 없음' }}</span>
+          <span class="fs-6">{{ formatPolicy(detail?.restdateshopping) || '정보 없음' }}</span>
         </div>
         <div class="d-flex align-items-center justify-content-between mt-2">
           <h2 class="fs-5">주차 정보</h2>
-          <span class="fs-6">{{ detail.parkingshopping ?? '주차요금 정보 없음' }}</span>
+          <span class="fs-6">{{
+            formatPolicy(detail.parkingshopping) ?? '주차요금 정보 없음'
+          }}</span>
         </div>
       </div>
 
       <!-- 오른쪽: 지도 Placeholder -->
       <div class="col-6">
         <div class="map-placeholder d-flex align-items-center justify-content-center rounded-4">
-          <ShelterKakaoMap :lat="detail.mapy" :lng="detail.mapx" />
+          <ShelterKakaoMap :lat="Number(detail.mapy)" :lng="Number(detail.mapx)" />
         </div>
       </div>
     </div>
@@ -378,7 +387,7 @@ function stripHtmlTags(str: string) {
       </div>
       <div class="bi bi-house fa-s text-secondary-red fs-5">
         <span class="ms-1 text-gray-7">{{
-          detail?.homepage ? stripHtmlTags(detail.homepage) : '-'
+          detail?.homepage ? formatPolicy(detail.homepage) : '-'
         }}</span>
       </div>
     </div>
@@ -395,7 +404,7 @@ function stripHtmlTags(str: string) {
         </div>
         <div class="d-flex align-items-center justify-content-between mt-2">
           <h2 class="fs-5">영업시간</h2>
-          <span class="fs-6">{{ detail?.usetime ? stripHtmlTags(detail.usetime) : '-' }}</span>
+          <span class="fs-6">{{ detail?.usetime ? formatPolicy(detail.usetime) : '-' }}</span>
         </div>
         <div class="d-flex align-items-center justify-content-between mt-2">
           <h2 class="fs-5">쉬는 날</h2>
@@ -407,14 +416,14 @@ function stripHtmlTags(str: string) {
         </div>
         <div class="d-flex align-items-center justify-content-between mt-2">
           <h2 class="fs-5">체험 안내</h2>
-          <span class="fs-6">{{ detail.expguide ? stripHtmlTags(detail.usetime) : '-' }}</span>
+          <span class="fs-6">{{ detail.expguide ? formatPolicy(detail.expguide) : '-' }}</span>
         </div>
       </div>
 
       <!-- 오른쪽: 지도 Placeholder -->
       <div class="col-6">
         <div class="map-placeholder d-flex align-items-center justify-content-center rounded-4">
-          <ShelterKakaoMap :lat="detail.mapy" :lng="detail.mapx" />
+          <ShelterKakaoMap :lat="Number(detail.mapy)" :lng="Number(detail.mapx)" />
         </div>
       </div>
     </div>
@@ -440,7 +449,7 @@ function stripHtmlTags(str: string) {
       </div>
       <div class="bi bi-house fa-s text-secondary-red fs-5">
         <span class="ms-1 text-gray-7">{{
-          detail?.homepage ? stripHtmlTags(detail.homepage) : '-'
+          detail?.homepage ? formatPolicy(detail.homepage) : '-'
         }}</span>
       </div>
     </div>
@@ -453,32 +462,32 @@ function stripHtmlTags(str: string) {
         </p>
         <div class="d-flex align-items-center justify-content-between mt-5">
           <h2 class="fs-5">문의 및 안내</h2>
-          <span class="fs-6">{{ detail?.infocenterleports ?? '-' }}</span>
+          <span class="fs-6">{{ formatPolicy(detail?.infocenterleports) ?? '-' }}</span>
         </div>
         <div class="d-flex align-items-center justify-content-between mt-2">
           <h2 class="fs-5">영업시간</h2>
           <span class="fs-6">{{
-            detail?.usetimeleports ? stripHtmlTags(detail.usetimeleports) : '-'
+            detail?.usetimeleports ? formatPolicy(detail.usetimeleports) : '-'
           }}</span>
         </div>
         <div class="d-flex align-items-center justify-content-between mt-2">
           <h2 class="fs-5">쉬는 날</h2>
-          <span class="fs-6">{{ detail?.restdateleports || '-' }}</span>
+          <span class="fs-6">{{ formatPolicy(detail?.restdateleports) || '-' }}</span>
         </div>
         <div class="d-flex align-items-center justify-content-between mt-2">
           <h2 class="fs-5">주차 정보</h2>
-          <span class="fs-6">{{ detail.parkingleports ?? '-' }}</span>
+          <span class="fs-6">{{ formatPolicy(detail.parkingleports) ?? '-' }}</span>
         </div>
         <div class="d-flex align-items-center justify-content-between mt-2">
           <h2 class="fs-5">입장료</h2>
-          <span class="fs-6">{{ detail.usefeeleports ?? '-' }}</span>
+          <span class="fs-6">{{ formatPolicy(detail.usefeeleports) ?? '-' }}</span>
         </div>
       </div>
 
       <!-- 오른쪽: 지도 Placeholder -->
       <div class="col-6">
         <div class="map-placeholder d-flex align-items-center justify-content-center rounded-4">
-          <ShelterKakaoMap :lat="detail.mapy" :lng="detail.mapx" />
+          <ShelterKakaoMap :lat="Number(detail.mapy)" :lng="Number(detail.mapx)" />
         </div>
       </div>
     </div>
