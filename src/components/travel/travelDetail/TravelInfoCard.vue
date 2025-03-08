@@ -1,8 +1,13 @@
 <script setup lang="ts">
 import ShelterKakaoMap from '@/components/adoption/shelter/ShelterKakaoMap.vue';
+import { useRouter } from 'vue-router';
+import { useAuthStore } from '@/stores/auth';
+import { ref, computed } from 'vue';
+import PlannerModal from './PlannerModal.vue';
 
 interface BaseDetail {
   title: string;
+  contentid: string;
   addr1: string | null;
   tel: string | null;
   overview: string | null;
@@ -66,6 +71,38 @@ export type DetailCard =
   | ActivitiesDetail;
 
 const { detail } = defineProps<{ detail: DetailCard }>();
+const router = useRouter();
+const authStore = useAuthStore();
+
+// PlannerModal 관련 상태
+const isPlannerVisible = ref(false);
+const modalPositionTop = ref('700px'); // 필요에 따라 위치값 수정
+const modalPositionLeft = ref('1550px'); // 필요에 따라 위치값 수정
+
+//기존 detail Prop을 PlannerModal 데이터에 맞게 수정
+const detailForPlanner = computed(() => {
+  const { title, contenttypeid, ...rest } = detail;
+  return {
+    ...rest,
+    name: title,
+    contentTypeId: contenttypeid,
+    mapx: Number(detail.mapx),
+    mapy: Number(detail.mapy),
+  };
+});
+
+function togglePlannerModal() {
+  isPlannerVisible.value = !isPlannerVisible.value;
+}
+
+function handleIconClick() {
+  if (!authStore.isAuth) {
+    alert('로그인을 해주세요');
+    router.push({ name: 'login' });
+  } else {
+    isPlannerVisible.value = !isPlannerVisible.value;
+  }
+}
 
 // HTML 태그 제거 함수
 function formatPolicy(text: string | null): string {
@@ -91,7 +128,22 @@ function formatPolicy(text: string | null): string {
         <h1 class="mb-0 text-gray-10" style="font-family: 'Paperlogy'; font-weight: 700">
           {{ detail?.title ?? '가람초연재' }}
         </h1>
-        <i class="bi bi-map fa-2x text-primary-green"></i>
+
+        <div class="button-container">
+          <!-- 여행 플래너 버튼 -->
+          <button @click="handleIconClick" class="btn p-0 border-0 bg-transparent">
+            <i class="bi bi-map fa-2x text-primary-green"></i>
+          </button>
+          <span class="tooltip">여행계획에 추가하기</span>
+        </div>
+
+        <PlannerModal
+          :visible="isPlannerVisible"
+          :positionTop="modalPositionTop"
+          :positionLeft="modalPositionLeft"
+          :data="detailForPlanner"
+          @toggle-visibility="togglePlannerModal"
+        />
       </div>
 
       <div class="bi bi-geo-alt fa-s text-secondary-red fs-5">
@@ -164,7 +216,21 @@ function formatPolicy(text: string | null): string {
         <h1 class="mb-0 text-gray-10" style="font-family: 'Paperlogy'; font-weight: 700">
           {{ detail?.title ?? '가평카페 109' }}
         </h1>
-        <i class="bi bi-map fa-2x text-primary-green"></i>
+        <div class="button-container">
+          <!-- 여행 플래너 버튼 -->
+          <button @click="handleIconClick" class="btn p-0 border-0 bg-transparent">
+            <i class="bi bi-map fa-2x text-primary-green"></i>
+          </button>
+          <span class="tooltip">여행계획에 추가하기</span>
+        </div>
+
+        <PlannerModal
+          :visible="isPlannerVisible"
+          :positionTop="modalPositionTop"
+          :positionLeft="modalPositionLeft"
+          :data="detailForPlanner"
+          @toggle-visibility="togglePlannerModal"
+        />
       </div>
 
       <div class="bi bi-geo-alt fa-s text-secondary-red fs-5">
@@ -235,7 +301,21 @@ function formatPolicy(text: string | null): string {
         <h1 class="mb-0 text-gray-10" style="font-family: 'Paperlogy'; font-weight: 700">
           {{ detail?.title ?? '-' }}
         </h1>
-        <i class="bi bi-map fa-2x text-primary-green"></i>
+        <div class="button-container">
+          <!-- 여행 플래너 버튼 -->
+          <button @click="handleIconClick" class="btn p-0 border-0 bg-transparent">
+            <i class="bi bi-map fa-2x text-primary-green"></i>
+          </button>
+          <span class="tooltip">여행계획에 추가하기</span>
+        </div>
+
+        <PlannerModal
+          :visible="isPlannerVisible"
+          :positionTop="modalPositionTop"
+          :positionLeft="modalPositionLeft"
+          :data="detailForPlanner"
+          @toggle-visibility="togglePlannerModal"
+        />
       </div>
 
       <div class="bi bi-geo-alt fa-s text-secondary-red fs-5">
@@ -313,7 +393,21 @@ function formatPolicy(text: string | null): string {
         <h1 class="mb-0 text-gray-10" style="font-family: 'Paperlogy'; font-weight: 700">
           {{ detail?.title ?? '가평현리 5일장' }}
         </h1>
-        <i class="bi bi-map fa-2x text-primary-green"></i>
+        <div class="button-container">
+          <!-- 여행 플래너 버튼 -->
+          <button @click="handleIconClick" class="btn p-0 border-0 bg-transparent">
+            <i class="bi bi-map fa-2x text-primary-green"></i>
+          </button>
+          <span class="tooltip">여행계획에 추가하기</span>
+        </div>
+
+        <PlannerModal
+          :visible="isPlannerVisible"
+          :positionTop="modalPositionTop"
+          :positionLeft="modalPositionLeft"
+          :data="detailForPlanner"
+          @toggle-visibility="togglePlannerModal"
+        />
       </div>
 
       <div class="bi bi-geo-alt fa-s text-secondary-red fs-5">
@@ -376,7 +470,21 @@ function formatPolicy(text: string | null): string {
         <h1 class="mb-0 text-gray-10" style="font-family: 'Paperlogy'; font-weight: 700">
           {{ detail?.title ?? '가우도' }}
         </h1>
-        <i class="bi bi-map fa-2x text-primary-green"></i>
+        <div class="button-container">
+          <!-- 여행 플래너 버튼 -->
+          <button @click="handleIconClick" class="btn p-0 border-0 bg-transparent">
+            <i class="bi bi-map fa-2x text-primary-green"></i>
+          </button>
+          <span class="tooltip">여행계획에 추가하기</span>
+        </div>
+
+        <PlannerModal
+          :visible="isPlannerVisible"
+          :positionTop="modalPositionTop"
+          :positionLeft="modalPositionLeft"
+          :data="detailForPlanner"
+          @toggle-visibility="togglePlannerModal"
+        />
       </div>
 
       <div class="bi bi-geo-alt fa-s text-secondary-red fs-5">
@@ -438,7 +546,21 @@ function formatPolicy(text: string | null): string {
         <h1 class="mb-0 text-gray-10" style="font-family: 'Paperlogy'; font-weight: 700">
           {{ detail?.title ?? '가우도' }}
         </h1>
-        <i class="bi bi-map fa-2x text-primary-green"></i>
+        <div class="button-container">
+          <!-- 여행 플래너 버튼 -->
+          <button @click="handleIconClick" class="btn p-0 border-0 bg-transparent">
+            <i class="bi bi-map fa-2x text-primary-green"></i>
+          </button>
+          <span class="tooltip">여행계획에 추가하기</span>
+        </div>
+
+        <PlannerModal
+          :visible="isPlannerVisible"
+          :positionTop="modalPositionTop"
+          :positionLeft="modalPositionLeft"
+          :data="detailForPlanner"
+          @toggle-visibility="togglePlannerModal"
+        />
       </div>
 
       <div class="bi bi-geo-alt fa-s text-secondary-red fs-5">
@@ -501,5 +623,30 @@ function formatPolicy(text: string | null): string {
   height: 630px; /* 원하는 크기로 조절 */
   background-color: #f0f0f0;
   border: 1px dashed #ccc;
+}
+
+.tooltip {
+  position: absolute;
+  bottom: 120%; /* 버튼 위에 위치 */
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.75);
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease-in-out;
+}
+
+/* 버튼에 마우스 오버하면 툴팁 표시 */
+.button-container:hover .tooltip {
+  opacity: 1;
+}
+.button-container {
+  position: relative;
+  display: inline-block;
 }
 </style>

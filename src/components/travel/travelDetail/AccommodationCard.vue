@@ -48,8 +48,9 @@ function pyeongToSquareMeter(pyeong: string | null) {
           <div
             v-else
             class="placeholder-image rounded-3 d-flex align-items-center justify-content-center"
+            style="background-color: #e0e0e0; width: 100%; height: 100%"
           >
-            No Image
+            <span class="text-muted">No Image</span>
           </div>
         </div>
         <!-- 오른쪽: 텍스트(상단) + 가격(하단) -->

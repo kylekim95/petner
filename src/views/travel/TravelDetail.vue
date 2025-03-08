@@ -60,6 +60,7 @@ onMounted(async () => {
     const imageResult = await fetchTourImageData({ contentId: contentId });
     if (Array.isArray(imageResult)) {
       imageData.value = imageResult.map((item: { originimgurl: string }) => item.originimgurl);
+      console.log('Image 데이터: ', imageData.value);
     } else {
       console.warn('API 응답 결과가 배열이 아닙니다.', imageData.value);
     }
