@@ -152,10 +152,10 @@ function HandleDeletePlan(id : string){
 }
 .color-box-expand {
   width: 100%;
-  transition: all .5s ease-in-out;
+  transition: all .5s;
 }
 .slideOutLeft {
   transform: translateX(100%);
-  transition: all .5s ease-in-out;
+  transition: all .5s;
 }
 </style>

@@ -28,6 +28,13 @@ watch(
         mapInstance.panTo(new window.kakao.maps.LatLng(destArr[0].mapy, destArr[0].mapx));
       else
         mapInstance.panTo(new window.kakao.maps.LatLng(props.currentFocused.mapy, props.currentFocused.mapx));
+      const markers = destArr.map((e)=>{
+        return (new window.kakao.maps.Marker({ position: new window.kakao.maps.LatLng(e.mapy, e.mapx)}));
+      });
+      console.log(markers);
+      for(let i = 0; i < markers.length; i++){
+        markers[i].setMap(mapInstance);
+      }
     }
   }, {deep:true}
 );

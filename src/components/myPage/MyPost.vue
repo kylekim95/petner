@@ -11,6 +11,8 @@ import * as CHANID from '@/constants/communityConsts';
 import { useAuthStore } from '@/stores/auth';
 import type { devPost } from '@/types/devcourse/devPost';
 
+import { getAuthorPosts } from '@/apis/devcourse/Post/getAuthorPosts';
+
 const adoptionFormPost = ref<devPost>();
 const adoptionRequestData = ref<AdoptionRequestData>();
 const auth = useAuthStore();
@@ -47,6 +49,17 @@ watch(
     }
   }
 );
+
+onMounted(async ()=>{
+  if(!auth.user) return;
+
+  const posts = (await getAuthorPosts({authorId: auth.user._id})).posts.filter((e)=>(e.channel._id===CHANID.FreeChannelId || e.channel._id===CHANID.MissingChannelId));
+  posts.sort((a, b)=>{
+    return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+  });
+  //posts 출력해주세요
+  console.log(posts);
+});
 
 // 현재 선택된 콘텐츠 (게시글 / 입양신청서)
 const currentContent = ref('게시글');
