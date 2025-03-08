@@ -9,10 +9,11 @@ import { type DetailCard } from '@/components/travel/travelDetail/TravelInfoCard
 import { type PetTravelDetail } from '@/components/travel/travelDetail/withPetsInfo.vue';
 import { type RoomItem } from '@/components/travel/travelDetail/AccommodationCard.vue';
 import { type DetailInfoData } from '@/components/travel/travelDetail/DetailInfoComponent.vue';
+import { type GetChannelPostsResponse } from '@/apis/devcourse/Post/getChannelPosts';
 
 import WithPetsInfo from '@/components/travel/travelDetail/withPetsInfo.vue';
 import AccommodationCard from '@/components/travel/travelDetail/AccommodationCard.vue';
-import CommunityPosts from '@/components/travel/travelDetail/CommunityPosts.vue';
+import CommunityFreePosts from '@/components/travel/travelDetail/CommunityFreePosts.vue';
 import DetailInfoComponent from '@/components/travel/travelDetail/DetailInfoComponent.vue';
 //API 함수들
 import { fetchTourImageData } from '@/apis/tour/detailImage';
@@ -20,8 +21,11 @@ import { fetchPetTourData } from '@/apis/tour/detailPetTour';
 import { fetchDetailInfoData } from '@/apis/tour/detailInfo';
 import { detailIntro } from '@/apis/tour/detailIntro';
 import { detailCommon } from '@/apis/tour/detailCommon';
+import { getChannelPosts } from '@/apis/devcourse/Post/getChannelPosts';
+import { FreeChannelId } from '@/constants/communityConsts';
 
 const imageData = ref<string[]>([]);
+const postsData = ref<GetChannelPostsResponse | null>(null);
 const detailRoomData = ref<RoomItem[]>([]);
 const detailInfoData = ref<DetailInfoData[]>([]);
 const detailCommonData = ref<DetailCard | null>(null);
@@ -85,6 +89,10 @@ onMounted(async () => {
     detailPetTourData.value = fetchedDetailPetTour[0];
     console.log('PETTOUR 데이터:', detailPetTourData.value);
 
+    //자유게시판 포스트 글 불러오기기
+    postsData.value = await getChannelPosts({ channelId: FreeChannelId, offset: 0 });
+    console.log('API로 받은 게시글 데이터:', postsData.value);
+
     //Common,Info,Intro를 InfoCard컴포넌트 프로퍼티에 넘기기위해 하나의 객체에 저장
     if (detailCommonData.value && detailIntroData.value) {
       detailMergedData.value = {
@@ -96,10 +104,6 @@ onMounted(async () => {
     console.error('상세 데이터를 불러오는 중 오류 발생: ', error);
   }
 });
-
-const dummyData = {
-  name: '가람초',
-};
 </script>
 
 <template>
@@ -119,6 +123,6 @@ const dummyData = {
     <DetailInfoComponent :data="detailInfoData" />
   </div>
   <div class="container mb-5">
-    <CommunityPosts :name="dummyData.name" :data="[]" />
+    <CommunityFreePosts :data="postsData" />
   </div>
 </template>
