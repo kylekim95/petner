@@ -1,21 +1,45 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import 'swiper/css';
+import usePlanner, { type TravelData } from '@/hooks/usePlanner';
+import { useRouter } from 'vue-router';
 
-const travelPlans = ref([
-  { title: '덕구랑 2박 3일 강원도 여행', date: '2025.10.09' },
-  { title: '서울 야경 투어', date: '2025.11.15' },
-  { title: '부산 해운대 여행', date: '2025.12.20' },
-  { title: '제주도 힐링 여행', date: '2026.01.05' },
-  { title: '부산 해운대 여행', date: '2025.12.20' },
-  { title: '제주도 힐링 여행', date: '2026.01.05' },
-  { title: '부산 해운대 여행', date: '2025.12.20' },
-  { title: '제주도 힐링 여행', date: '2026.01.05' },
-  { title: '제주도 힐링 여행', date: '2026.01.05' },
-  { title: '부산 해운대 여행', date: '2025.12.20' },
-  { title: '제주도 힐링 여행', date: '2026.01.05' },
-]);
+const planner = usePlanner();
+const myPlans = ref<TravelData[]>();
+const router = useRouter();
+
+onMounted(async ()=>{
+  myPlans.value = await planner?.GetMyPlans();
+});
+watch(
+  ()=>myPlans.value,
+  ()=>{
+    const formattedData = myPlans.value?.map((e)=>{
+      const _date = new Date(e.createdAt);
+      return {
+        title: e.title,
+        date: _date.getFullYear() + '.' + _date.getMonth() + '.' + _date.getDay(),
+        id: e.id
+      }
+    });
+    if(formattedData){
+      travelPlans.value = formattedData;
+    }
+  }
+);
+const travelPlans = ref<{title: string, date: string, id: string}[]>([]);
+// { title: '덕구랑 2박 3일 강원도 여행', date: '2025.10.09' },
+// { title: '서울 야경 투어', date: '2025.11.15' },
+// { title: '부산 해운대 여행', date: '2025.12.20' },
+// { title: '제주도 힐링 여행', date: '2026.01.05' },
+// { title: '부산 해운대 여행', date: '2025.12.20' },
+// { title: '제주도 힐링 여행', date: '2026.01.05' },
+// { title: '부산 해운대 여행', date: '2025.12.20' },
+// { title: '제주도 힐링 여행', date: '2026.01.05' },
+// { title: '제주도 힐링 여행', date: '2026.01.05' },
+// { title: '부산 해운대 여행', date: '2025.12.20' },
+// { title: '제주도 힐링 여행', date: '2026.01.05' },
 </script>
 
 <template>
@@ -28,7 +52,7 @@ const travelPlans = ref([
       <!--  여행 리스트 -->
       <Swiper
         :direction="'vertical'"
-        :slides-per-view="3"
+        :slides-per-view="5"
         :space-between="10"
         style="height: 650px"
       >
@@ -36,6 +60,8 @@ const travelPlans = ref([
           v-for="(plan, index) in travelPlans"
           :key="index"
           class="d-flex flex-row align-items-center myTravelList position-relative"
+          @click="()=>{router.push(`/travel/planner/${plan.id}`)}"
+          style="cursor: pointer;"
         >
           <img src="/public/myPage/myPlanImg.png" width="68px" height="68px" alt="" />
           <div>{{ plan.title }}</div>
