@@ -8,6 +8,7 @@ import { useRouter } from 'vue-router';
 const props = defineProps<{
   card: devPost;
 }>();
+console.log('card', props.card);
 const AVATAR_WIDTH = '40px';
 const AVATART_HEIGHT = '40px';
 const data = JSON.parse(props.card.title);

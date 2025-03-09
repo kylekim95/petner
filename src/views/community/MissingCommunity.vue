@@ -4,11 +4,19 @@ import useFetchMissingPost from '@/composibles/tanstack-query/useFetchMissingPos
 import PATH from '@/constants/path';
 import { useAuthStore } from '@/stores/auth';
 import { storeToRefs } from 'pinia';
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
 const router = useRouter();
 // 여기서 missing community post들을 호출
 const { postCards, isLoading } = useFetchMissingPost();
+const filteredPostCard = computed(() => {
+  const filtered = postCards.value?.posts.filter((post) => {
+    const contents = JSON.parse(post.title);
+    return contents.animalType == animalType.value;
+  });
+  console.log('필터링된 카드', filteredPostCard);
+  return filtered;
+});
 
 // 필터
 const sortBy = ref<'recent' | 'comment'>('recent');
@@ -92,7 +100,7 @@ const handleWriteClick = () => {
               :key="index"
               class="col d-flex g-3 justify-content-center"
             >
-              <MissingCommunityPostCard :card="post" v-if="post.title !== '[object Object]'" />
+              <MissingCommunityPostCard :card="post" />
             </div>
           </div>
         </div>
