@@ -3,38 +3,63 @@ import MyTravelCard from '@/components/myPage/MyTravelCard.vue';
 import AdoptionRequestDisplay, {
   type AdoptionRequestData,
 } from '@/components/myPage/AdoptionRequestDisplay.vue';
-import { ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 
-const data: AdoptionRequestData = {
-  contact: '010-1234-5678',
-  email: 'abc12@email.com',
-  gender: '여자',
-  name: '홍길동',
-  reqId: '89526750',
-  questions: [
-    {
-      question: '입양을 원하는 이유',
-      answer:
-        '어렸을 때부터 반려동물과 함께 자라며, 동물에 대한 깊은 애정과 책임감을 느꼈습니다. 이번 기회에 제 삶에 새로운 가족을 맞이하고 싶습니다.',
-    },
-    {
-      question: '키우고 있는 반려동물',
-      answer:
-        '현재는 반려동물을 키우고 있지 않습니다. 하지만 이전에 강아지를 키운 경험이 있으며, 반려동물을 돌보는 일에 대해 충분히 이해하고 있습니다.',
-    },
-    {
-      question: '키우던 반려동물을 개인 사정으로 포기한 경험',
-      answer:
-        '아니요, 반려동물을 포기한 경험은 없습니다. 모든 상황을 고려해 충분히 책임질 수 있을 때만 입양을 결정하고 있습니다.',
-    },
-    {
-      question: '가족 구성원',
-      answer:
-        '저희 가족은 총 4명입니다. 부모님, 저, 그리고 동생이 한 명 있습니다. 부모님은 모두 직장에 다니시고, 동생은 대학생입니다. 저희 가족은 모두 동물을 사랑해서, 저와 동생이 함께 반려동물 돌보는 일을 주로 합니다.',
-    },
-  ],
-  oathDate: new Date(),
-};
+import { getChannelPosts } from '@/apis/devcourse/Post/getChannelPosts';
+import type adoptionForm from '@/types/adoptionForm';
+import * as CHANID from '@/constants/communityConsts';
+import { useAuthStore } from '@/stores/auth';
+import type { devPost } from '@/types/devcourse/devPost';
+
+import { getAuthorPosts } from '@/apis/devcourse/Post/getAuthorPosts';
+
+const adoptionFormPost = ref<devPost>();
+const adoptionRequestData = ref<AdoptionRequestData>();
+const auth = useAuthStore();
+onMounted(async ()=>{
+  const posts = (await getChannelPosts({channelId: CHANID.AdoptionChannelId})).posts;
+  const myPosts = posts.filter((e)=>e.author._id === auth.user?._id);
+  if(myPosts.length <= 0) return;
+  let mostRecent = myPosts[0];
+  for(let i = 1; i < myPosts.length; i++){
+    if(new Date(mostRecent.createdAt) < new Date(myPosts[i].createdAt)){
+      mostRecent = myPosts[i];
+    }
+  }
+  adoptionFormPost.value = mostRecent;
+});
+watch(
+  ()=>adoptionFormPost.value,
+  ()=>{
+    if(!adoptionFormPost.value) return;
+    const adoptionFormData = JSON.parse(adoptionFormPost.value.title) as adoptionForm;
+    adoptionRequestData.value = {
+      contact: adoptionFormData.phone,
+      email: adoptionFormData.email,
+      gender: adoptionFormData.gender,
+      name: adoptionFormData.name,
+      oathDate: new Date(adoptionFormPost.value.createdAt),
+      reqId: adoptionFormData.adoptionNumber,
+      questions:[
+        {question: '입양을 원하시는 가장 큰 이유는 무엇인가요?', answer: adoptionFormData.adoptionReason},
+        {question: '키우고 계신 반려동물이 있나요? 있다면 소개해 주세요.', answer: adoptionFormData.hasPet},
+        {question: '키우던 반려동물을 개인 사정으로 포기한 경험이 있으신가요? 이유는 무엇인가요?', answer: adoptionFormData.gaveUpPet},
+        {question: '가족 구성원은 몇 명인가요? 구성원을 소개해 주세요.', answer: adoptionFormData.familyMembers},
+      ]
+    }
+  }
+);
+
+onMounted(async ()=>{
+  if(!auth.user) return;
+
+  const posts = (await getAuthorPosts({authorId: auth.user._id})).posts.filter((e)=>(e.channel._id===CHANID.FreeChannelId || e.channel._id===CHANID.MissingChannelId));
+  posts.sort((a, b)=>{
+    return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+  });
+  //posts 출력해주세요
+  console.log(posts);
+});
 
 // 현재 선택된 콘텐츠 (게시글 / 입양신청서)
 const currentContent = ref('게시글');
@@ -72,7 +97,7 @@ const changeContent = (content: string) => {
       <MyTravelCard />
     </div>
     <div v-motion-pop class="w-100" v-if="currentContent === '입양신청서'">
-      <AdoptionRequestDisplay :data="data" />
+      <AdoptionRequestDisplay v-if="adoptionRequestData !== undefined" :data="adoptionRequestData" />
     </div>
   </div>
 </template>

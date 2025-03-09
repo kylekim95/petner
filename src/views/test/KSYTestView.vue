@@ -1,23 +1,14 @@
 <script setup lang="ts">
+import PlannerModal from '@/components/travel/travelDetail/PlannerModal.vue';
 import { ref } from 'vue';
 
-import { useAuthStore } from '@/stores/auth';
-
-import { createChannel, type CreateChannelRequest } from '@/apis/devcourse/Channel/createChannel';
-import { deleteChannel, type DeleteChannelRequest } from '@/apis/devcourse/Channel/deleteChannel';
-
-// login test
-const auth = useAuthStore();
-const adminEmail = 'admin@programmers.co.kr';
-const adminPw = 'programmers';
-
+const visible = ref<boolean>(false);
 </script>
 
 <template>
-  <div class="d-flex flex-column container p-5 gap-1">
-    <button class="btn bg-primary-red text-gray-1" @click="()=>auth.Login(adminEmail, adminPw)" style="width: 150px; height: 50px">LOGIN ADMIN</button>
-    <button class="btn bg-primary-red text-gray-1" @click="()=>auth.Login(adminEmail, adminPw)" style="width: 150px; height: 50px">LOGIN ADMIN</button>
-    <button class="btn bg-primary-red text-gray-1" @click="()=>auth.Login(adminEmail, adminPw)" style="width: 150px; height: 50px">LOGIN ADMIN</button>
-</div>
+  <div class="p-5">
+    <button type="button" class="btn btn-primary m-2" @click="()=>{visible = !visible}">Click Me!</button>
+    <PlannerModal :visible="visible" :position-left="'500px'" :position-top="'500px'" @toggle-visibility="visible=!visible" />
+  </div>
 </template>
 

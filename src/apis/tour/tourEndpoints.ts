@@ -7,7 +7,7 @@ export const INTRO = Object.freeze({
 });
 
 export const INFO = Object.freeze({
-  get: 'detailIntro',
+  get: 'detailInfo',
 });
 
 export const IMAGE = Object.freeze({
