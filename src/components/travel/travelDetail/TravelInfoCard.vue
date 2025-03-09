@@ -76,8 +76,8 @@ const authStore = useAuthStore();
 
 // PlannerModal 관련 상태
 const isPlannerVisible = ref(false);
-const modalPositionTop = ref('75%'); // 필요에 따라 위치값 수정
-const modalPositionLeft = ref('92%'); //필요에 따라 위치값 수정
+const modalPositionTop = ref('100%'); // 필요에 따라 위치값 수정
+const modalPositionLeft = ref('0%'); //필요에 따라 위치값 수정
 
 //기존 detail Prop을 PlannerModal 데이터에 맞게 수정
 const detailForPlanner = computed(() => {

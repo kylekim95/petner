@@ -111,7 +111,7 @@ const chartPlugins : ChartPlugin<'line'>[] = [
 </script>
 
 <template>
-  <div class="container mb-5 p-2 d-flex gap-1" style="height: 575px; width: 67%; min-width: 1280px">
+  <div class="container mb-5 p-3 d-flex gap-1" style="height: 575px; width: 67%; min-width: 1280px">
     <div style="width: 60%; height: 100%;">
       <Line :options="chartOptions" :data="chartData" :plugins="chartPlugins" />
     </div>

@@ -3,32 +3,41 @@ import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import axios from 'axios';
 import CommentSection from '@/components/community/CommentSection.vue';
+import { getPost } from '@/apis/devcourse/Post/getPost';
+import { devPost } from '@/types/devcourse/devPost';
+import { devUser } from '@/types/devcourse/devUser';
+import { devComment } from '@/types/devcourse/devComment';
 
 const route = useRoute();
 const router = useRouter();
 const postId = route.params.postId as string;
 
 // 게시글 데이터를 저장할 ref
-const post = ref<any>(null);
+interface parsedPostData {
+  author : devUser,
+  title : string,
+  content : string,
+  image : string,
+  comments : devComment[],
+  id: string
+}
+const post = ref<parsedPostData>();
 
 onMounted(async () => {
   try {
-    const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/posts/${postId}`);
-    let data = response.data;
-    // title 필드가 JSON 문자열이라면 파싱하여 제목과 내용을 분리
-    try {
-      const parsed = JSON.parse(data.title);
-      data.title = parsed.title;
-      if (parsed.content) {
-        data.content = parsed.content;
-      }
-    } catch (e) {
-      console.error('타이틀 파싱 에러:', e);
+    const response = (await getPost({id: postId})).post;
+    const parsedTitle = JSON.parse(response.title);
+    post.value = {
+      author: response.author,
+      title: parsedTitle.title,
+      content: parsedTitle.content,
+      image: response.image ?? '',
+      comments: response.comments,
+      id: response._id
     }
-    post.value = data;
-    console.log('게시글 상세 데이터:', post.value);
-  } catch (error) {
-    console.error('게시글 로드 에러:', error);
+  }
+  catch(e){
+    console.log(e);
   }
 });
 
@@ -37,11 +46,17 @@ const handleDelete = async () => {
   console.log('게시글 삭제:', postId);
   router.push('/community');
 };
-
 // 댓글 삭제 함수
-const handleCommentDelete = (index: number) => {
-  if (post.value && post.value.comments) {
-    post.value.comments.splice(index, 1);
+const handleCommentUpdate = async (index: number) => {
+  const response = (await getPost({id: postId})).post;
+  const parsedTitle = JSON.parse(response.title);
+  post.value = {
+    author: response.author,
+    title: parsedTitle.title,
+    content: parsedTitle.content,
+    image: response.image ?? '',
+    comments: response.comments,
+    id: response._id
   }
 };
 </script>
@@ -74,7 +89,7 @@ const handleCommentDelete = (index: number) => {
       <div class="col-md-4">
         <div style="width: 100%; position: relative; border-radius: 8px;">
           <img
-            :src="post.image"
+            :src="post.image ?? undefined"
             alt="community-image"
             class="img-fluid"
             style="
@@ -110,8 +125,9 @@ const handleCommentDelete = (index: number) => {
     <!-- 댓글 섹션 -->
     <CommentSection
       :comments="post.comments"
-      :onDeleteComment="handleCommentDelete"
+      :onUpdateComment="handleCommentUpdate"
       color="red"
+      :postId="post.id"
     />
   </div>
 </template>
