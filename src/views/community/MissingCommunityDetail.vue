@@ -11,7 +11,7 @@ import { useQueryClient } from '@tanstack/vue-query';
 import QUERY_KEY from '@/constants/queryKey';
 import PATH from '@/constants/path';
 
-const cat = ['이름', '나이', '품종', '성별', '색상', '마이크로 칩 번호'];
+const cat = ['나이', '품종', '성별', '색상', '마이크로 칩 번호'];
 const missingCat = ['분실 날짜', '분실 장소', '주위의 특징적 건물', '관할지'];
 const contactInfoCat = ['신고자', '연락처'];
 const route = useRoute();
@@ -48,7 +48,6 @@ const dummyData = computed(() => ({
   postBy: userData.value?.user.fullName,
   createdAt: data.value[0].createdAt,
   animalInfo: {
-    name: contents.value.name,
     age: contents.value.age,
     breed: contents.value.species,
     gender: contents.value.gender,
@@ -63,7 +62,7 @@ const dummyData = computed(() => ({
     juris: contents.value.region,
   },
   contactInfo: {
-    name: userData.value?.user.fullName,
+    name: contents.value.name,
     tel: contents.value.phone,
   },
 }));
