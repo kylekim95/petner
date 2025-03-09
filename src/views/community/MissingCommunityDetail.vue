@@ -1,27 +1,45 @@
 <script setup lang="ts">
 import useFetchMissingDetail from '@/composibles/tanstack-query/useFetchMissingDetail';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import useFetchMissingPost from '@/composibles/tanstack-query/useFetchMissingPost';
 import { computed } from 'vue';
 import type MissingAnimalDataType from '@/types/missingAnimal';
 import type { computedRef } from 'vue';
 import useFetchUser from '@/composibles/tanstack-query/useFetchUser';
+import useDeletePost from '@/composibles/tanstack-query/useDeletePost';
+import { deletePost } from '@/apis/devcourse/Post/deletePost';
+import { useQueryClient } from '@tanstack/vue-query';
+import QUERY_KEY from '@/constants/queryKey';
+import PATH from '@/constants/path';
+import { getChannelPosts } from '@/apis/devcourse/Post/getChannelPosts';
+import { MissingChannelId } from '@/constants/communityConsts';
+
 const cat = ['이름', '나이', '품종', '성별', '색상', '마이크로 칩 번호'];
 const missingCat = ['분실 날짜', '분실 장소', '주위의 특징적 건물', '관할지'];
 const contactInfoCat = ['신고자', '연락처'];
 const route = useRoute();
+const router = useRouter();
 const { postId } = route.params;
+console.log('postId', postId);
 const { postCards, isLoading } = useFetchMissingPost();
 
 // 전체 카드데이터중 특정 Id를 가진 카드만 가져오기
 const data = computed(() => postCards.value?.posts.filter((cards) => cards._id === postId));
 // title에 저장된 실종정보 파싱
-const contents: computedRef<MissingAnimalDataType> = computed(() =>
-  JSON.parse(data?.value[0].title),
-);
+const contents: computedRef<MissingAnimalDataType> = computed(() => {
+  if (data.value !== undefined) {
+    return JSON.parse(data?.value[0].title);
+  }
+  return null;
+});
 // 신고유저 정보 가져오기
-const userId = computed(() => data?.value[0].author._id);
-const userData = useFetchUser(userId.value);
+const userId = computed(() => {
+  if (data.value !== undefined) {
+    return data?.value[0]?.author._id;
+  }
+  return null;
+});
+const userData = useFetchUser(userId?.value);
 const profileImgUrl =
   userData.value?.user.image === undefined
     ? '/PNG-Image/images/default-profile1.png'
@@ -51,6 +69,24 @@ const dummyData = computed(() => ({
     tel: contents.value.phone,
   },
 }));
+
+const deletePostMutation = useDeletePost();
+const queryClient = useQueryClient();
+
+const handleDelete = async () => {
+  // 삭제 요청  보내기
+  deletePostMutation.mutate(postId);
+  // 기존 쿼리키를 무효화 하고 새롭게 데이터 요청
+  queryClient.invalidateQueries({
+    queryKey: QUERY_KEY.missingList,
+  });
+  await queryClient.refetchQueries({
+    queryKey: QUERY_KEY.missingList,
+    type: 'all',
+  });
+
+  router.push(PATH.communityMissing);
+};
 </script>
 
 <template>
@@ -80,6 +116,7 @@ const dummyData = computed(() => ({
         <button
           class="btn border-primary-red rounded-5 d-flex align-items-center justify-content-center bg-white"
           style="width: 100px; height: 35px"
+          @click="handleDelete"
         >
           <p class="m-0 p-0 button-text text-primary-red">삭제하기</p>
         </button>

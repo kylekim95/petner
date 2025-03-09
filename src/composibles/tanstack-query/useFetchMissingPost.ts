@@ -4,7 +4,7 @@ import QUERY_KEY from '@/constants/queryKey';
 import { useQuery } from '@tanstack/vue-query';
 import { computed } from 'vue';
 // TODO
-// [] 데이터 불러오기
+// [x] 데이터 불러오기
 // [] 최신순, 댓글순으로 데이터 정렬해서 보여주기
 // [] 강아지, 고양이, 기타 축종 선택해서 보여주기
 
