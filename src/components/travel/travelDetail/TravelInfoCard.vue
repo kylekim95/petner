@@ -77,7 +77,7 @@ const authStore = useAuthStore();
 // PlannerModal 관련 상태
 const isPlannerVisible = ref(false);
 const modalPositionTop = ref('75%'); // 필요에 따라 위치값 수정
-const modalPositionLeft = ref('92%'); // 필요에 따라 위치값 수정
+const modalPositionLeft = ref('92%'); //필요에 따라 위치값 수정
 
 //기존 detail Prop을 PlannerModal 데이터에 맞게 수정
 const detailForPlanner = computed(() => {
@@ -129,21 +129,27 @@ function formatPolicy(text: string | null): string {
           {{ detail?.title ?? '가람초연재' }}
         </h1>
 
-        <div class="button-container">
+        <div class="button-container" style="width: fit-content; height: fit-content">
           <!-- 여행 플래너 버튼 -->
-          <button @click="handleIconClick" class="btn p-0 border-0 bg-transparent">
+          <button
+            @click="
+              (e) => {
+                handleIconClick();
+              }
+            "
+            class="btn p-0 border-0 bg-transparent"
+          >
             <i class="bi bi-map fa-2x text-primary-green"></i>
           </button>
           <span class="tooltip">여행계획에 추가하기</span>
+          <PlannerModal
+            :visible="isPlannerVisible"
+            :positionTop="modalPositionTop"
+            :positionLeft="modalPositionLeft"
+            :data="detailForPlanner"
+            @toggle-visibility="togglePlannerModal"
+          />
         </div>
-
-        <PlannerModal
-          :visible="isPlannerVisible"
-          :positionTop="modalPositionTop"
-          :positionLeft="modalPositionLeft"
-          :data="detailForPlanner"
-          @toggle-visibility="togglePlannerModal"
-        />
       </div>
 
       <div class="bi bi-geo-alt fa-s text-secondary-red fs-5">
@@ -216,21 +222,27 @@ function formatPolicy(text: string | null): string {
         <h1 class="mb-0 text-gray-10" style="font-family: 'Paperlogy'; font-weight: 700">
           {{ detail?.title ?? '가평카페 109' }}
         </h1>
-        <div class="button-container">
+        <div class="button-container" style="width: fit-content; height: fit-content">
           <!-- 여행 플래너 버튼 -->
-          <button @click="handleIconClick" class="btn p-0 border-0 bg-transparent">
+          <button
+            @click="
+              (e) => {
+                handleIconClick();
+              }
+            "
+            class="btn p-0 border-0 bg-transparent"
+          >
             <i class="bi bi-map fa-2x text-primary-green"></i>
           </button>
           <span class="tooltip">여행계획에 추가하기</span>
+          <PlannerModal
+            :visible="isPlannerVisible"
+            :positionTop="modalPositionTop"
+            :positionLeft="modalPositionLeft"
+            :data="detailForPlanner"
+            @toggle-visibility="togglePlannerModal"
+          />
         </div>
-
-        <PlannerModal
-          :visible="isPlannerVisible"
-          :positionTop="modalPositionTop"
-          :positionLeft="modalPositionLeft"
-          :data="detailForPlanner"
-          @toggle-visibility="togglePlannerModal"
-        />
       </div>
 
       <div class="bi bi-geo-alt fa-s text-secondary-red fs-5">
@@ -301,21 +313,27 @@ function formatPolicy(text: string | null): string {
         <h1 class="mb-0 text-gray-10" style="font-family: 'Paperlogy'; font-weight: 700">
           {{ detail?.title ?? '-' }}
         </h1>
-        <div class="button-container">
+        <div class="button-container" style="width: fit-content; height: fit-content">
           <!-- 여행 플래너 버튼 -->
-          <button @click="handleIconClick" class="btn p-0 border-0 bg-transparent">
+          <button
+            @click="
+              (e) => {
+                handleIconClick();
+              }
+            "
+            class="btn p-0 border-0 bg-transparent"
+          >
             <i class="bi bi-map fa-2x text-primary-green"></i>
           </button>
           <span class="tooltip">여행계획에 추가하기</span>
+          <PlannerModal
+            :visible="isPlannerVisible"
+            :positionTop="modalPositionTop"
+            :positionLeft="modalPositionLeft"
+            :data="detailForPlanner"
+            @toggle-visibility="togglePlannerModal"
+          />
         </div>
-
-        <PlannerModal
-          :visible="isPlannerVisible"
-          :positionTop="modalPositionTop"
-          :positionLeft="modalPositionLeft"
-          :data="detailForPlanner"
-          @toggle-visibility="togglePlannerModal"
-        />
       </div>
 
       <div class="bi bi-geo-alt fa-s text-secondary-red fs-5">
@@ -393,21 +411,27 @@ function formatPolicy(text: string | null): string {
         <h1 class="mb-0 text-gray-10" style="font-family: 'Paperlogy'; font-weight: 700">
           {{ detail?.title ?? '가평현리 5일장' }}
         </h1>
-        <div class="button-container">
+        <div class="button-container" style="width: fit-content; height: fit-content">
           <!-- 여행 플래너 버튼 -->
-          <button @click="handleIconClick" class="btn p-0 border-0 bg-transparent">
+          <button
+            @click="
+              (e) => {
+                handleIconClick();
+              }
+            "
+            class="btn p-0 border-0 bg-transparent"
+          >
             <i class="bi bi-map fa-2x text-primary-green"></i>
           </button>
           <span class="tooltip">여행계획에 추가하기</span>
+          <PlannerModal
+            :visible="isPlannerVisible"
+            :positionTop="modalPositionTop"
+            :positionLeft="modalPositionLeft"
+            :data="detailForPlanner"
+            @toggle-visibility="togglePlannerModal"
+          />
         </div>
-
-        <PlannerModal
-          :visible="isPlannerVisible"
-          :positionTop="modalPositionTop"
-          :positionLeft="modalPositionLeft"
-          :data="detailForPlanner"
-          @toggle-visibility="togglePlannerModal"
-        />
       </div>
 
       <div class="bi bi-geo-alt fa-s text-secondary-red fs-5">
@@ -470,21 +494,27 @@ function formatPolicy(text: string | null): string {
         <h1 class="mb-0 text-gray-10" style="font-family: 'Paperlogy'; font-weight: 700">
           {{ detail?.title ?? '가우도' }}
         </h1>
-        <div class="button-container">
+        <div class="button-container" style="width: fit-content; height: fit-content">
           <!-- 여행 플래너 버튼 -->
-          <button @click="handleIconClick" class="btn p-0 border-0 bg-transparent">
+          <button
+            @click="
+              (e) => {
+                handleIconClick();
+              }
+            "
+            class="btn p-0 border-0 bg-transparent"
+          >
             <i class="bi bi-map fa-2x text-primary-green"></i>
           </button>
           <span class="tooltip">여행계획에 추가하기</span>
+          <PlannerModal
+            :visible="isPlannerVisible"
+            :positionTop="modalPositionTop"
+            :positionLeft="modalPositionLeft"
+            :data="detailForPlanner"
+            @toggle-visibility="togglePlannerModal"
+          />
         </div>
-
-        <PlannerModal
-          :visible="isPlannerVisible"
-          :positionTop="modalPositionTop"
-          :positionLeft="modalPositionLeft"
-          :data="detailForPlanner"
-          @toggle-visibility="togglePlannerModal"
-        />
       </div>
 
       <div class="bi bi-geo-alt fa-s text-secondary-red fs-5">
@@ -546,21 +576,27 @@ function formatPolicy(text: string | null): string {
         <h1 class="mb-0 text-gray-10" style="font-family: 'Paperlogy'; font-weight: 700">
           {{ detail?.title ?? '가우도' }}
         </h1>
-        <div class="button-container">
+        <div class="button-container" style="width: fit-content; height: fit-content">
           <!-- 여행 플래너 버튼 -->
-          <button @click="handleIconClick" class="btn p-0 border-0 bg-transparent">
+          <button
+            @click="
+              (e) => {
+                handleIconClick();
+              }
+            "
+            class="btn p-0 border-0 bg-transparent"
+          >
             <i class="bi bi-map fa-2x text-primary-green"></i>
           </button>
           <span class="tooltip">여행계획에 추가하기</span>
+          <PlannerModal
+            :visible="isPlannerVisible"
+            :positionTop="modalPositionTop"
+            :positionLeft="modalPositionLeft"
+            :data="detailForPlanner"
+            @toggle-visibility="togglePlannerModal"
+          />
         </div>
-
-        <PlannerModal
-          :visible="isPlannerVisible"
-          :positionTop="modalPositionTop"
-          :positionLeft="modalPositionLeft"
-          :data="detailForPlanner"
-          @toggle-visibility="togglePlannerModal"
-        />
       </div>
 
       <div class="bi bi-geo-alt fa-s text-secondary-red fs-5">
