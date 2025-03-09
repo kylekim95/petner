@@ -13,8 +13,6 @@ import { useRouter } from 'vue-router';
 import { useQueryClient } from '@tanstack/vue-query';
 import PATH from '@/constants/path';
 import QUERY_KEY from '@/constants/queryKey';
-const router = useRouter();
-const queryClient = useQueryClient();
 
 const data = reactive({
   name: '',
@@ -32,7 +30,7 @@ const data = reactive({
 });
 const imageRef = ref<File | null>(null); // 이미지 담을 배열
 const doroRef = ref('');
-const { postFormMutation } = usePostMissingForm();
+const postFormMutation = usePostMissingForm();
 
 const isValid = computed(() => {
   // data 배열을 돌면서 하나라도 비어있는 것이 있다면 false
@@ -42,29 +40,36 @@ const isValid = computed(() => {
   return dataResult && imageResult && addressResult;
 });
 
-const handleSubmit = (e: SubmitEvent) => {
-  e.preventDefault();
+const router = useRouter();
+const queryClient = useQueryClient();
+const handleSubmit = async () => {
   if (isValid.value) {
     // FormData만들기
     const post = {
       ...data,
       address: doroRef.value,
     };
-    console.log('이미지 확인', imageRef.value);
-    postFormMutation.mutate({
+
+    await postFormMutation.mutateAsync({
       title: JSON.stringify(post),
       channelId: MissingChannelId,
       image: imageRef.value ? imageRef.value : undefined,
     });
 
-    // 성공
     if (postFormMutation.isSuccess) {
-      alert('제출이 완료 되었습니다.');
-      // 쿼리 키를 무효화 & 실종 조회 페이지로 라우팅
-      queryClient.invalidateQueries({ queryKey: QUERY_KEY.missingList });
+      alert('정상적으로 제출이 완료되었습니다.');
+      // 기존 쿼리키를 무효화 하고 새롭게 데이터 요청
+      queryClient.invalidateQueries({
+        queryKey: QUERY_KEY.missingList,
+      });
+      await queryClient.refetchQueries({
+        queryKey: QUERY_KEY.missingList,
+        type: 'all',
+      });
       router.push(PATH.communityMissing);
     } else {
-      console.log('post 제출 실패');
+      alert('제출에 실패했습니다.');
+      router.push(PATH.communityMissing);
     }
   } else {
     alert('작성하지 않은 제출란이 있습니다.');
@@ -74,7 +79,7 @@ const handleSubmit = (e: SubmitEvent) => {
 
 <template>
   <div class="container overflow-hidden border border-light px-3 m-4 py-5">
-    <form class="row gx-5">
+    <div class="row gx-5">
       <div class="col px-5">
         <div class="d-flex flex-column gap-4">
           <TitleText size="32px" color="gray-10" weight="600" class="mb-3">
@@ -198,14 +203,13 @@ const handleSubmit = (e: SubmitEvent) => {
         >
           <button
             class="bg-primary-blue border border-none rounded text-white"
-            :style="{ width: '120px', height: '43px' }"
-            type="submit"
+            style="width: 120px; height: 43px"
             @click="handleSubmit"
           >
             등록
           </button>
         </div>
       </div>
-    </form>
+    </div>
   </div>
 </template>

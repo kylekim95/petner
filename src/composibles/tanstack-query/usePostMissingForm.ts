@@ -5,7 +5,7 @@ const usePostMissingForm = () => {
   const postFormMutation = useMutation({
     mutationFn: createPost,
   });
-  return { postFormMutation };
+  return postFormMutation;
 };
 
 export default usePostMissingForm;

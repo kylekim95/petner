@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import MissingForm from '@/components/community/MissingForm.vue';
-
-// 폼 제출 하는 곳
 </script>
 
 <template>
