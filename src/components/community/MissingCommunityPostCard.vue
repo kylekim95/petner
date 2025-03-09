@@ -3,6 +3,7 @@ import useFetchUser from '@/composibles/tanstack-query/useFetchUser';
 import type { devPost } from '@/types/devcourse/devPost';
 import dateGap from '@/utils/dateGap';
 import { defineProps } from 'vue';
+import { useRouter } from 'vue-router';
 // Props 정의
 const props = defineProps<{
   card: devPost;
@@ -16,10 +17,17 @@ const profileImgUrl =
   userData.value?.user.image === undefined
     ? '/PNG-Image/images/default-profile1.png'
     : userData.value?.user.image;
-console.log('profile', profileImgUrl);
+const router = useRouter();
+const handleClick = () => {
+  router.push(`/community/missing/${props.card._id}`);
+};
 </script>
 <template>
-  <div class="border border-gray-7" :style="{ width: '100%', borderRadius: '10px' }">
+  <div
+    class="border border-gray-7 card-wrapper"
+    :style="{ width: '100%', borderRadius: '10px' }"
+    @click="handleClick"
+  >
     <!-- 이미지 영역 -->
     <div class="position-relative z-0 filter">
       <img
@@ -27,6 +35,7 @@ console.log('profile', profileImgUrl);
         alt="강아지"
         width="100%"
         height="442px"
+        class="card-image"
         :style="{ filter: 'brightness(0.7)', borderRadius: '10px 10px 0px 0px' }"
       />
       <div
@@ -107,4 +116,15 @@ console.log('profile', profileImgUrl);
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.card-wrapper {
+  cursor: pointer;
+  transition: transform 0.3s ease; /* 이미지 확대 효과 */
+}
+.card-image {
+  overflow: hidden;
+}
+.card-wrapper:hover {
+  transform: scale(1.01); /* hover 시 이미지를 10% 확대 */
+}
+</style>
