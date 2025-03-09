@@ -1,24 +1,20 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 
-const imagePreviews = ref<string[]>([]); // 이미지 미리보기 배열
-const images = defineModel<string[]>();
+const imagePreviews = ref<string | null>(''); // 이미지 미리보기 배열
+const image = defineModel<File | null>();
 // 이미지 삭제
-const removeImage = (index: number) => {
-  images.value!.splice(index, 1);
-  imagePreviews.value.splice(index, 1);
+const removeImage = () => {
+  image.value = null;
+  imagePreviews.value = null;
 };
 const handleImageChange = (event: Event) => {
   const input = event.target as HTMLInputElement;
   if (input?.files) {
-    const files = Array.from(input.files);
-    images.value = [...images.value, ...files];
-
+    const file = input.files[0];
+    image.value = file;
     // 미리보기 배열 업데이트
-    imagePreviews.value = [
-      ...imagePreviews.value,
-      ...files.map((file) => URL.createObjectURL(file)),
-    ];
+    imagePreviews.value = URL.createObjectURL(file);
   }
 };
 </script>
@@ -43,17 +39,17 @@ const handleImageChange = (event: Event) => {
       </label>
       <input type="file" id="image-upload" @change="handleImageChange" class="d-none" multiple />
       <!-- 이미지 미리보기 -->
-      <div v-for="(preview, index) in imagePreviews" :key="index" class="position-relative">
+      <div class="position-relative" v-if="imagePreviews">
         <div class="d-flex justify-content-center align-items-center position-relative">
           <img
-            :src="preview"
+            :src="imagePreviews"
             alt="Image preview"
             style="width: 200px; height: 200px; object-fit: cover; border-radius: 8px"
           />
           <button
             type="button"
             class="btn btn-sm btn-danger position-absolute top-0 end-0"
-            @click="removeImage(index)"
+            @click="removeImage()"
             style="z-index: 10; background-color: rgba(255, 255, 255, 0.5)"
           >
             X
