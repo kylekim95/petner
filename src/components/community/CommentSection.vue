@@ -5,6 +5,7 @@ import { createComment } from '@/apis/devcourse/Comment/createComment';
 import { useAuthStore } from '@/stores/auth';
 import { deleteComment } from '@/apis/devcourse/Comment/deleteComment';
 import { type devPost } from '@/types/devcourse/devPost';
+import { RouterLink } from 'vue-router';
 
 // props 타입 정의
 interface CommentSectionProps {
@@ -124,8 +125,11 @@ function HandleInput(e : Event) {
           <p class="m-0 p-0">새 댓글 작성하기</p>
         </button>
       </div>
-      <div v-if="!auth.isAuth">
-
+      <div v-if="!auth.isAuth" class="d-flex flex-column align-items-center">
+        <p class="m-0 p-0 text-primary-purple">댓글을 작성하기 위해서는 로그인이 필요합니다.</p>
+        <RouterLink class="btn bg-primary-purple w-100 p-2 mt-2 text-gray-1" to="/login">
+          <p class="m-0 p-0">로그인</p>
+        </RouterLink>
       </div>
     </div>
 
