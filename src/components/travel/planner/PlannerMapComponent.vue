@@ -1,4 +1,5 @@
 <script setup lang="js">
+//<a href="https://www.flaticon.com/free-icons/paws" title="paws icons">Paws icons created by Icons_Field - Flaticon</a>
 import { ref, onMounted, watch } from 'vue';
 
 const props = defineProps({
@@ -17,6 +18,8 @@ const props = defineProps({
 });
 const mapContainer = ref(null);
 let mapInstance = undefined;
+const prevLines = [];
+const prevMarkers = [];
 
 watch(
   ()=>props,
@@ -28,11 +31,34 @@ watch(
         mapInstance.panTo(new window.kakao.maps.LatLng(destArr[0].mapy, destArr[0].mapx));
       else
         mapInstance.panTo(new window.kakao.maps.LatLng(props.currentFocused.mapy, props.currentFocused.mapx));
+
+      const linePath = [];
       const markers = destArr.map((e)=>{
-        return (new window.kakao.maps.Marker({ position: new window.kakao.maps.LatLng(e.mapy, e.mapx)}));
+        const latlng = new window.kakao.maps.LatLng(e.mapy, e.mapx);
+        linePath.push(latlng);
+        return new window.kakao.maps.Marker({ position: latlng});
       });
-      console.log(markers);
+
+      while(prevLines.length > 0) prevLines.pop().setMap(null);
+      while(prevMarkers.length > 0) prevMarkers.pop().setMap(null);
+      const polyLine = new window.kakao.maps.Polyline({
+        path: linePath,
+        strokeWeight:5,
+        strokeColor: '#f3723f',
+        strokeOpacity: 0.75,
+        strokeStyle: 'dashed',
+      });
+      prevLines.push(polyLine);
+      polyLine.setMap(mapInstance);
+
       for(let i = 0; i < markers.length; i++){
+        markers[i].setImage(
+          new window.kakao.maps.MarkerImage('/travelPlanner/paws.png',
+            new window.kakao.maps.Size(35, 35),
+            new window.kakao.maps.Point(17.5, 17.5)
+          )
+        );
+        prevMarkers.push(markers[i]);
         markers[i].setMap(mapInstance);
       }
     }
@@ -51,6 +77,12 @@ const loadKakaoMap = (container, positions, options) => {
       });
       mapInstance = new window.kakao.maps.Map(container, options);
       for(let i = 0; i < markers.length; i++){
+        markers[i].setImage(
+          new window.kakao.maps.MarkerImage('/travelPlanner/paws.png',
+            new window.kakao.maps.Size(31, 35),
+            new window.kakao.maps.Point(13, 34)
+          )
+        );
         markers[i].setMap(mapInstance);
       }
     });
