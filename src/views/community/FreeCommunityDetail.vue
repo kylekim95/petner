@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import axios from 'axios';
 import CommentSection from '@/components/community/CommentSection.vue';
 import { getPost } from '@/apis/devcourse/Post/getPost';
-import { devPost } from '@/types/devcourse/devPost';
-import { devUser } from '@/types/devcourse/devUser';
-import { devComment } from '@/types/devcourse/devComment';
+import { type devUser } from '@/types/devcourse/devUser';
+import { type devComment } from '@/types/devcourse/devComment';
+import { useAuthStore } from '@/stores/auth';
 
 const route = useRoute();
 const router = useRouter();
@@ -22,6 +21,7 @@ interface parsedPostData {
   id: string
 }
 const post = ref<parsedPostData>();
+const auth = useAuthStore();
 
 onMounted(async () => {
   try {
@@ -104,7 +104,7 @@ const handleCommentUpdate = async (index: number) => {
             "
           />
         </div>
-        <div class="d-flex justify-content-center gap-2 mt-3">
+        <div v-if="auth.user?._id === post.author._id" class="d-flex justify-content-center gap-2 mt-3">
           <button
             class="btn px-4 py-2 hover-effect"
             style="background-color: var(--primary-purple); color: var(--gray-1); border-radius: 30px;"
