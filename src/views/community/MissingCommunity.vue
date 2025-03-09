@@ -96,7 +96,7 @@ const handleWriteClick = () => {
         <div v-else class="container px-3">
           <div class="row row-cols-1 row-cols-2 justify-content-center">
             <div
-              v-for="(post, index) of postCards?.posts"
+              v-for="(post, index) of filteredPostCard"
               :key="index"
               class="col d-flex g-3 justify-content-center"
             >
@@ -152,6 +152,9 @@ const handleWriteClick = () => {
   width: 66vw;
   min-width: 800px;
   max-width: 1280px;
+}
+.container {
+  min-height: 75vh;
 }
 
 .controls {
