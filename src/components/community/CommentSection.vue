@@ -1,36 +1,32 @@
 <script setup lang="ts">
-import { defineProps } from 'vue';
-
-// 댓글 타입 정의
-interface Comment {
-  user: {
-    username: string;
-    avatar: string;
-  };
-  date: string;
-  content: string;
-}
+import { defineProps, ref } from 'vue';
+import { type devComment } from '@/types/devcourse/devComment';
+import { createComment } from '@/apis/devcourse/Comment/createComment';
+import { useAuthStore } from '@/stores/auth';
+import { deleteComment } from '@/apis/devcourse/Comment/deleteComment';
+import { type devPost } from '@/types/devcourse/devPost';
 
 // props 타입 정의
-const props = defineProps({
-  comments: {
-    type: Array as () => Comment[], // 댓글 배열 타입
-    required: true,
-  },
-  onDeleteComment: {
-    type: Function,
-    required: true,
-  },
-  color: {
-    type: String,
-    required: true, // 페이지 색상 red 또는 blue
-  },
-});
+interface CommentSectionProps {
+  comments : devComment[],
+  onUpdateComment : (id: number)=>void,
+  color: string,
+  postId: string,
+}
+const props = defineProps<CommentSectionProps>();
 
 // 댓글 삭제 함수 (props로 전달받음)
-const handleCommentDelete = (index: number) => {
-  props.onDeleteComment(index);
-};
+// const handleCommentDelete = (index: number) => {
+//   props.onDeleteComment(index);
+// };
+
+const auth = useAuthStore();
+const newComment = ref<boolean>(false);
+const commentContents = ref<string>('');
+function HandleInput(e : Event) {
+  const element = e.target as HTMLDivElement;
+  commentContents.value = element.innerText;
+}
 </script>
 
 <template>
@@ -55,7 +51,7 @@ const handleCommentDelete = (index: number) => {
     >
       <div class="d-flex align-items-center mb-3">
         <img
-          :src="comment.user.avatar"
+          :src="comment.author.image"
           alt="user-profile"
           class="rounded-circle me-2"
           width="40"
@@ -66,16 +62,16 @@ const handleCommentDelete = (index: number) => {
             class="mb-0 fw-bold"
             :style="{ color: color === 'red' ? 'var(--primary-red)' : 'var(--primary-blue)' }"
           >
-            {{ comment.user.username }}
+            {{ comment.author.fullName }}
           </p>
-          <p class="mb-0 text-muted" style="font-size: 14px">{{ comment.date }}</p>
+          <p class="mb-0 text-muted" style="font-size: 14px">{{ comment.createdAt }}</p>
         </div>
       </div>
-      <p class="mb-0">{{ comment.content }}</p>
+      <p class="mb-0">{{ comment.comment }}</p>
 
       <button
         class="btn btn-sm position-absolute bottom-0 end-0 mb-2 me-2"
-        @click="handleCommentDelete(index)"
+        @click="async (e)=>{await deleteComment({id: comment._id}); props.onUpdateComment(1); }"
         :style="{
           color: color === 'red' ? 'var(--primary-red)' : 'var(--primary-blue)',
         }"
@@ -83,6 +79,56 @@ const handleCommentDelete = (index: number) => {
         삭제
       </button>
     </div>
+
+    <div class="w-100 rounded py-3">
+      <div v-if="auth.isAuth">
+        <div v-if="newComment"
+        class="border p-3 mb-3 rounded-3"
+        :style="{
+          backgroundColor: color === 'red' ? 'var(--gray-1)' : 'var(--primary-blue-light)',
+          boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+          position: 'relative',
+          height: 'fit-content',
+        }"
+        >
+          <div class="d-flex align-items-center mb-3">
+            <img
+              :src="auth.user?.image"
+              alt="user-profile"
+              class="rounded-circle me-2"
+              width="40"
+              height="40"
+            />
+            <div>
+              <p
+                class="mb-0 fw-bold"
+                :style="{ color: color === 'red' ? 'var(--primary-red)' : 'var(--primary-blue)' }"
+              >
+                {{ auth.user?.fullName }}
+              </p>
+            </div>
+          </div>
+          <div contenteditable="plaintext-only" class="w-100 border border-2 border-secondary-red rounded" style="outline: none;" @input="(e)=>HandleInput(e)"/>
+          <div class="d-flex gap-3 mt-3">
+            <button class="btn bg-primary-green text-gray-1" @click="async ()=>{
+              await createComment({postId: props.postId, comment: commentContents});
+              commentContents = '';
+              newComment = false;
+              props.onUpdateComment(1);
+            }
+            ">제출하기</button>
+            <button class="btn bg-primary-red text-gray-1" @click="()=>{ commentContents=''; newComment=false; }">취소하기</button>
+          </div>
+        </div>
+        <button class="btn bg-gray-3 w-100 p-2 mt-2" @click="newComment = true">
+          <p class="m-0 p-0">새 댓글 작성하기</p>
+        </button>
+      </div>
+      <div v-if="!auth.isAuth">
+
+      </div>
+    </div>
+
   </div>
 </template>
 
