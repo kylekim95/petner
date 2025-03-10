@@ -3,7 +3,6 @@ import TitleText from '../common/TitleText.vue';
 import TextInput from '@/components/community/TextInput.vue';
 import TextareaInput from '@/components/community/TextareaInput.vue';
 import SelecterInput from '@/components/community/SelecterInput.vue';
-import ImageUploader from '@/components/community/ImageUploader.vue';
 import KakaoMap from '@/components/community/KakaoMap.vue';
 import { ANIMAL_TYPE_ARRAY, GENDER_ARRAY } from '@/constants/mock/community/formOptions';
 import { reactive, ref, computed } from 'vue';
@@ -67,7 +66,8 @@ const initialImage = computed(() => {
 const data = reactive({
   ...initialData.value,
 });
-const imageRef = ref<File | null>(initialImage); // 이미지 담을 배열
+const imageRef = ref<File | null>(initialImage.value); // 이미지 담을 배열
+const imagePreviews = ref<string | null>(initialImage.value); // 이미지 미리보기 배열
 const doroRef = ref<string>(initialDoro.value);
 const postFormMutation = usePostMissingForm();
 const updateFormMutation = useUpdateMissingPost();
@@ -81,6 +81,20 @@ const isValid = computed(() => {
 
 const router = useRouter();
 const queryClient = useQueryClient();
+// 이미지 삭제
+const removeImage = () => {
+  imageRef.value = null;
+  imagePreviews.value = null;
+};
+const handleImageChange = (event: Event) => {
+  const input = event.target as HTMLInputElement;
+  imageRef.value = null;
+  if (input?.files) {
+    const file = input.files[0];
+    imagePreviews.value = URL.createObjectURL(file);
+    imageRef.value = file;
+  }
+};
 const handleSubmit = async () => {
   if (isValid.value) {
     // FormData만들기
@@ -120,6 +134,7 @@ const handleUpdate = async () => {
       ...data,
       address: doroRef.value,
     };
+    console.log('전달될 image', imageRef.value);
     await updateFormMutation.mutateAsync({
       title: JSON.stringify(post),
       channelId: MissingChannelId,
@@ -172,8 +187,51 @@ const handleUpdate = async () => {
             🐻‍❄️ 실종동물 정보
           </TitleText>
           <!-- 이미지 업로드 -->
-          <ImageUploader v-model="imageRef" />
-
+          <!-- <ImageUploader v-model="imageRef" /> -->
+          <div>
+            <div class="d-flex gap-3 mb-2">
+              <!-- 사진 추가 -->
+              <label
+                for="image-upload"
+                class="d-flex justify-content-center align-items-center border rounded-3"
+                style="
+                  width: 200px;
+                  height: 200px;
+                  cursor: pointer;
+                  background-color: var(--gray-3);
+                  border: 2px dashed var(--gray-7);
+                "
+              >
+                <span class="text-center" style="font-size: 20px; color: #6c757d">+</span><br />
+                <span style="font-size: 18px; color: #6c757d">이미지 업로드</span>
+              </label>
+              <input
+                type="file"
+                id="image-upload"
+                @change="handleImageChange"
+                class="d-none"
+                multiple
+              />
+              <!-- 이미지 미리보기 -->
+              <div class="position-relative" v-if="imagePreviews">
+                <div class="d-flex justify-content-center align-items-center position-relative">
+                  <img
+                    :src="imagePreviews"
+                    alt="Image preview"
+                    style="width: 200px; height: 200px; object-fit: cover; border-radius: 8px"
+                  />
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-danger position-absolute top-0 end-0"
+                    @click="removeImage()"
+                    style="z-index: 10; background-color: rgba(255, 255, 255, 0.5)"
+                  >
+                    X
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
           <SelecterInput
             label="동물분류"
             selectorLabel="동물분류를 선택해주세요"

@@ -14,55 +14,21 @@ const imagePreviews = ref<string | null>(initialImagePreview.value); // 이미�
 const removeImage = () => {
   image.value = null;
   imagePreviews.value = null;
+  console.log('image 삭제', image.value);
 };
 const handleImageChange = (event: Event) => {
   const input = event.target as HTMLInputElement;
+  image.value = null;
   if (input?.files) {
     const file = input.files[0];
-    image.value = file;
+    console.log('file', file);
     // 미리보기 배열 업데이트
     imagePreviews.value = URL.createObjectURL(file);
+    console.log('image preview', imagePreviews.value);
+    image.value = file;
+    console.log('새로 업데이트된 이미지', image.value);
   }
 };
 </script>
 
-<template>
-  <div>
-    <div class="d-flex gap-3 mb-2">
-      <!-- 사진 추가 -->
-      <label
-        for="image-upload"
-        class="d-flex justify-content-center align-items-center border rounded-3"
-        style="
-          width: 200px;
-          height: 200px;
-          cursor: pointer;
-          background-color: var(--gray-3);
-          border: 2px dashed var(--gray-7);
-        "
-      >
-        <span class="text-center" style="font-size: 20px; color: #6c757d">+</span><br />
-        <span style="font-size: 18px; color: #6c757d">이미지 업로드</span>
-      </label>
-      <input type="file" id="image-upload" @change="handleImageChange" class="d-none" multiple />
-      <!-- 이미지 미리보기 -->
-      <div class="position-relative" v-if="imagePreviews">
-        <div class="d-flex justify-content-center align-items-center position-relative">
-          <img
-            :src="imagePreviews"
-            alt="Image preview"
-            style="width: 200px; height: 200px; object-fit: cover; border-radius: 8px"
-          />
-          <button
-            type="button"
-            class="btn btn-sm btn-danger position-absolute top-0 end-0"
-            @click="removeImage()"
-            style="z-index: 10; background-color: rgba(255, 255, 255, 0.5)"
-          >
-            X
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-</template>
+<template></template>
