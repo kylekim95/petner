@@ -14,6 +14,7 @@ const headerClass = computed(() => route.meta.headerVariant || 'header-default')
 const notificationOpen = ref<boolean>(false);
 const notificationsArr = ref<devNotification[]>();
 onMounted(async ()=>{
+  if(!auth.isAuth) return;
   notificationsArr.value = (await getNotifications()).notifications.filter((e)=>!e.seen);
 });
 </script>
