@@ -2,7 +2,6 @@
 import { ref, watch } from 'vue';
 import NotificationCard from './NotificationCard.vue';
 import type { devNotification } from '@/types/devcourse/devNotification';
-import { notificationsSeen } from '@/apis/devcourse/Notification/notificationsSeen';
 
 interface NotificationModalProps {
   visibility: boolean
@@ -13,8 +12,7 @@ const display = ref<string>('none');
 watch(
   ()=>props.visibility,
   ()=>{
-    display.value = props.visibility ? 'flex' : 'none';
-    notificationsSeen();
+    display.value = props.visibility ? '100' : '0';
   }
 );
 </script>
@@ -22,8 +20,8 @@ watch(
 <template>
   <div
     class="position-absolute bg-gray-3 rounded-3 mx-5 my-3 overflow-hidden"
-    style="width: 400px; min-height: fit-content; max-height: 300px; top: 100%; right: 0%; z-index: 1; flex-direction: column;"
-    :style="{ display: display }"
+    style="width: 400px; min-height: fit-content; max-height: 300px; top: 100%; right: 0%; z-index: 1; flex-direction: column; transition: opacity 0.5s ease-in-out;"
+    :style="{ opacity: display }"
   >
     <div class="w-100 px-3 py-2 border-bottom">
       <p class="m-0 p-0 notification-modal-header">알림</p>
