@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { defineProps, ref } from 'vue';
+import { defineProps, ref, useTemplateRef } from 'vue';
 import { type devComment } from '@/types/devcourse/devComment';
 import { createComment } from '@/apis/devcourse/Comment/createComment';
 import { useAuthStore } from '@/stores/auth';
 import { deleteComment } from '@/apis/devcourse/Comment/deleteComment';
 import { type devPost } from '@/types/devcourse/devPost';
 import { RouterLink } from 'vue-router';
+import { deletePost } from '@/apis/devcourse/Post/deletePost';
 
 // props 타입 정의
 interface CommentSectionProps {
@@ -28,6 +29,8 @@ function HandleInput(e : Event) {
   const element = e.target as HTMLDivElement;
   commentContents.value = element.innerText;
 }
+const updateIndex = ref<number>(-1);
+const commentTextBoxes = useTemplateRef<HTMLInputElement[]>('commentTextBox');
 </script>
 
 <template>
@@ -65,20 +68,50 @@ function HandleInput(e : Event) {
           >
             {{ comment.author.fullName }}
           </p>
-          <p class="mb-0 text-muted" style="font-size: 14px">{{ comment.createdAt }}</p>
+          <p class="mb-0 text-muted" style="font-size: 14px">{{ (new Date(comment.updatedAt)).toLocaleDateString() + ' ' + (new Date(comment.updatedAt)).toLocaleTimeString() }}</p>
         </div>
       </div>
-      <p class="mb-0">{{ comment.comment }}</p>
 
-      <button
-        class="btn btn-sm position-absolute bottom-0 end-0 mb-2 me-2"
-        @click="async (e)=>{await deleteComment({id: comment._id}); props.onUpdateComment(1); }"
-        :style="{
-          color: color === 'red' ? 'var(--primary-red)' : 'var(--primary-blue)',
-        }"
-      >
-        삭제
-      </button>
+      <input ref="commentTextBox" :disabled="updateIndex !== index" type="text" name="" id="" :value="comment.comment" class="border-0" style="width: 90%">
+
+      <div v-if="auth.user?._id === comment.author._id" class="position-absolute bottom-0 end-0 mb-2 me-2">
+        <button
+          v-if="index !== updateIndex"
+          class="btn btn-sm"
+          @click="async (e)=>{
+            updateIndex = index;
+          }"
+          :style="{
+            color: color === 'red' ? 'var(--primary-red)' : 'var(--primary-blue)',
+          }"
+        >
+          수정
+        </button>
+        <button
+          v-if="index === updateIndex"
+          class="btn btn-sm"
+          @click="async (e)=>{
+            await deleteComment({id: comment._id});
+            await createComment({postId: props.postId, comment: commentTextBoxes ? commentTextBoxes[index].value : '' });
+            props.onUpdateComment(1);
+            updateIndex = -1;
+          }"
+          :style="{
+            color: 'var(--primary-green)',
+          }"
+        >
+          완료
+        </button>
+        <button
+          class="btn btn-sm"
+          @click="async (e)=>{await deleteComment({id: comment._id}); props.onUpdateComment(1); }"
+          :style="{
+            color: color === 'red' ? 'var(--primary-red)' : 'var(--primary-blue)',
+          }"
+        >
+          삭제
+        </button>
+      </div>
     </div>
 
     <div class="w-100 rounded py-3">

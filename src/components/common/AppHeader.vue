@@ -1,12 +1,21 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
+import NotificationModal from './NotificationModal.vue';
+import { getNotifications } from '@/apis/devcourse/Notification/getNotifications';
+import type { devNotification } from '@/types/devcourse/devNotification';
 
 const route = useRoute();
 const auth = useAuthStore();
 
 const headerClass = computed(() => route.meta.headerVariant || 'header-default');
+
+const notificationOpen = ref<boolean>(false);
+const notificationsArr = ref<devNotification[]>();
+onMounted(async ()=>{
+  notificationsArr.value = (await getNotifications()).notifications.filter((e)=>!e.seen);
+});
 </script>
 
 <template>
@@ -28,6 +37,9 @@ const headerClass = computed(() => route.meta.headerVariant || 'header-default')
     <router-link to="/login" v-if="!auth.isAuth" style="text-decoration: none;">
       <span class="user-name" :style="{ color: 'FFFFFF' }">로그인</span>
     </router-link>
+    <i v-if="auth.isAuth && !notificationOpen" class="bi-bell mx-2" style="font-size: 1.2rem; cursor: pointer" @click="notificationOpen = true"></i>
+    <i v-if="auth.isAuth && notificationOpen" class="bi-bell-slash mx-2" style="font-size: 1.2rem; cursor: pointer" @click="notificationOpen = false"></i>
+    <NotificationModal :visibility="notificationOpen" :notifications="notificationsArr ?? []" />
   </header>
 </template>
 
@@ -41,7 +53,7 @@ const headerClass = computed(() => route.meta.headerVariant || 'header-default')
   width: 100%;
   height: 75px;
   top: 0;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 .logo {
   font-family: 'Paperlogy';

@@ -1,22 +1,10 @@
 <script setup lang="ts">
-import AppHeader from '@/components/common/AppHeader.vue';
-import AppFooter from '@/components/common/AppFooter.vue';
 import AdoptionHero from '@/components/adoption/main/AdoptionHero.vue';
 import AdoptionGraph from '@/components/adoption/main/AdoptionGraph.vue';
 import AdoptionCategory from '@/components/adoption/main/AdoptionCategory.vue';
 import AdoptionMap from '@/components/adoption/main/AdoptionMap.vue';
 import AdoptionReviews from '@/components/adoption/main/AdoptionReviews.vue';
 import AdoptionCardBanner from '@/components/adoption/main/AdoptionCardBanner.vue';
-import { onMounted } from 'vue';
-import { getShelterAniamls, getShelterInfo, getShelterListApi } from '@/apis/adoption/shelter';
-
-// API TEST 용
-onMounted(async () => {
-  const res = await getShelterListApi();
-  //const res = await getShelterInfo(311322200900001);
-  //const res = await getShelterAniamls(311322200900001);
-  console.log('res from main', res);
-});
 </script>
 
 <template>

@@ -22,8 +22,9 @@ export async function detailCommon(dataId: DataId) {
         overviewYN: 'Y',
       },
     });
-    const data = response.data.response.body.items.item;
-    console.log(data);
+
+    const data = response.data.response.body.items?.item;
+    // console.log(data);
     return data; // API 응답 데이터를 반환
   } catch (error) {
     console.error('Error fetching tour data:', error);
