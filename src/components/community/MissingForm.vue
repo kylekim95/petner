@@ -9,27 +9,65 @@ import { ANIMAL_TYPE_ARRAY, GENDER_ARRAY } from '@/constants/mock/community/form
 import { reactive, ref, computed } from 'vue';
 import usePostMissingForm from '@/composibles/tanstack-query/usePostMissingForm';
 import { MissingChannelId } from '@/constants/communityConsts';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import { useQueryClient } from '@tanstack/vue-query';
 import PATH from '@/constants/path';
 import QUERY_KEY from '@/constants/queryKey';
+import useFetchTargetMissing from '@/composibles/tanstack-query/useFetchTargetMissing';
+
+// Page query 확인하기
+const route = useRoute();
+const { postId } = route.query;
+
+// postId가 있으면 수정페이지이고 없으면 등록 페이지로 동작
+// PostId에 해당하는 데이터를 받아와야함
+const { post, isLoading, contents } = useFetchTargetMissing(postId ? postId : '');
+const initialData = computed(() => {
+  if (contents) {
+    console.log('contetns', contents);
+    return {
+      name: contents.value?.name,
+      phone: contents.value?.phone,
+      species: contents.value?.species,
+      age: contents.value?.age,
+      furColor: contents.value?.furColor,
+      RFID: contents.value?.RFID,
+      feature: contents.value?.feature,
+      animalType: contents.value?.animalType,
+      gender: contents.value?.gender,
+      date: contents.value?.date,
+      placeFeature: contents.value?.placeFeature, // 실종 장소 특징
+      region: contents.value?.region, // 관할지
+    };
+  } else {
+    return {
+      name: '',
+      phone: '',
+      species: '',
+      age: '',
+      furColor: '',
+      RFID: '',
+      feature: '',
+      animalType: '',
+      gender: '',
+      date: '',
+      placeFeature: '', // 실종 장소 특징
+      region: '', // 관할지
+    };
+  }
+});
+const initialDoro = computed(() => {
+  return post && contents && contents.value ? contents.value.address : '';
+});
+const initialImage = computed(() => {
+  return post && post.value ? post.value[0].image : '';
+});
 
 const data = reactive({
-  name: '',
-  phone: '',
-  species: '',
-  age: '',
-  furColor: '',
-  RFID: '',
-  feature: '',
-  animalType: '',
-  gender: '',
-  date: '',
-  placeFeature: '', // 실종 장소 특징
-  region: '', // 관할지
+  ...initialData.value,
 });
-const imageRef = ref<File | null>(null); // 이미지 담을 배열
-const doroRef = ref('');
+const imageRef = ref<File | null>(initialImage); // 이미지 담을 배열
+const doroRef = ref<string>(initialDoro.value);
 const postFormMutation = usePostMissingForm();
 
 const isValid = computed(() => {
@@ -202,6 +240,15 @@ const handleSubmit = async () => {
           :style="{ marginRight: '12%' }"
         >
           <button
+            v-if="post !== undefined"
+            class="bg-primary-blue border border-none rounded text-white"
+            style="width: 120px; height: 43px"
+            @click="handleSubmit"
+          >
+            수정
+          </button>
+          <button
+            v-else
             class="bg-primary-blue border border-none rounded text-white"
             style="width: 120px; height: 43px"
             @click="handleSubmit"

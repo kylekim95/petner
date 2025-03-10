@@ -1,8 +1,15 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 
-const imagePreviews = ref<string | null>(''); // 이미지 미리보기 배열
 const image = defineModel<File | null>();
+const initialImagePreview = computed(() => {
+  if (image.value) {
+    return image.value;
+  } else {
+    return '';
+  }
+});
+const imagePreviews = ref<string | null>(initialImagePreview.value); // 이미지 미리보기 배열
 // 이미지 삭제
 const removeImage = () => {
   image.value = null;

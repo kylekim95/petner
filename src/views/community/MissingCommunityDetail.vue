@@ -68,6 +68,8 @@ const dummyData = computed(() => ({
 }));
 
 const handleDelete = async () => {
+  // TODO : 유저 신상 파악해서 버튼 동작 제어하기
+
   // 삭제 요청  보내기
   deletePostMutation.mutate(postId);
   // 기존 쿼리키를 무효화 하고 새롭게 데이터 요청
@@ -80,6 +82,13 @@ const handleDelete = async () => {
   });
 
   router.push(PATH.communityMissing);
+};
+
+const handleUpdate = () => {
+  // TODO : 유저 신상 파악해서 버튼 동작 제어하기
+
+  // /community/missing-form?id='sdfljlskjd' 이렇게 전달
+  router.push({ path: PATH.communityMissingForm, query: { postId: postId } });
 };
 </script>
 
@@ -104,6 +113,7 @@ const handleDelete = async () => {
         <button
           class="btn border-0 bg-primary-green rounded-5 d-flex align-items-center justify-content-center"
           style="width: 100px; height: 35px"
+          @click="handleUpdate"
         >
           <p class="m-0 p-0 button-text text-gray-1">수정하기</p>
         </button>
