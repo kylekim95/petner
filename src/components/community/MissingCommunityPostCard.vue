@@ -96,7 +96,7 @@ const handleClick = () => {
           :style="{ width: '73px', height: '30px', borderRadius: '30px', fontSize: '16px' }"
         >
           <i class="bi bi-pencil" :style="{ fontSize: '20px' }"></i>
-          <span>3</span>
+          <span>{{ card.comments.length }}</span>
         </div>
         <div
           class="bg-gray-3 d-flex flex-row align-items-center justify-content-center gap-3 text-primary-blue"
