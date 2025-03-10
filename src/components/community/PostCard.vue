@@ -87,9 +87,9 @@ const commentCount = computed(() => (props.comments ? props.comments.length : 0)
 
 <style scoped>
 .card-wrapper {
-  width: 90%;
-  max-width: 600px;
-  margin: 10px auto;
+  width: 100%;         
+  max-width: 600px;     
+  margin: 10px 0;       
   border-radius: 15px;
   overflow: hidden;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -97,6 +97,11 @@ const commentCount = computed(() => (props.comments ? props.comments.length : 0)
   transition: transform 0.2s;
   cursor: pointer;
 }
+
+.card-wrapper:hover {
+  transform: scale(1.02);
+}
+
 .card-wrapper:hover {
   transform: scale(1.02);
 }
