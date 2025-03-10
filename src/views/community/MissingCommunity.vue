@@ -14,7 +14,12 @@ const filteredPostCard = computed(() => {
     const contents = JSON.parse(post.title);
     return contents.animalType == animalType.value;
   });
-  console.log('필터링된 카드', filteredPostCard);
+  // console.log('필터링된 카드', filteredPostCard);
+
+  // 여기에 sorting 로직을 추가 -> 댓글순일경우
+  if (sortBy.value === 'comment') {
+    return filtered?.sort((a, b) => b.comments.length - a.comments.length);
+  }
   return filtered;
 });
 
