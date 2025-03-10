@@ -6,19 +6,16 @@ export const useFacilitiesStore = defineStore('facilities', () => {
 
   const setContentTypeIdCode = (newCode: string) => {
     contentTypeId.value = newCode;
-    console.log(contentTypeId.value);
   };
 
   const areaCode = ref('1'); // 디폴트 서울
   const setAreaCode = (newCode: string) => {
     areaCode.value = newCode;
-    console.log(areaCode.value);
   };
 
-  const typeCode = ref('A0302');
+  const typeCode = ref('');
   const setTypeCode = (newCode: string) => {
     typeCode.value = newCode;
-    console.log(typeCode);
   };
 
   // 공용시설 정보
@@ -49,10 +46,16 @@ export const useFacilitiesStore = defineStore('facilities', () => {
     facility.selected = !facility.selected;
   };
 
+  const keyword = ref('');
+  const setKeywordCode = (newCode: string) => {
+    keyword.value = newCode;
+  };
+
   const queryData = ref({
     contentTypeId: contentTypeId,
     areaCode: areaCode, // 디폴트: 서울
     typeCode: typeCode,
+    keyword: keyword,
   });
   return {
     // contentTypeId
@@ -67,6 +70,9 @@ export const useFacilitiesStore = defineStore('facilities', () => {
     facilities,
     roomFacilities,
     toggleFacility,
+    // 키워드
+    keyword,
+    setKeywordCode,
     // 총 데이터
     queryData,
   };
