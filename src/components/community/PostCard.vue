@@ -1,17 +1,20 @@
 <script setup lang="ts">
 import { defineProps, computed } from 'vue';
 import { useRouter } from 'vue-router';
+import LikeButton from './LikeButton.vue';
+import { type devLike } from '@/types/devcourse/devLike';
+import { type devComment } from '@/types/devcourse/devComment';
 
 interface PostCardProps {
   postId: string;
-  imageUrl: string; 
-  title: string; 
-  createdAt: string; 
-  authorImage: string; 
-  authorName: string; 
+  imageUrl: string;
+  title: string;
+  createdAt: string;
+  authorImage: string;
+  authorName: string;
   authorEmail: string;
-  likes?: any[];
-  comments?: any[]; 
+  likes: devLike[];
+  comments?: devComment[];
 }
 
 const props = defineProps<PostCardProps>();
@@ -45,7 +48,6 @@ const timeAgo = (dateStr: string) => {
   return days + '일 전';
 };
 
-const likeCount = computed(() => (props.likes ? props.likes.length : 0));
 const commentCount = computed(() => (props.comments ? props.comments.length : 0));
 </script>
 
@@ -71,8 +73,8 @@ const commentCount = computed(() => (props.comments ? props.comments.length : 0)
     <div class="card-footer">
       <div class="stats">
         <span class="stat">
-          <i class="bi bi-heart-fill" style="color: #dc3644"></i>
-          {{ likeCount }}
+          <!-- <i class="bi bi-heart-fill" style="color: #dc3644"></i> -->
+          <LikeButton :postId="props.postId" :likes="props.likes" />
         </span>
         <span class="stat">
           <i class="bi bi-chat"></i>
@@ -85,9 +87,9 @@ const commentCount = computed(() => (props.comments ? props.comments.length : 0)
 
 <style scoped>
 .card-wrapper {
-  width: 90%;
-  max-width: 600px;
-  margin: 10px auto;
+  width: 100%;         
+  max-width: 600px;     
+  margin: 10px 0;       
   border-radius: 15px;
   overflow: hidden;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -95,6 +97,11 @@ const commentCount = computed(() => (props.comments ? props.comments.length : 0)
   transition: transform 0.2s;
   cursor: pointer;
 }
+
+.card-wrapper:hover {
+  transform: scale(1.02);
+}
+
 .card-wrapper:hover {
   transform: scale(1.02);
 }
