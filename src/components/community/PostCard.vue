@@ -3,6 +3,7 @@ import { defineProps, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import LikeButton from './LikeButton.vue';
 import { type devLike } from '@/types/devcourse/devLike';
+import { type devComment } from '@/types/devcourse/devComment';
 
 interface PostCardProps {
   postId: string;
@@ -12,8 +13,8 @@ interface PostCardProps {
   authorImage: string;
   authorName: string;
   authorEmail: string;
-  likes?: devLike[];
-  comments?: any[];
+  likes: devLike[];
+  comments?: devComment[];
 }
 
 const props = defineProps<PostCardProps>();
@@ -47,7 +48,6 @@ const timeAgo = (dateStr: string) => {
   return days + '일 전';
 };
 
-const likeCount = computed(() => (props.likes ? props.likes.length : 0));
 const commentCount = computed(() => (props.comments ? props.comments.length : 0));
 </script>
 
