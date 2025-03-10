@@ -2,7 +2,7 @@
 import useFetchMissingDetail from '@/composibles/tanstack-query/useFetchMissingDetail';
 import { useRoute, useRouter } from 'vue-router';
 import useFetchMissingPost from '@/composibles/tanstack-query/useFetchMissingPost';
-import { computed } from 'vue';
+import { computed, ref, onMounted } from 'vue';
 import type MissingAnimalDataType from '@/types/missingAnimal';
 import type { ComputedRef } from 'vue';
 import useFetchUser from '@/composibles/tanstack-query/useFetchUser';
@@ -10,6 +10,10 @@ import useDeletePost from '@/composibles/tanstack-query/useDeletePost';
 import { useQueryClient } from '@tanstack/vue-query';
 import QUERY_KEY from '@/constants/queryKey';
 import PATH from '@/constants/path';
+import CommentSection from '@/components/community/CommentSection.vue';
+import { getPost } from '@/apis/devcourse/Post/getPost';
+import { type devUser } from '@/types/devcourse/devUser';
+import { type devComment } from '@/types/devcourse/devComment';
 
 const cat = ['나이', '품종', '성별', '색상', '마이크로 칩 번호'];
 const missingCat = ['분실 날짜', '분실 장소', '주위의 특징적 건물', '관할지'];
@@ -18,8 +22,36 @@ const route = useRoute();
 const router = useRouter();
 const deletePostMutation = useDeletePost();
 const queryClient = useQueryClient();
-const { postId } = route.params;
+// const { postId } = route.params;
+const postId = route.params.postId as string;
 const { postCards, isLoading } = useFetchMissingPost();
+
+interface parsedPostData {
+  author: devUser;
+  title: string;
+  content: string;
+  image: string;
+  comments: devComment[];
+  id: string;
+}
+const post = ref<parsedPostData>();
+
+onMounted(async () => {
+  try {
+    const response = (await getPost({ id: postId })).post;
+    const parsedTitle = JSON.parse(response.title);
+    post.value = {
+      author: response.author,
+      title: parsedTitle.title,
+      content: parsedTitle.content,
+      image: response.image ?? '',
+      comments: response.comments,
+      id: response._id,
+    };
+  } catch (e) {
+    console.log(e);
+  }
+});
 
 // 전체 카드데이터중 특정 Id를 가진 카드만 가져오기
 const data = computed(() => postCards.value?.posts.filter((cards) => cards._id === postId));
@@ -80,6 +112,20 @@ const handleDelete = async () => {
   });
 
   router.push(PATH.communityMissing);
+};
+
+// 댓글 삭제 함수
+const handleCommentUpdate = async (index: number) => {
+  const response = (await getPost({ id: postId })).post;
+  const parsedTitle = JSON.parse(response.title);
+  post.value = {
+    author: response.author,
+    title: parsedTitle.title,
+    content: parsedTitle.content,
+    image: response.image ?? '',
+    comments: response.comments,
+    id: response._id,
+  };
 };
 </script>
 
@@ -160,6 +206,15 @@ const handleDelete = async () => {
         <p class="w-75 m-0 p-0 value-text">{{ item }}</p>
       </div>
     </div>
+
+    <!-- 댓글 섹션 -->
+    <CommentSection
+      v-if="post"
+      :comments="post.comments"
+      :onUpdateComment="handleCommentUpdate"
+      color="red"
+      :postId="post.id"
+    />
   </div>
 </template>
 
