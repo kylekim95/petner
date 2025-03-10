@@ -1,7 +1,6 @@
 import { type devPost, ExtractPostFromJson } from '@/types/devcourse/devPost';
 import { POST } from '@/apis/devcourse/endpoints';
 import devAPI from '@/config/axiosDevConfig';
-import axios from 'axios';
 
 export interface CreatePostRequest {
   title: string;
