@@ -1,17 +1,24 @@
 <script setup lang="ts">
-const dummyImageSrc =
-  'https://media.istockphoto.com/id/1853686056/ko/%EC%82%AC%EC%A7%84/%EC%A7%91%EC%97%90%EC%84%9C-%ED%9C%B4%EC%8B%9D%EC%9D%84-%EC%B7%A8%ED%95%98%EB%8A%94-%EA%B3%A8%EB%93%A0-%EB%A6%AC%ED%8A%B8%EB%A6%AC%EB%B2%84.jpg?s=1024x1024&w=is&k=20&c=qrl0V8QEo7JzTYnGk7hPuSKhmryWD5vnLnrWy0C3XzU=';
+import { type devPost } from '@/types/devcourse/devChannel';
+import { useAuthStore } from '@/stores/auth';
+import { computed } from 'vue';
+import { MissingChannelId } from '@/constants/communityConsts';
 
-interface PostData {
-  imgUrl: string;
-  author: string;
-  date: Date;
-  title: string;
-  like: number;
-  chat: number;
-}
+const auth = useAuthStore();
+const { data } = defineProps<{ data: devPost }>();
 
-const { data } = defineProps<{ data: PostData }>();
+
+
+const commentCount = computed(() => data.comments?.length || 0);
+const likesCount = computed(() => data.likes?.length || 0);
+const parsedTitle = computed(() => {
+  try {
+    return JSON.parse(data.title);
+  } catch (error) {
+    console.error('JSON parse error:', error);
+    return {};
+  }
+});
 </script>
 
 <template>
@@ -22,35 +29,51 @@ const { data } = defineProps<{ data: PostData }>();
       <div class="d-flex flex-row align-items-center gap-3">
         <!-- 이미지 -->
         <div class="overflow-hidden" style="border-radius: 85px">
-          <img
-            src="https://cdn.pixabay.com/photo/2016/04/19/15/13/minion-1338858_1280.jpg"
-            alt=""
-            class="postCardImg"
-          />
+          <img :src="auth.user?.image" alt="" class="postCardImg" />
         </div>
         <!-- 내 정보 텍스 -->
         <div class="d-flex flex-column gap-2">
-          <span class="postCardText">{{ data.author }}</span>
-          <span class="dateText">{{ data.date }}</span>
+          <span class="postCardText">{{ auth.user?.fullName }}</span>
+          <span class="dateText">{{ data.createdAt.slice(0, 10) }}</span>
         </div>
       </div>
       <i class="bi bi-three-dots" :style="{ fontSize: '30px' }"></i>
     </div>
-    <!-- 메인 이미지 -->
-    <div class="mainImg overflow-hidden">
-      <img :src="dummyImageSrc" alt="" class="card-img-top" />
-    </div>
-    <!--소개글 -->
-    <div class="contentText">{{ data.title }}</div>
-    <!-- 좋아요, 댓글 -->
-    <div class="d-flex flex-row align-items-center gap-4">
-      <div class="d-flex flex-row align-items-center gap-2">
-        <i class="bi bi-suit-heart commentIcon"></i>
-        <span class="commentText">{{ data.like }}</span>
+
+    <div v-if="data.channel._id === MissingChannelId" class="missingInfo">
+      <!-- 실종 게시글 전용 필드 -->
+      <!-- 메인 이미지 -->
+      <div class="mainImg overflow-hidden">
+        <img :src="data.image" alt="" class="card-img-top" />
       </div>
+      <p class="contentText">{{ parsedTitle.title }}</p>
+      <p><span class="fw-bold">반려동물 종</span>: {{ parsedTitle.species }}</p>
+      <p><span class="fw-bold">실종 장소 특징</span>: {{ parsedTitle.placeFeature }}</p>
+      <p><span class="fw-bold">관할지</span>: {{ parsedTitle.region }}</p>
+      <!-- 필요한 다른 필드도 추가 가능 (예: date, RFID 등) -->
       <div class="d-flex flex-row align-items-center gap-2">
         <i class="bi bi-chat-left commentIcon"></i>
-        <span class="commentText"> {{ data.chat }}</span>
+        <span class="commentText"> {{ commentCount || '0' }}</span>
+      </div>
+    </div>
+
+    <!--소개글 -->
+    <div v-else>
+      <!-- 메인 이미지 -->
+      <div class="mainImg overflow-hidden">
+        <img :src="data.image" alt="" class="card-img-top" />
+      </div>
+      <div class="contentText">{{ JSON.parse(data.title).title }}</div>
+      <!-- 좋아요, 댓글 -->
+      <div class="d-flex flex-row align-items-center gap-4">
+        <div class="d-flex flex-row align-items-center gap-2">
+          <i class="bi bi-suit-heart commentIcon"></i>
+          <span class="commentText">{{ likesCount || '0' }}</span>
+        </div>
+        <div class="d-flex flex-row align-items-center gap-2">
+          <i class="bi bi-chat-left commentIcon"></i>
+          <span class="commentText"> {{ commentCount || '0' }}</span>
+        </div>
       </div>
     </div>
   </div>
