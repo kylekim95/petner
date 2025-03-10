@@ -12,12 +12,10 @@ console.log('card', props.card);
 const AVATAR_WIDTH = '40px';
 const AVATART_HEIGHT = '40px';
 const data = computed(() => JSON.parse(props.card.title));
-const { fullName: userName, _id: userId } = props.card.author; // 사용자 정보 가져오기
+const { fullName, _id: userId, image } = props.card.author; // 사용자 정보 가져오기
 const userData = useFetchUser(userId);
 const profileImgUrl =
-  userData.value?.user.image === undefined
-    ? '/PNG-Image/images/default-profile1.png'
-    : userData.value?.user.image;
+  image === undefined ? '/PNG-Image/images/default-profile1.png' : userData.value?.user.image;
 const router = useRouter();
 const handleClick = () => {
   router.push(`/community/missing/${props.card._id}`);
@@ -80,7 +78,7 @@ const handleClick = () => {
           />
         </div>
         <span class="text-gray-7 fw-medium" :style="{ fontSize: '24px', fontWeight: '500' }">{{
-          userName
+          fullName
         }}</span>
       </div>
       <div class="fw-bold" :style="{ fontSize: '20px' }">
@@ -96,7 +94,7 @@ const handleClick = () => {
           :style="{ width: '73px', height: '30px', borderRadius: '30px', fontSize: '16px' }"
         >
           <i class="bi bi-pencil" :style="{ fontSize: '20px' }"></i>
-          <span>3</span>
+          <span>{{ card.comments.length }}</span>
         </div>
         <div
           class="bg-gray-3 d-flex flex-row align-items-center justify-content-center gap-3 text-primary-blue"
