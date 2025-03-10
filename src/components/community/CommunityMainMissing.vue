@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import CommunityMainFindCard, { CommunityPost } from '@/components/community/CommunityMainFindCard.vue';
+import CommunityMainFindCard, { type MissingCommunityPost } from '@/components/community/CommunityMainFindCard.vue';
 import { ref, onMounted } from 'vue';
 import { getChannelPosts } from '@/apis/devcourse/Post/getChannelPosts';
 import { MissingChannelId } from '@/constants/communityConsts';
 import { type devPost } from '@/types/devcourse/devPost';
 
-const cards = ref<CommunityPost[]>([]);
+const cards = ref<MissingCommunityPost[]>([]);
 const data = ref<devPost[]>([]);
 onMounted(async ()=>{
   const posts = (await getChannelPosts({channelId: MissingChannelId})).posts;
   if(posts.length <= 0) return;
   data.value = posts.slice(0, 8);
-  cards.value = data.value.map<CommunityPost>((e)=>{
+  cards.value = data.value.map<MissingCommunityPost>((e)=>{
     const parsedData = JSON.parse(e.title);
     return {
       imageURL: e.image ?? '',

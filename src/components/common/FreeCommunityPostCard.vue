@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { defineProps } from 'vue';
 import { type devPost } from '@/types/devcourse/devPost';
 
-interface CommunityPost {
+interface FreeCommunityPost {
   data : devPost
 }
-const props = defineProps<CommunityPost>();
+const props = defineProps<FreeCommunityPost>();
 </script>
 
 <template>

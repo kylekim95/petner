@@ -17,7 +17,7 @@ import AdoptionCardBanner from '@/components/adoption/main/AdoptionCardBanner.vu
     <AdoptionCategory />
     <div class="fitted-contents">
       <AdoptionMap />
-      <AdoptionReviews />
+      <!-- <AdoptionReviews /> -->
       <AdoptionCardBanner />
     </div>
     <!-- <AppFooter /> -->

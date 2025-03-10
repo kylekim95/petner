@@ -8,6 +8,7 @@ import { type devPost } from '@/types/devcourse/devPost';
 const data = ref<devPost[]>([]);
 onMounted(async ()=>{
   const posts = (await getChannelPosts({channelId: FreeChannelId})).posts;
+  console.log(posts);
   if(posts.length <= 0) return;
   data.value = posts.slice(0, 8);
 });

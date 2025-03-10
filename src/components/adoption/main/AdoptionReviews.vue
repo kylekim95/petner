@@ -1,10 +1,13 @@
 <script setup lang="ts">
+import { getAllSearchQuery } from '@/apis/devcourse/Search/getAllSearchQuery';
 import FreeCommunityPostCard from '@/components/common/FreeCommunityPostCard.vue';
-import MOCK_FREE_COMMUNITY_POST from '@/constants/mock/freeCommunityPost';
+import { devPost } from '@/types/devcourse/devPost';
+import { ref, onMounted } from 'vue';
 
-const mockCommunityData = Array(5).fill(MOCK_FREE_COMMUNITY_POST); // TODO : Fetch data
-
-const CardListData = mockCommunityData.slice(0, 4);
+const CardListData = ref<devPost>();
+onMounted(async ()=>{
+  const posts = (await getAllSearchQuery({searchQuery: '입양후기'})).resultsPosts;
+});
 </script>
 
 <template>

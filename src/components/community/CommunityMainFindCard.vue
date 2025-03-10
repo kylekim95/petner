@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { defineProps } from 'vue';
-export interface CommunityPost {
+export interface MissingCommunityPost {
   imageURL: string;
   lostLocation: string;
   areaLocation: string;
@@ -11,7 +11,7 @@ export interface CommunityPost {
 }
 
 const props = defineProps<{
-  item: CommunityPost;
+  item: MissingCommunityPost;
 }>();
 </script>
 

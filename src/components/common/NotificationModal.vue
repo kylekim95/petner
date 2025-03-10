@@ -19,7 +19,7 @@ watch(
 
 <template>
   <div
-    class="position-absolute bg-gray-3 rounded-3 mx-5 my-3 overflow-hidden"
+    class="position-absolute bg-gray-3 rounded-3 mx-5 my-3 overflow-hidden z-3"
     style="width: 400px; min-height: fit-content; max-height: 300px; top: 100%; right: 0%; z-index: 1; flex-direction: column; transition: opacity 0.5s ease-in-out;"
     :style="{ opacity: display }"
   >
