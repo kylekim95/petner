@@ -2,12 +2,8 @@
 
 <template>
   <div class="d-flex flex-row justify-content-between gap-5 heroSection">
-    <div class="position-relative heroLeft overflow-hidden">
-      <img
-        src="https://cdn.pixabay.com/photo/2015/05/30/19/53/playing-puppies-790638_1280.jpg"
-        alt=""
-        class="card-img-top"
-      />
+    <div class="position-relative heroLeft overflow-hidden linear-shadow">
+      <img src="/public/CommunityMain/dog-beach.jpeg" alt="beach dog image" class="card-img-top" />
       <div
         class="heroLeftText d-flex flex-column position-absolute"
         :style="{ bottom: '20px', left: '20px' }"
@@ -140,5 +136,15 @@
 .postNavigation:hover {
   transform: scale(1.03);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.linear-shadow {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(218, 218, 218, 0.15) 46%,
+    rgba(0, 0, 0, 0.3) 87%,
+    rgba(0, 0, 0, 0.3) 100%
+  );
 }
 </style>
