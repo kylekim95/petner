@@ -2,7 +2,7 @@
 import useFetchUser from '@/composibles/tanstack-query/useFetchUser';
 import type { devPost } from '@/types/devcourse/devPost';
 import dateGap from '@/utils/dateGap';
-import { defineProps } from 'vue';
+import { defineProp, computed } from 'vue';
 import { useRouter } from 'vue-router';
 // Props 정의
 const props = defineProps<{
@@ -11,7 +11,7 @@ const props = defineProps<{
 console.log('card', props.card);
 const AVATAR_WIDTH = '40px';
 const AVATART_HEIGHT = '40px';
-const data = JSON.parse(props.card.title);
+const data = computed(() => JSON.parse(props.card.title));
 const { fullName: userName, _id: userId } = props.card.author; // 사용자 정보 가져오기
 const userData = useFetchUser(userId);
 const profileImgUrl =
