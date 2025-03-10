@@ -12,22 +12,47 @@ import { useAuthStore } from '@/stores/auth';
 import type { devPost } from '@/types/devcourse/devPost';
 
 import { getAuthorPosts } from '@/apis/devcourse/Post/getAuthorPosts';
+import { useRouter } from 'vue-router';
 
 const adoptionFormPost = ref<devPost>();
 const adoptionRequestData = ref<AdoptionRequestData>();
+const freePosts = ref<devPost[]>([]);
+
 const auth = useAuthStore();
+const router = useRouter();
+
+// 현재 선택된 콘텐츠 (게시글 / 입양신청서)
+const currentContent = ref('게시글');
+
+// 버튼 클릭 시 콘텐츠 변경 함수
+const changeContent = (content: string) => {
+  currentContent.value = content;
+};
 onMounted(async () => {
-  const posts = (await getChannelPosts({ channelId: CHANID.AdoptionChannelId })).posts;
-  const myPosts = posts.filter((e) => e.author._id === auth.user?._id);
-  if (myPosts.length <= 0) return;
-  let mostRecent = myPosts[0];
-  for (let i = 1; i < myPosts.length; i++) {
-    if (new Date(mostRecent.createdAt) < new Date(myPosts[i].createdAt)) {
-      mostRecent = myPosts[i];
+  if (!auth.user) return;
+
+  // 입양 채널 게시글 중 본인이 작성한 글을 가져와 가장 최근 글 선택
+  const adoptionPosts = (await getChannelPosts({ channelId: CHANID.AdoptionChannelId })).posts;
+  const myPosts = adoptionPosts.filter((e) => e.author._id === auth.user?._id);
+  if (myPosts.length > 0) {
+    let mostRecent = myPosts[0];
+    for (let i = 1; i < myPosts.length; i++) {
+      if (new Date(mostRecent.createdAt) < new Date(myPosts[i].createdAt)) {
+        mostRecent = myPosts[i];
+      }
     }
+    adoptionFormPost.value = mostRecent;
   }
-  adoptionFormPost.value = mostRecent;
+
+  // 작성자 게시글(자유/실종 채널) 가져오기 및 정렬
+  const fetchedPosts = (await getAuthorPosts({ authorId: auth.user._id })).posts.filter(
+    (e) => e.channel._id === CHANID.FreeChannelId || e.channel._id === CHANID.MissingChannelId,
+  );
+  fetchedPosts.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  console.log(fetchedPosts);
+  freePosts.value = fetchedPosts;
 });
+
 watch(
   () => adoptionFormPost.value,
   () => {
@@ -62,27 +87,6 @@ watch(
   },
 );
 
-onMounted(async () => {
-  if (!auth.user) return;
-
-  const posts = (await getAuthorPosts({ authorId: auth.user._id })).posts.filter(
-    (e) => e.channel._id === CHANID.FreeChannelId || e.channel._id === CHANID.MissingChannelId,
-  );
-  posts.sort((a, b) => {
-    return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
-  });
-  //posts 출력해주세요
-  console.log(posts);
-});
-
-// 현재 선택된 콘텐츠 (게시글 / 입양신청서)
-const currentContent = ref('게시글');
-
-// 버튼 클릭 시 콘텐츠 변경 함수
-const changeContent = (content: string) => {
-  currentContent.value = content;
-};
-
 // 게시글 목업 데이터
 const postData = ref({
   imgUrl:
@@ -93,6 +97,14 @@ const postData = ref({
   like: 1498,
   chat: 1498,
 });
+
+const goToPostDetail = (post: devPost) => {
+  if (post.channel._id === CHANID.MissingChannelId) {
+    router.push(`/community/missing/${post._id}`);
+  } else {
+    router.push(`/community/free/${post._id}`);
+  }
+};
 </script>
 
 <template>
@@ -118,8 +130,16 @@ const postData = ref({
       </div>
     </div>
     <!-- 카드 리스트 섹션 -->
-    <div v-motion-pop class="container myPostListSection" v-if="currentContent === '게시글'">
-      <MyTravelCard :data="postData" />
+
+    <div v-motion-pop v-if="currentContent === '게시글'" class="container myPostListSection">
+      <div
+        v-for="post in freePosts"
+        :key="post._id"
+        class="my-5"
+        @click="() => goToPostDetail(post)"
+      >
+        <MyTravelCard :data="post" onclick="" />
+      </div>
     </div>
     <div v-motion-pop class="w-100" v-if="currentContent === '입양신청서'">
       <AdoptionRequestDisplay
@@ -157,6 +177,8 @@ const postData = ref({
 .myPostListSection {
   width: 85%;
   height: 90%;
+  overflow-y: auto;
+  scrollbar-width: none;
 }
 
 .cursorPointer:hover {
