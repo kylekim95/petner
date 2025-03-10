@@ -1,21 +1,38 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { getChannelPosts } from '@/apis/devcourse/Post/getChannelPosts';
+import { FreeChannelId } from '@/constants/communityConsts';
+import { onMounted, ref } from 'vue';
+import { type devPost } from '@/types/devcourse/devPost';
+import { RouterLink } from 'vue-router';
+
+const mostLikes = ref<devPost>();
+onMounted(async ()=>{
+  const posts = (await getChannelPosts({channelId: FreeChannelId})).posts;
+  if(posts.length <= 0) return;
+  posts.sort((a, b)=>((b.likes.length) - (a.likes.length)));
+  mostLikes.value = posts[0];
+});
+</script>
 
 <template>
-  <div class="d-flex flex-row justify-content-between gap-5 heroSection">
-    <div class="position-relative heroLeft overflow-hidden">
-      <img
-        src="https://cdn.pixabay.com/photo/2015/05/30/19/53/playing-puppies-790638_1280.jpg"
-        alt=""
-        class="card-img-top"
-      />
-      <div
-        class="heroLeftText d-flex flex-column position-absolute"
-        :style="{ bottom: '20px', left: '20px' }"
-      >
-        <div class="title">강원도 바다 수영 다녀왔어요</div>
-        <div class="subTitle">| 양양 멍비치</div>
+<div class="d-flex flex-row justify-content-between gap-5 heroSection">
+  <div class="position-relative heroLeft overflow-hidden bg-gray-3">
+        <RouterLink :to="`/community/free/${mostLikes?._id}`">
+        <div class="w-100 h-100" style="background-color: #000000;"></div>
+        <img
+          :src="mostLikes && mostLikes.image ? mostLikes.image : ''"
+          alt=""
+          class="card-img-top position-absolute top-0 opacity-50"
+        />
+        <div
+          class="heroLeftText d-flex flex-column position-absolute"
+          :style="{ bottom: '20px', left: '20px' }"
+        >
+          <div class="title">{{ mostLikes ? JSON.parse(mostLikes.title).title : '강원도 바다 수영 다녀왔어요' }}</div>
+          <div class="subTitle"> {{ mostLikes ? mostLikes.author.fullName : '양양 멍비치' }} </div>
+        </div>
+        </RouterLink>
       </div>
-    </div>
 
     <div class="heroRight d-flex flex-column justify-content-between">
       <!-- 자유게시판 영역 -->
@@ -140,5 +157,15 @@
 .postNavigation:hover {
   transform: scale(1.03);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.linear-shadow {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(218, 218, 218, 0.15) 46%,
+    rgba(0, 0, 0, 0.3) 87%,
+    rgba(0, 0, 0, 0.3) 100%
+  );
 }
 </style>
