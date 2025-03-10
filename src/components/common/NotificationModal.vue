@@ -8,7 +8,7 @@ interface NotificationModalProps {
   notifications: devNotification[];
 }
 const props = defineProps<NotificationModalProps>();
-const display = ref<string>('none');
+const display = ref<string>('0');
 watch(
   ()=>props.visibility,
   ()=>{
