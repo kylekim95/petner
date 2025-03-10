@@ -1,6 +1,17 @@
 <script setup lang="ts">
-const dummyImageSrc = "https://media.istockphoto.com/id/1853686056/ko/%EC%82%AC%EC%A7%84/%EC%A7%91%EC%97%90%EC%84%9C-%ED%9C%B4%EC%8B%9D%EC%9D%84-%EC%B7%A8%ED%95%98%EB%8A%94-%EA%B3%A8%EB%93%A0-%EB%A6%AC%ED%8A%B8%EB%A6%AC%EB%B2%84.jpg?s=1024x1024&w=is&k=20&c=qrl0V8QEo7JzTYnGk7hPuSKhmryWD5vnLnrWy0C3XzU="
+const dummyImageSrc =
+  'https://media.istockphoto.com/id/1853686056/ko/%EC%82%AC%EC%A7%84/%EC%A7%91%EC%97%90%EC%84%9C-%ED%9C%B4%EC%8B%9D%EC%9D%84-%EC%B7%A8%ED%95%98%EB%8A%94-%EA%B3%A8%EB%93%A0-%EB%A6%AC%ED%8A%B8%EB%A6%AC%EB%B2%84.jpg?s=1024x1024&w=is&k=20&c=qrl0V8QEo7JzTYnGk7hPuSKhmryWD5vnLnrWy0C3XzU=';
 
+interface PostData {
+  imgUrl: string;
+  author: string;
+  date: Date;
+  title: string;
+  like: number;
+  chat: number;
+}
+
+const { data } = defineProps<{ data: PostData }>();
 </script>
 
 <template>
@@ -19,33 +30,27 @@ const dummyImageSrc = "https://media.istockphoto.com/id/1853686056/ko/%EC%82%AC%
         </div>
         <!-- 내 정보 텍스 -->
         <div class="d-flex flex-column gap-2">
-          <span class="postCardText">홍길동</span>
-          <span class="dateText">2024.10.21</span>
+          <span class="postCardText">{{ data.author }}</span>
+          <span class="dateText">{{ data.date }}</span>
         </div>
       </div>
       <i class="bi bi-three-dots" :style="{ fontSize: '30px' }"></i>
     </div>
     <!-- 메인 이미지 -->
     <div class="mainImg overflow-hidden">
-      <img
-        :src="dummyImageSrc"
-        alt=""
-
-        class="card-img-top"
-
-      />
+      <img :src="dummyImageSrc" alt="" class="card-img-top" />
     </div>
     <!--소개글 -->
-    <div class="contentText">우리 강아지 너무 귀엽지 않나요?</div>
+    <div class="contentText">{{ data.title }}</div>
     <!-- 좋아요, 댓글 -->
     <div class="d-flex flex-row align-items-center gap-4">
       <div class="d-flex flex-row align-items-center gap-2">
         <i class="bi bi-suit-heart commentIcon"></i>
-        <span class="commentText">1,498</span>
+        <span class="commentText">{{ data.like }}</span>
       </div>
       <div class="d-flex flex-row align-items-center gap-2">
-        <i class="bi bi-suit-heart commentIcon"></i>
-        <span class="commentText"> 1,498</span>
+        <i class="bi bi-chat-left commentIcon"></i>
+        <span class="commentText"> {{ data.chat }}</span>
       </div>
     </div>
   </div>
