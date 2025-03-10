@@ -1,15 +1,16 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import FreeCommunityPostCard from '../common/FreeCommunityPostCard.vue';
+import { getChannelPosts } from '@/apis/devcourse/Post/getChannelPosts';
+import { FreeChannelId } from '@/constants/communityConsts';
+import { type devPost } from '@/types/devcourse/devPost';
 
-const cards = ref(
-  new Array(8).fill(0).map((_, i) => ({
-    title: `눈내리는 날 글램핑 다녀왔어요 #${i + 1}`,
-    imageURL: 'https://cdn.pixabay.com/photo/2024/01/15/21/16/dog-8510901_1280.jpg',
-    content: `눈밭에서 뛰어놀고 쿨쿨 잠도 잘자네요 #${i + 1}`,
-    author: '신중석',
-  }))
-);
+const data = ref<devPost[]>([]);
+onMounted(async ()=>{
+  const posts = (await getChannelPosts({channelId: FreeChannelId})).posts;
+  if(posts.length <= 0) return;
+  data.value = posts.slice(0, 8);
+});
 </script>
 
 <template>
@@ -20,16 +21,16 @@ const cards = ref(
       :style="{ width: '100%', marginBottom: '34px' }"
     >
       <div class="title">💫 자유게시판</div>
-      <div class="postNavigation d-flex flex-row justify-content-center align-items-center gap-2">
-        <span style="font-weight: 600">자유게시판</span>
-        <router-link to="/community/free" style="text-decoration: none;">
+      <router-link to="/community/free" style="text-decoration: none;">
+        <div class="postNavigation d-flex flex-row justify-content-center align-items-center gap-2">
+          <span style="font-weight: 600">자유게시판</span>
           <span class="text-primary-blue" style="font-weight: 700">더보기</span>
-        </router-link>
-      </div>
+        </div>
+      </router-link>
     </div>
-    <div class="d-flex flex-wrap gap-2 justify-content-between">
-      <div class="freePostCard" v-for="(item, index) in cards" :key="index">
-        <FreeCommunityPostCard :item="item" />
+    <div class="d-flex flex-wrap gap-2">
+      <div class="freePostCard" v-for="(item, index) in data" :key="index">
+        <FreeCommunityPostCard :data="item" />
       </div>
     </div>
   </div>
