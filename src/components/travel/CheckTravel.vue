@@ -11,10 +11,17 @@ const facilitiesStore = useFacilitiesStore();
 const route = useRoute();
 const router = useRouter();
 
+// 현재 페이지 ContentTypeId
 const categoryParam = route.params.category;
 const currentContentTypeId = ref<string>(
   Array.isArray(categoryParam) ? categoryParam[0] : categoryParam || '',
 );
+
+// 키워드 값
+const keyword = ref('');
+const onSearch = () => {
+  facilitiesStore.setKeywordCode(keyword.value);
+};
 
 // 초기 렌더링 시 currentContentTypeId의 값을 할당
 facilitiesStore.setContentTypeIdCode(currentContentTypeId.value);
@@ -28,7 +35,6 @@ watch(currentContentTypeId, (newValue) => {
 // 현재 페이지
 const pageCategoryData = ref({
   title: '카테고리',
-
   options: [
     { category: '문화 & 쇼핑', contentTypeId: '38' },
     { category: '숙소', contentTypeId: '32' },
@@ -94,15 +100,15 @@ const shoppingCategoryData = ref({
   title: '쇼핑 유형',
   options: [
     { category: '전체', code: '' },
-    { category: '5일장', code: '' },
-    { category: '시장', code: '' },
-    { category: '백화점', code: '' },
-    { category: '면세점', code: '' },
-    { category: '대형마트', code: '' },
-    { category: '전문매장', code: '' },
-    { category: '공예 / 공방', code: '' },
-    { category: '특산물 판매점', code: '' },
-    { category: '사후 면세점', code: '' },
+    { category: '5일장', code: 'A04010100' },
+    { category: '시장', code: 'A04010200' },
+    { category: '백화점', code: 'A04010300' },
+    { category: '면세점', code: 'A04010400' },
+    { category: '대형마트', code: 'A04010500' },
+    { category: '전문매장', code: 'A04010600' },
+    { category: '공예 / 공방', code: 'A04010700' },
+    { category: '특산물 판매점', code: 'A04010900' },
+    { category: '사후 면세점', code: 'A04011000' },
   ],
 });
 // 레포츠
@@ -136,15 +142,6 @@ const currentCategoryData = computed(() => {
       return { title: '기본', category: '', options: [] };
   }
 });
-
-// 부모에서 자식으로 전달할 변수
-const facilitiesData = ref<{ common: string[]; room: string[] }>({ common: [], room: [] });
-
-// 이벤트 핸들러를 통해 선택된 데이터를 업데이트
-const handleFacilitiesUpdate = (data: { common: string[]; room: string[] }) => {
-  facilitiesData.value = data;
-  console.log('업데이트된 시설 데이터:', facilitiesData.value);
-};
 </script>
 
 <template>
@@ -152,8 +149,16 @@ const handleFacilitiesUpdate = (data: { common: string[]; room: string[] }) => {
   <div v-motion="travelCategoryEffect" class="mainLeft container position-sticky-top">
     <!-- search -->
     <div class="searchSection position-relative">
-      <input class="searchInput" type="text" placeholder="키워드 검색" />
-      <i class="bi bi-search position-absolute searchIcon"></i>
+      <div class="searchSection position-relative">
+        <input
+          class="searchInput"
+          type="text"
+          placeholder="키워드 검색"
+          v-model="keyword"
+          @keyup.enter="onSearch"
+        />
+        <i class="bi bi-search position-absolute searchIcon" @click="onSearch"></i>
+      </div>
     </div>
     <!-- 페이지 카테고리 -->
     <div class="title" :style="{ marginTop: '70px' }">카테고리</div>

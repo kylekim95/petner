@@ -1,57 +1,18 @@
 <script setup lang="ts">
 import { detailCommon } from '@/apis/tour/detailCommon';
 import { ref, onMounted } from 'vue';
-interface TourData {
-  addr1: string;
-  addr2: string;
-  areacode: string;
-  cat1: string;
-  cat2: string;
-  cat3: string;
-  contentid: string;
-  contenttypeid: string;
-  cpyrhtDivCd: string;
-  createdtime: string;
-  firstimage: string;
-  firstimage2: string;
-  mapx: string;
-  mapy: string;
-  mlevel: string;
-  modifiedtime: string;
-  sigungucode: string;
-  tel: string;
-  title: string;
-  zipcode: string;
-}
-
-interface DetailData {
-  addr1: string;
-  addr2: string;
-  areacode: string;
-  cat1: string;
-  cat2: string;
-  cat3: string;
-  contentid: string;
-  contenttypeid: string;
-  cpyrhtDivCd: string;
-  createdtime: string;
-  firstimage: string;
-  firstimage2: string;
-  homepage: string;
-  mapx: string;
-  mapy: string;
-  mlevel: string;
-  modifiedtime: string;
-  overview?: string;
-  sigungucode: string;
-  tel: string;
-  telname: string;
-  title: string;
-  zipcode: string;
-}
+import PATH from '@/constants/path';
+import router from '@/router';
+import type { TourData } from '@/types/travelList/tourData';
+import type { DetailData } from '@/types/travelList/detailData';
+import { traveListImg, restaurantImg } from '@/constants/mock/travel/travelList';
 
 const { data } = defineProps<{ data: TourData }>();
 
+//  랜덤 이미지
+const randomImg = traveListImg[Math.floor(Math.random() * traveListImg.length)].url;
+
+// 상속받은 contentTypeId,contentId
 const contentData = ref({
   contentId: data.contentid,
   contentTypeId: data.contenttypeid,
@@ -60,27 +21,32 @@ const contentData = ref({
 // detailCommon의 결과가 배열이므로, ref의 초기값은 빈 배열로 설정
 const overviewData = ref<DetailData>();
 
-onMounted(async () => {
-  // detailCommon이 반환하는 배열을 overviewData에 할당합니다.
-  overviewData.value = await detailCommon(contentData.value);
-  console.log(overviewData.value);
-});
+// onMounted(async () => {
+//   // detailCommon이 반환하는 배열을 overviewData에 할당합니다.
+//   overviewData.value = await detailCommon(contentData?.value);
+// });
+
+// 카드 클릭시 해당 정보를 가진 상세 페이지 이동
+const handleRouter = (contentId: string) => {
+  router.push(PATH.travelDetail.replace(':contentId', contentId));
+};
 </script>
 
 <template>
   <!-- 카드 컴포넌트 -->
   <div
-    class="d-flex flex-row gap-1 position-relative"
+    class="d-flex flex-row gap-2"
     :style="{ width: '100%', height: '295px', marginTop: '20px' }"
+    @click="() => handleRouter(data.contentid)"
   >
     <div class="card overflow-hidden">
-      <img :src="data.firstimage" class="card-img-top" />
+      <img :src="data.firstimage ? data.firstimage : randomImg" class="card-img-top" />
     </div>
-    <div class="d-flex flex-column justify-content-between ms-4" :style="{ width: '55%' }">
+    <div class="d-flex flex-column justify-content-between ms-4 cardContentSection">
       <!-- 카테고리 -->
       <div class="text-primary-blue" :style="{ fontSize: '16px' }">호텔</div>
       <!-- 이름 및 아이콘 -->
-      <div class="d-flex flex-wrap justify-content-lg-between align-items-center">
+      <div class="d-flex flex-row justify-content-between align-items-center">
         <div class="subTitle">{{ data.title }}</div>
         <div class="d-flex flex-row gap-2">
           <!-- 아이콘 -->
@@ -92,7 +58,9 @@ onMounted(async () => {
       <div>{{ data.addr1 }}</div>
       <div>{{ data.tel }}</div>
       <div class="" style="width: 100%">
-        <p
+        <div
+          v-for="(item, index) in overviewData"
+          :key="index"
           class="mb-0"
           style="
             display: -webkit-box;
@@ -103,8 +71,8 @@ onMounted(async () => {
             max-width: 100%;
           "
         >
-          {{ overviewData[0] ? overviewData[0].overview : '' }}
-        </p>
+          <!-- {{ item.overview ? item.overview : '' }} -->
+        </div>
       </div>
       <div class="title">110000원/박</div>
     </div>
@@ -122,17 +90,15 @@ onMounted(async () => {
   font-size: 24px;
   font-weight: 500;
 }
-.mainRight {
-  display: flex;
-  width: 75%;
-  flex-direction: column;
-  align-items: start;
-}
 
 .card {
-  width: 45%;
+  width: 50%;
   height: 295px;
   border-radius: 15px;
+}
+.cardContentSection {
+  width: 50%;
+  height: 295px;
 }
 
 .card-img-top {
