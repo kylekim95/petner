@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useAuthStore } from '@/stores/auth';
 import TextBlock, { type TextBlockDescriptor } from '../common/TextBlock.vue';
 import { RouterLink } from 'vue-router';
 
@@ -21,6 +22,7 @@ const plannerIntroText : TextBlockDescriptor[][] = [
     }
   ],
 ];
+const auth = useAuthStore();
 </script>
 
 <template>
@@ -43,7 +45,8 @@ const plannerIntroText : TextBlockDescriptor[][] = [
         </div>
         <button type="button" class="btn border rounded-5 mt-5 text-primary-green border-primary-green" style="width:250px; height:50px;">
           <div class="d-flex justify-content-center position-relative">
-            <RouterLink to="travel/planner/1" style="text-decoration: none;"><div class="text-primary-green" :style="{ fontFamily:' Pretendard', fontSize: '20px', fontWeight: 500 }">시작하기</div></RouterLink>
+            <!-- <RouterLink v-if="auth.isAuth" to="#" style="text-decoration: none;"><div class="text-primary-green" :style="{ fontFamily:' Pretendard', fontSize: '20px', fontWeight: 500 }">시작하기</div></RouterLink> -->
+            <RouterLink v-if="!auth.isAuth" to="/login" style="text-decoration: none;"><div class="text-primary-green" :style="{ fontFamily:' Pretendard', fontSize: '20px', fontWeight: 500 }">로그인하러 가기</div></RouterLink>
           </div>
         </button>
       </div>

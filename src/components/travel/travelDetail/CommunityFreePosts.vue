@@ -5,8 +5,9 @@ import PostCard from '@/components/community/PostCard.vue';
 import type { GetChannelPostsResponse } from '@/apis/devcourse/Post/getChannelPosts';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
+import { devPost } from '@/types/devcourse/devPost';
 
-const { data } = defineProps<{ data: GetChannelPostsResponse | null }>();
+const { data, title } = defineProps<{ data: devPost[], title: string }>();
 
 const authStore = useAuthStore();
 const router = useRouter();
@@ -25,7 +26,7 @@ function handleClick() {
   <div v-if="data" class="d-flex flex-column bg-gray-3 p-3 rounded">
     <!-- 헤더 & 후기 작성 버튼 -->
     <div class="d-flex justify-content-between align-items-center mb-0">
-      <p class="ms-4 mt-3 p-0 name-text text-gray-10 fs-2 fw-bold">자유게시판</p>
+      <p class="ms-4 mt-3 p-0 name-text text-gray-10 fs-2 fw-bold">{{ title }}</p>
       <button
         class="btn border-secondary-green rounded bg-white"
         @click="handleClick"
@@ -41,7 +42,7 @@ function handleClick() {
       space-between="10"
       style="height: fit-content"
     >
-      <swiper-slide v-for="post in data.posts.slice(0, 8)" :key="post._id"
+      <swiper-slide v-for="post in data.slice(0, 8)" :key="post._id"
         ><PostCard
           :postId="post._id"
           :imageUrl="post.image ?? ''"
