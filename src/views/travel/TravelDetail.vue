@@ -112,22 +112,24 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div v-if="detailCommonData && imageData" class="my-5">
-    <PhotoGrid :firstimage="detailCommonData.firstimage" :images="imageData" />
-  </div>
-  <div v-if="detailMergedData" class="mb-3">
-    <InfoCard :detail="detailMergedData" />
-  </div>
-  <div v-if="detailPetTourData">
-    <WithPetsInfo :detail="detailPetTourData" />
-  </div>
-  <div v-if="contentTypeId === '32'" class="my-5">
-    <AccommodationCard :rooms="detailRoomData" />
-  </div>
-  <div class="container my-5">
-    <DetailInfoComponent :data="detailInfoData" />
-  </div>
-  <div class="container mb-5">
-    <CommunityFreePosts :data="postsData" :title="detailCommonData ? detailCommonData.title : '자유게시판'" />
+  <div class="container overflow-hidden">
+    <div v-if="detailCommonData && imageData" class="my-5">
+      <PhotoGrid :firstimage="detailCommonData.firstimage" :images="imageData" />
+    </div>
+    <div v-if="detailMergedData" class="mb-3">
+      <InfoCard :detail="detailMergedData" />
+    </div>
+    <div v-if="detailPetTourData">
+      <WithPetsInfo :detail="detailPetTourData" />
+    </div>
+    <div v-if="contentTypeId === '32'" class="my-5">
+      <AccommodationCard :rooms="detailRoomData" />
+    </div>
+    <div class="container my-5">
+      <DetailInfoComponent :data="detailInfoData" />
+    </div>
+    <div class="container mb-5">
+      <CommunityFreePosts :data="postsData" :title="detailCommonData ? detailCommonData.title : '자유게시판'" />
+    </div>
   </div>
 </template>
