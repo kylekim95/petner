@@ -1,27 +1,36 @@
 <script setup lang="ts">
 export interface AdoptionRequestData {
-  name : string;
-  contact : string;
-  email : string;
-  gender : string;
-  reqId : string;
-  questions : { question:string, answer:string }[];
-  oathDate : Date;
+  name: string;
+  contact: string;
+  email: string;
+  gender: string;
+  reqId: string;
+  questions: { question: string; answer: string }[];
+  oathDate: Date;
 }
 interface AdoptionRequestDisplayProps {
-  data : AdoptionRequestData;
+  data: AdoptionRequestData;
 }
 const props = defineProps<AdoptionRequestDisplayProps>();
-const petnerText = '본인은 펫트너를 통해 입양한 반려동물에게  책임을 다하고, 최적의 환경과 보살핌을 제공할 것을 서약합니다.';
-const formattedOathDate = props.data.oathDate.getFullYear() + '년 ' + props.data.oathDate.getMonth() + '월 ' + props.data.oathDate.getDay() + '일';
+const petnerText =
+  '본인은 펫트너를 통해 입양한 반려동물에게  책임을 다하고, 최적의 환경과 보살핌을 제공할 것을 서약합니다.';
+const formattedOathDate =
+  props.data.oathDate.getFullYear() +
+  '년 ' +
+  props.data.oathDate.getMonth() +
+  '월 ' +
+  props.data.oathDate.getDay() +
+  '일';
 console.log(formattedOathDate);
 </script>
 
 <template>
   <div class="bg-primary d-flex flex-column">
-    <div class="bg-secondary-green w-100 py-4 px-5 d-flex justify-content-between border-bottom border-2 align-items-center">
+    <div
+      class="bg-secondary-green w-100 py-4 px-5 d-flex justify-content-between border-bottom border-2 align-items-center"
+    >
       <p class="p-0 m-0 text-gray-1 adoption-request-title-text">입양 신청서</p>
-      <img src="/pawIcon.svg" alt="" style="width:40px; height:40px;">
+      <img src="/pawIcon.svg" alt="" style="width: 40px; height: 40px" />
     </div>
     <div class="bg-secondary-green w-100 p-3 px-5">
       <!-- 이름 & 연락처 -->
@@ -57,7 +66,9 @@ console.log(formattedOathDate);
     <div class="bg-gray-3 w-100 px-5">
       <div v-for="(item, index) in props.data.questions" :key="index" class="mt-5">
         <div class="border-bottom border-2 border-gray-7 pb-3">
-          <p class="m-0 p-0 text-gray-10 question-title">{{ (index + 1).toString() + ". " + item.question }}</p>
+          <p class="m-0 p-0 text-gray-10 question-title">
+            {{ (index + 1).toString() + '. ' + item.question }}
+          </p>
         </div>
         <div class="pt-3">
           <p class="m-0 p-0 text-gray-7 question-content">{{ item.answer }}</p>
