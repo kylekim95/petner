@@ -29,7 +29,7 @@ const plannerIntroText : TextBlockDescriptor[][] = [
       backgroundImage : `url(/PlannerBackgroundImg.png)`,
     }"
   >
-    <div class="gap-1" :style="{ width: '67%', height: '100%', justifySelf : 'center', justifyContent: 'center', display: 'flex', flexDirection: 'row'}">
+    <div class="gap-5" :style="{ width: '67%', height: '100%', justifySelf : 'center', justifyContent: 'center', display: 'flex', flexDirection: 'row', minWidth: '1280px'}">
       <div class="d-flex flex-column" style="width: 35%; min-width: 400px; justify-content: center;">
         <div class="d-flex">
           <TextBlock :text-block="plannerIntroText[0][0]"/>
@@ -47,7 +47,9 @@ const plannerIntroText : TextBlockDescriptor[][] = [
           </div>
         </button>
       </div>
-      <div class="w-50 bg-secondary opacity-50 rounded-4 align-self-center" style="height: 450px; min-width: 500px;"></div>
+      <div class="rounded-4 align-self-center overflow-hidden" style="width: fit-content; height: 400px;">
+        <img src="/travelPlanner/planner-image.png" alt="" style="width:auto; height: 100%;">
+      </div>
     </div>
   </div>
 </template>

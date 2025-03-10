@@ -1,12 +1,10 @@
-<script setup lang="ts">
-import PNG_IMAGES from '../../../../public/PNG-Image/image';
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <div class="banner-wrapper">
     <div class="banner-cards">
       <div class="banner-card">
-        <img :src="PNG_IMAGES.alertBell" alert="bell image" />
+        <img src="/PNG-Image/images/alert-bell.png" alert="bell image" />
         <p>
           우리나라 유기동물들에게 <br />
           조금만 귀기울여주세요
@@ -21,7 +19,7 @@ import PNG_IMAGES from '../../../../public/PNG-Image/image';
     </div>
     <div class="banner-graph">
       <!-- TRY : Chart.js 로 구현해보기 -->
-      <img :src="PNG_IMAGES.adoptionChart" alert="adoption data graph" />
+      <img src="/PNG-Image/images/adoption-chart.png" alert="adoption data graph" />
     </div>
   </div>
 </template>

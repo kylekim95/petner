@@ -1,8 +1,13 @@
 <script setup lang="ts">
 import ShelterKakaoMap from '@/components/adoption/shelter/ShelterKakaoMap.vue';
+import { useRouter } from 'vue-router';
+import { useAuthStore } from '@/stores/auth';
+import { ref, computed } from 'vue';
+import PlannerModal from './PlannerModal.vue';
 
 interface BaseDetail {
   title: string;
+  contentid: string;
   addr1: string | null;
   tel: string | null;
   overview: string | null;
@@ -66,6 +71,50 @@ export type DetailCard =
   | ActivitiesDetail;
 
 const { detail } = defineProps<{ detail: DetailCard }>();
+const router = useRouter();
+const authStore = useAuthStore();
+
+// PlannerModal 관련 상태
+const isPlannerVisible = ref(false);
+const modalPositionTop = ref('100%'); // 필요에 따라 위치값 수정
+const modalPositionLeft = ref('0%'); //필요에 따라 위치값 수정
+
+//기존 detail Prop을 PlannerModal 데이터에 맞게 수정
+const detailForPlanner = computed(() => {
+  const { title, contenttypeid, ...rest } = detail;
+  return {
+    ...rest,
+    name: title,
+    contentTypeId: contenttypeid,
+    mapx: Number(detail.mapx),
+    mapy: Number(detail.mapy),
+  };
+});
+
+function togglePlannerModal() {
+  isPlannerVisible.value = !isPlannerVisible.value;
+}
+
+function handleIconClick() {
+  if (!authStore.isAuth) {
+    alert('로그인을 해주세요');
+    router.push({ name: 'login' });
+  } else {
+    isPlannerVisible.value = !isPlannerVisible.value;
+  }
+}
+
+// HTML 태그 제거 함수
+function formatPolicy(text: string | null): string {
+  if (!text) return '';
+  return (
+    text
+      // <br />, <br>, <br/> 등 다양한 형식을 공백으로 대체
+      .replace(/<br\s*\/?>/gi, ' ')
+      // 나머지 HTML 태그는 제거
+      .replace(/<[^>]*>/g, '')
+  );
+}
 </script>
 
 <template>
@@ -79,7 +128,28 @@ const { detail } = defineProps<{ detail: DetailCard }>();
         <h1 class="mb-0 text-gray-10" style="font-family: 'Paperlogy'; font-weight: 700">
           {{ detail?.title ?? '가람초연재' }}
         </h1>
-        <i class="bi bi-map fa-2x text-primary-green"></i>
+
+        <div class="button-container" style="width: fit-content; height: fit-content">
+          <!-- 여행 플래너 버튼 -->
+          <button
+            @click="
+              (e) => {
+                handleIconClick();
+              }
+            "
+            class="btn p-0 border-0 bg-transparent"
+          >
+            <i class="bi bi-map fa-2x text-primary-green"></i>
+          </button>
+          <span class="tooltip">여행계획에 추가하기</span>
+          <PlannerModal
+            :visible="isPlannerVisible"
+            :positionTop="modalPositionTop"
+            :positionLeft="modalPositionLeft"
+            :data="detailForPlanner"
+            @toggle-visibility="togglePlannerModal"
+          />
+        </div>
       </div>
 
       <div class="bi bi-geo-alt fa-s text-secondary-red fs-5">
@@ -91,19 +161,22 @@ const { detail } = defineProps<{ detail: DetailCard }>();
         <span class="ms-1 text-gray-7"> {{ detail?.tel ?? '연락처' }}</span>
       </div>
       <div class="bi bi-house fa-s text-secondary-red fs-5">
-        <span class="ms-1 text-gray-7">{{ detail?.homepage ?? '홈페이지' }}</span>
+        <span
+          class="ms-1 text-gray-7"
+          v-html="detail?.homepage ? formatPolicy(detail.homepage) : '-'"
+        ></span>
       </div>
     </div>
     <div class="row mt-3 gy-3">
       <div class="col-6">
         <h2 class="mb-3 fs-5">소개</h2>
 
-        <p class="fs-7">
-          {{ detail?.overview ?? '소개글' }}
-        </p>
+        <p class="fs-7" v-if="detail?.overview" v-html="detail.overview"></p>
+        <p class="fs-7" v-else>정보가 없습니다.</p>
         <div class="d-flex align-items-center justify-content-between mt-5">
           <h2 class="fs-5">문의 및 안내</h2>
-          <span class="fs-6">{{ detail?.tel ?? '010-3524-6124' }}</span>
+          <span class="fs-6" v-if="detail?.tel">{{ detail.tel }}</span>
+          <span class="fs-6" v-else>010-3524-6124</span>
         </div>
         <div class="d-flex align-items-center justify-content-between mt-2">
           <h2 class="fs-5">객실 갯수</h2>
@@ -115,16 +188,25 @@ const { detail } = defineProps<{ detail: DetailCard }>();
             (detail?.checkintime ?? '15:00') + ' / ' + (detail?.checkouttime ?? '10:00')
           }}</span>
         </div>
-        <div class="d-flex align-items-center justify-content-between mt-2">
-          <h2 class="fs-5">환불 규정</h2>
-          <span class="fs-6">{{ detail.refundregulation ?? '예약 확정시 환불 불가' }}</span>
+        <div class="row mt-2">
+          <div class="col-auto">
+            <h2 class="fs-5">환불 규정</h2>
+          </div>
+          <div class="col text-end">
+            <span
+              class="fs-6"
+              v-if="detail?.refundregulation"
+              v-html="formatPolicy(detail.refundregulation)"
+            ></span>
+            <span class="fs-6" v-else>예약 확정시 환불 불가</span>
+          </div>
         </div>
       </div>
 
       <!-- 오른쪽: 지도 Placeholder -->
       <div class="col-6">
         <div class="map-placeholder d-flex align-items-center justify-content-center rounded-4">
-          <ShelterKakaoMap :lat="33.450701" :lng="126.570667" />
+          <ShelterKakaoMap :lat="Number(detail.mapy)" :lng="Number(detail.mapx)" />
         </div>
       </div>
     </div>
@@ -134,13 +216,33 @@ const { detail } = defineProps<{ detail: DetailCard }>();
   <div v-if="detail?.contenttypeid === '39'" class="container">
     <div class="row g-2">
       <h3 class="text-secondary-red fs-5" style="font-family: 'Paperlogy'; font-weight: 700">
-        레스토랑
+        레스토랑 & 카페
       </h3>
       <div class="d-flex align-items-center justify-content-between mb-3">
         <h1 class="mb-0 text-gray-10" style="font-family: 'Paperlogy'; font-weight: 700">
           {{ detail?.title ?? '가평카페 109' }}
         </h1>
-        <i class="bi bi-map fa-2x text-primary-green"></i>
+        <div class="button-container" style="width: fit-content; height: fit-content">
+          <!-- 여행 플래너 버튼 -->
+          <button
+            @click="
+              (e) => {
+                handleIconClick();
+              }
+            "
+            class="btn p-0 border-0 bg-transparent"
+          >
+            <i class="bi bi-map fa-2x text-primary-green"></i>
+          </button>
+          <span class="tooltip">여행계획에 추가하기</span>
+          <PlannerModal
+            :visible="isPlannerVisible"
+            :positionTop="modalPositionTop"
+            :positionLeft="modalPositionLeft"
+            :data="detailForPlanner"
+            @toggle-visibility="togglePlannerModal"
+          />
+        </div>
       </div>
 
       <div class="bi bi-geo-alt fa-s text-secondary-red fs-5">
@@ -152,7 +254,9 @@ const { detail } = defineProps<{ detail: DetailCard }>();
         <span class="ms-1 text-gray-7"> {{ detail?.tel ?? '연락처' }}</span>
       </div>
       <div class="bi bi-house fa-s text-secondary-red fs-5">
-        <span class="ms-1 text-gray-7">{{ detail?.homepage ?? '홈페이지' }}</span>
+        <span class="ms-1 text-gray-7">{{
+          detail?.homepage ? formatPolicy(detail.homepage) : '-'
+        }}</span>
       </div>
     </div>
     <div class="row mt-3 gy-3">
@@ -160,44 +264,46 @@ const { detail } = defineProps<{ detail: DetailCard }>();
         <h2 class="mb-3 fs-4">소개</h2>
 
         <p class="fs-7">
-          {{ detail?.overview ?? '소개글' }}
+          {{ detail?.overview ? formatPolicy(detail.overview) : '-' }}
         </p>
         <div class="d-flex align-items-center justify-content-between mt-5">
           <h2 class="fs-5">문의 및 안내</h2>
-          <span class="fs-6">{{ detail?.tel ?? '010-3524-6124' }}</span>
+          <span class="fs-6">{{ formatPolicy(detail?.tel) ?? '010-3524-6124' }}</span>
         </div>
         <div class="d-flex align-items-center justify-content-between mt-2">
           <h2 class="fs-5">영업시간</h2>
-          <span class="fs-6">{{ detail?.opentimefood }}</span>
+          <span class="fs-6">{{
+            detail?.opentimefood ? formatPolicy(detail.opentimefood) : '-'
+          }}</span>
         </div>
         <div class="d-flex align-items-center justify-content-between mt-2">
           <h2 class="fs-5">쉬는 날</h2>
-          <span class="fs-6">{{ detail.restdatefood || '연중무휴' }}</span>
+          <span class="fs-6">{{ formatPolicy(detail.restdatefood) || '연중무휴' }}</span>
         </div>
         <div class="d-flex align-items-center justify-content-between mt-2">
           <h2 class="fs-5">주차 정보</h2>
-          <span class="fs-6">{{ detail.parkingfood || '유료 주차장' }}</span>
+          <span class="fs-6">{{ formatPolicy(detail.parkingfood) || '유료 주차장' }}</span>
         </div>
         <div class="d-flex align-items-center justify-content-between mt-2">
           <h2 class="fs-5">취급 메뉴</h2>
-          <span class="fs-6">{{ detail.treatmenu || '정보 없음' }}</span>
+          <span class="fs-6">{{ formatPolicy(detail.treatmenu) || '정보 없음' }}</span>
         </div>
         <div class="d-flex align-items-center justify-content-between mt-2">
           <h2 class="fs-5">대표 메뉴</h2>
-          <span class="fs-6">{{ detail.firstmenu || '정보 없음' }}</span>
+          <span class="fs-6">{{ formatPolicy(detail.firstmenu) || '정보 없음' }}</span>
         </div>
       </div>
 
       <!-- 오른쪽: 지도 Placeholder -->
       <div class="col-6">
         <div class="map-placeholder d-flex align-items-center justify-content-center rounded-4">
-          <span class="text-muted">지도 영역 (Placeholder)</span>
+          <ShelterKakaoMap :lat="Number(detail.mapy)" :lng="Number(detail.mapx)" />
         </div>
       </div>
     </div>
   </div>
 
-  <!-- 문화  (contenttyepid === 14) -->
+  <!-- 문화  (contenttypeid === 14) -->
   <div v-if="detail?.contenttypeid === '14'" class="container">
     <div class="row g-2">
       <h3 class="text-secondary-red fs-5" style="font-family: 'Paperlogy'; font-weight: 700">
@@ -205,19 +311,41 @@ const { detail } = defineProps<{ detail: DetailCard }>();
       </h3>
       <div class="d-flex align-items-center justify-content-between mb-3">
         <h1 class="mb-0 text-gray-10" style="font-family: 'Paperlogy'; font-weight: 700">
-          {{ detail?.title ?? '가평현암 농경박물관' }}
+          {{ detail?.title ?? '-' }}
         </h1>
-        <i class="bi bi-map fa-2x text-primary-green"></i>
+        <div class="button-container" style="width: fit-content; height: fit-content">
+          <!-- 여행 플래너 버튼 -->
+          <button
+            @click="
+              (e) => {
+                handleIconClick();
+              }
+            "
+            class="btn p-0 border-0 bg-transparent"
+          >
+            <i class="bi bi-map fa-2x text-primary-green"></i>
+          </button>
+          <span class="tooltip">여행계획에 추가하기</span>
+          <PlannerModal
+            :visible="isPlannerVisible"
+            :positionTop="modalPositionTop"
+            :positionLeft="modalPositionLeft"
+            :data="detailForPlanner"
+            @toggle-visibility="togglePlannerModal"
+          />
+        </div>
       </div>
 
       <div class="bi bi-geo-alt fa-s text-secondary-red fs-5">
-        <span class="ms-1 text-gray-7"> {{ detail?.addr1 ?? '주소정보 없음' }}</span>
+        <span class="ms-1 text-gray-7"> {{ formatPolicy(detail?.addr1) ?? '주소정보 없음' }}</span>
       </div>
       <div class="bi bi-telephone fa-s text-secondary-red fs-5">
-        <span class="ms-1 text-gray-7"> {{ detail?.tel ?? '-' }}</span>
+        <span class="ms-1 text-gray-7"> {{ formatPolicy(detail?.tel) ?? '-' }}</span>
       </div>
       <div class="bi bi-house fa-s text-secondary-red fs-5">
-        <span class="ms-1 text-gray-7">{{ detail?.homepage ?? '정보 없음' }}</span>
+        <span class="ms-1 text-gray-7">{{
+          detail?.homepage ? formatPolicy(detail.homepage) : '-'
+        }}</span>
       </div>
     </div>
     <div class="row mt-3 gy-3">
@@ -225,16 +353,31 @@ const { detail } = defineProps<{ detail: DetailCard }>();
         <h2 class="mb-3 fs-4">소개</h2>
 
         <p class="fs-7">
-          {{ detail?.overview ?? '소개글 없음' }}
+          {{ detail?.overview ? formatPolicy(detail.overview) : '-' }}
         </p>
         <div class="d-flex align-items-center justify-content-between mt-5">
           <h2 class="fs-5">문의 및 안내</h2>
-          <span class="fs-6">{{ detail?.infocenterculture ?? '-' }}</span>
+          <span
+            class="fs-6"
+            style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis"
+            >{{ detail?.infocenterculture ? formatPolicy(detail.infocenterculture) : '-' }}</span
+          >
         </div>
-        <div class="d-flex align-items-center justify-content-between mt-2">
-          <h2 class="fs-5">영업시간</h2>
-          <span class="fs-6">{{ detail?.usetimeculture }}</span>
+        <div class="row mt-2">
+          <!-- 왼쪽 레이블: col-auto로 레이블 길이에 맞게 폭을 결정 -->
+          <div class="col-auto">
+            <h2 class="fs-5 mb-0">영업시간</h2>
+          </div>
+
+          <!-- 오른쪽 텍스트: 나머지 공간을 차지, 오른쪽 정렬, 길면 잘림 -->
+          <div
+            class="col text-end fs-6"
+            style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis"
+          >
+            {{ detail?.usetimeculture ? formatPolicy(detail.usetimeculture) : '-' }}
+          </div>
         </div>
+
         <div class="d-flex align-items-center justify-content-between mt-2">
           <h2 class="fs-5">쉬는 날</h2>
           <span class="fs-6">{{ detail?.restdateculture || '정보 없음' }}</span>
@@ -243,7 +386,7 @@ const { detail } = defineProps<{ detail: DetailCard }>();
           <h2 class="fs-5">주차 정보</h2>
           <span class="fs-6">{{
             detail?.parkingculture || detail?.parkingfee
-              ? `${detail?.parkingculture ?? '주차정보 없음'}/${detail?.parkingfee ?? '주차요금 정보 없음'}`
+              ? `${formatPolicy(detail.parkingculture) ?? '주차정보 없음'}/${formatPolicy(detail.parkingculture) ?? '주차요금 정보 없음'}`
               : '주차정보 없음'
           }}</span>
         </div>
@@ -252,7 +395,7 @@ const { detail } = defineProps<{ detail: DetailCard }>();
       <!-- 오른쪽: 지도 Placeholder -->
       <div class="col-6">
         <div class="map-placeholder d-flex align-items-center justify-content-center rounded-4">
-          <span class="text-muted">지도 영역 (Placeholder)</span>
+          <ShelterKakaoMap :lat="Number(detail.mapy)" :lng="Number(detail.mapx)" />
         </div>
       </div>
     </div>
@@ -268,17 +411,39 @@ const { detail } = defineProps<{ detail: DetailCard }>();
         <h1 class="mb-0 text-gray-10" style="font-family: 'Paperlogy'; font-weight: 700">
           {{ detail?.title ?? '가평현리 5일장' }}
         </h1>
-        <i class="bi bi-map fa-2x text-primary-green"></i>
+        <div class="button-container" style="width: fit-content; height: fit-content">
+          <!-- 여행 플래너 버튼 -->
+          <button
+            @click="
+              (e) => {
+                handleIconClick();
+              }
+            "
+            class="btn p-0 border-0 bg-transparent"
+          >
+            <i class="bi bi-map fa-2x text-primary-green"></i>
+          </button>
+          <span class="tooltip">여행계획에 추가하기</span>
+          <PlannerModal
+            :visible="isPlannerVisible"
+            :positionTop="modalPositionTop"
+            :positionLeft="modalPositionLeft"
+            :data="detailForPlanner"
+            @toggle-visibility="togglePlannerModal"
+          />
+        </div>
       </div>
 
       <div class="bi bi-geo-alt fa-s text-secondary-red fs-5">
-        <span class="ms-1 text-gray-7"> {{ detail?.addr1 ?? '주소정보 없음' }}</span>
+        <span class="ms-1 text-gray-7"> {{ detail?.addr1 ?? '-' }}</span>
       </div>
       <div class="bi bi-telephone fa-s text-secondary-red fs-5">
         <span class="ms-1 text-gray-7"> {{ detail?.tel ?? '-' }}</span>
       </div>
       <div class="bi bi-house fa-s text-secondary-red fs-5">
-        <span class="ms-1 text-gray-7">{{ detail?.homepage ?? '정보 없음' }}</span>
+        <span class="ms-1 text-gray-7">
+          {{ detail?.homepage ? formatPolicy(detail.homepage) : '-' }}
+        </span>
       </div>
     </div>
     <div class="row mt-3 gy-3">
@@ -290,26 +455,30 @@ const { detail } = defineProps<{ detail: DetailCard }>();
         </p>
         <div class="d-flex align-items-center justify-content-between mt-5">
           <h2 class="fs-5">문의 및 안내</h2>
-          <span class="fs-6">{{ detail?.infocentershopping ?? '-' }}</span>
+          <span class="fs-6">{{
+            detail?.infocentershopping ? formatPolicy(detail.infocentershopping) : '정보 없음'
+          }}</span>
         </div>
         <div class="d-flex align-items-center justify-content-between mt-2">
           <h2 class="fs-5">영업시간</h2>
-          <span class="fs-6">{{ detail?.fairday }}</span>
+          <span class="fs-6">{{ detail?.fairday ? formatPolicy(detail.fairday) : '-' }}</span>
         </div>
         <div class="d-flex align-items-center justify-content-between mt-2">
           <h2 class="fs-5">쉬는 날</h2>
-          <span class="fs-6">{{ detail?.restdateshopping || '정보 없음' }}</span>
+          <span class="fs-6">{{ formatPolicy(detail?.restdateshopping) || '정보 없음' }}</span>
         </div>
         <div class="d-flex align-items-center justify-content-between mt-2">
           <h2 class="fs-5">주차 정보</h2>
-          <span class="fs-6">{{ detail.parkingshopping ?? '주차요금 정보 없음' }}</span>
+          <span class="fs-6">{{
+            formatPolicy(detail.parkingshopping) ?? '주차요금 정보 없음'
+          }}</span>
         </div>
       </div>
 
       <!-- 오른쪽: 지도 Placeholder -->
       <div class="col-6">
         <div class="map-placeholder d-flex align-items-center justify-content-center rounded-4">
-          <span class="text-muted">지도 영역 (Placeholder)</span>
+          <ShelterKakaoMap :lat="Number(detail.mapy)" :lng="Number(detail.mapx)" />
         </div>
       </div>
     </div>
@@ -325,7 +494,27 @@ const { detail } = defineProps<{ detail: DetailCard }>();
         <h1 class="mb-0 text-gray-10" style="font-family: 'Paperlogy'; font-weight: 700">
           {{ detail?.title ?? '가우도' }}
         </h1>
-        <i class="bi bi-map fa-2x text-primary-green"></i>
+        <div class="button-container" style="width: fit-content; height: fit-content">
+          <!-- 여행 플래너 버튼 -->
+          <button
+            @click="
+              (e) => {
+                handleIconClick();
+              }
+            "
+            class="btn p-0 border-0 bg-transparent"
+          >
+            <i class="bi bi-map fa-2x text-primary-green"></i>
+          </button>
+          <span class="tooltip">여행계획에 추가하기</span>
+          <PlannerModal
+            :visible="isPlannerVisible"
+            :positionTop="modalPositionTop"
+            :positionLeft="modalPositionLeft"
+            :data="detailForPlanner"
+            @toggle-visibility="togglePlannerModal"
+          />
+        </div>
       </div>
 
       <div class="bi bi-geo-alt fa-s text-secondary-red fs-5">
@@ -335,7 +524,9 @@ const { detail } = defineProps<{ detail: DetailCard }>();
         <span class="ms-1 text-gray-7"> {{ detail?.tel ?? '-' }}</span>
       </div>
       <div class="bi bi-house fa-s text-secondary-red fs-5">
-        <span class="ms-1 text-gray-7">{{ detail?.homepage ?? '정보 없음' }}</span>
+        <span class="ms-1 text-gray-7">{{
+          detail?.homepage ? formatPolicy(detail.homepage) : '-'
+        }}</span>
       </div>
     </div>
     <div class="row mt-3 gy-3">
@@ -351,7 +542,7 @@ const { detail } = defineProps<{ detail: DetailCard }>();
         </div>
         <div class="d-flex align-items-center justify-content-between mt-2">
           <h2 class="fs-5">영업시간</h2>
-          <span class="fs-6">{{ detail?.usetime ?? '-' }}</span>
+          <span class="fs-6">{{ detail?.usetime ? formatPolicy(detail.usetime) : '-' }}</span>
         </div>
         <div class="d-flex align-items-center justify-content-between mt-2">
           <h2 class="fs-5">쉬는 날</h2>
@@ -361,16 +552,16 @@ const { detail } = defineProps<{ detail: DetailCard }>();
           <h2 class="fs-5">주차 정보</h2>
           <span class="fs-6">{{ detail.parking ?? '-' }}</span>
         </div>
-        <div class="d-block mt-2">
+        <div class="d-flex align-items-center justify-content-between mt-2">
           <h2 class="fs-5">체험 안내</h2>
-          <span class="fs-6">{{ detail.expguide ?? '-' }}</span>
+          <span class="fs-6">{{ detail.expguide ? formatPolicy(detail.expguide) : '-' }}</span>
         </div>
       </div>
 
       <!-- 오른쪽: 지도 Placeholder -->
       <div class="col-6">
         <div class="map-placeholder d-flex align-items-center justify-content-center rounded-4">
-          <span class="text-muted">지도 영역 (Placeholder)</span>
+          <ShelterKakaoMap :lat="Number(detail.mapy)" :lng="Number(detail.mapx)" />
         </div>
       </div>
     </div>
@@ -385,7 +576,27 @@ const { detail } = defineProps<{ detail: DetailCard }>();
         <h1 class="mb-0 text-gray-10" style="font-family: 'Paperlogy'; font-weight: 700">
           {{ detail?.title ?? '가우도' }}
         </h1>
-        <i class="bi bi-map fa-2x text-primary-green"></i>
+        <div class="button-container" style="width: fit-content; height: fit-content">
+          <!-- 여행 플래너 버튼 -->
+          <button
+            @click="
+              (e) => {
+                handleIconClick();
+              }
+            "
+            class="btn p-0 border-0 bg-transparent"
+          >
+            <i class="bi bi-map fa-2x text-primary-green"></i>
+          </button>
+          <span class="tooltip">여행계획에 추가하기</span>
+          <PlannerModal
+            :visible="isPlannerVisible"
+            :positionTop="modalPositionTop"
+            :positionLeft="modalPositionLeft"
+            :data="detailForPlanner"
+            @toggle-visibility="togglePlannerModal"
+          />
+        </div>
       </div>
 
       <div class="bi bi-geo-alt fa-s text-secondary-red fs-5">
@@ -395,7 +606,9 @@ const { detail } = defineProps<{ detail: DetailCard }>();
         <span class="ms-1 text-gray-7"> {{ detail?.tel ?? '-' }}</span>
       </div>
       <div class="bi bi-house fa-s text-secondary-red fs-5">
-        <span class="ms-1 text-gray-7">{{ detail?.homepage ?? '정보 없음' }}</span>
+        <span class="ms-1 text-gray-7">{{
+          detail?.homepage ? formatPolicy(detail.homepage) : '-'
+        }}</span>
       </div>
     </div>
     <div class="row mt-3 gy-3">
@@ -407,30 +620,32 @@ const { detail } = defineProps<{ detail: DetailCard }>();
         </p>
         <div class="d-flex align-items-center justify-content-between mt-5">
           <h2 class="fs-5">문의 및 안내</h2>
-          <span class="fs-6">{{ detail?.infocenterleports ?? '-' }}</span>
+          <span class="fs-6">{{ formatPolicy(detail?.infocenterleports) ?? '-' }}</span>
         </div>
         <div class="d-flex align-items-center justify-content-between mt-2">
           <h2 class="fs-5">영업시간</h2>
-          <span class="fs-6">{{ detail?.usetimeleports ?? '-' }}</span>
+          <span class="fs-6">{{
+            detail?.usetimeleports ? formatPolicy(detail.usetimeleports) : '-'
+          }}</span>
         </div>
         <div class="d-flex align-items-center justify-content-between mt-2">
           <h2 class="fs-5">쉬는 날</h2>
-          <span class="fs-6">{{ detail?.restdateleports || '-' }}</span>
+          <span class="fs-6">{{ formatPolicy(detail?.restdateleports) || '-' }}</span>
         </div>
         <div class="d-flex align-items-center justify-content-between mt-2">
           <h2 class="fs-5">주차 정보</h2>
-          <span class="fs-6">{{ detail.parkingleports ?? '-' }}</span>
+          <span class="fs-6">{{ formatPolicy(detail.parkingleports) ?? '-' }}</span>
         </div>
         <div class="d-flex align-items-center justify-content-between mt-2">
           <h2 class="fs-5">입장료</h2>
-          <span class="fs-6">{{ detail.usefeeleports ?? '-' }}</span>
+          <span class="fs-6">{{ formatPolicy(detail.usefeeleports) ?? '-' }}</span>
         </div>
       </div>
 
       <!-- 오른쪽: 지도 Placeholder -->
       <div class="col-6">
         <div class="map-placeholder d-flex align-items-center justify-content-center rounded-4">
-          <span class="text-muted">지도 영역 (Placeholder)</span>
+          <ShelterKakaoMap :lat="Number(detail.mapy)" :lng="Number(detail.mapx)" />
         </div>
       </div>
     </div>
@@ -444,5 +659,30 @@ const { detail } = defineProps<{ detail: DetailCard }>();
   height: 630px; /* 원하는 크기로 조절 */
   background-color: #f0f0f0;
   border: 1px dashed #ccc;
+}
+
+.tooltip {
+  position: absolute;
+  bottom: 120%; /* 버튼 위에 위치 */
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.75);
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease-in-out;
+}
+
+/* 버튼에 마우스 오버하면 툴팁 표시 */
+.button-container:hover .tooltip {
+  opacity: 1;
+}
+.button-container {
+  position: relative;
+  display: inline-block;
 }
 </style>

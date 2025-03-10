@@ -13,7 +13,7 @@ export async function fetchPetTourData(requiredData: PetTourData) {
         contentId: requiredData.contentId,
       },
     });
-    const data = response.data.response.body.items?.item;
+    const data = response.data.response.body.items.item;
     console.log(data);
     return data;
   } catch (error) {

@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import { createPost } from '@/apis/devcourse/Post/createPost';
+import * as CHANID from '@/constants/communityConsts';
 import { ref } from 'vue';
+import type adoptionForm from '@/types/adoptionForm';
 
 // 개인정보 입력 필드
 const name = ref('');
@@ -18,17 +21,33 @@ const familyAgreement = ref('');
 
 // 폼 제출 처리
 const handleSubmit = () => {
-  console.log('폼 제출됨');
-  console.log('이름:', name.value);
-  console.log('전화번호:', phone.value);
-  console.log('이메일:', email.value);
-  console.log('성별:', gender.value);
-  console.log('입양 공고 번호:', adoptionNumber.value);
-  console.log('입양 동기:', adoptionReason.value);
-  console.log('반려동물 여부:', hasPet.value);
-  console.log('반려동물 포기 경험:', gaveUpPet.value);
-  console.log('가족 구성원:', familyMembers.value);
-  console.log('가족 동의 여부:', familyAgreement.value);
+  // console.log('폼 제출됨');
+  // console.log('이름:', name.value);
+  // console.log('전화번호:', phone.value);
+  // console.log('이메일:', email.value);
+  // console.log('성별:', gender.value);
+  // console.log('입양 공고 번호:', adoptionNumber.value);
+  // console.log('입양 동기:', adoptionReason.value);
+  // console.log('반려동물 여부:', hasPet.value);
+  // console.log('반려동물 포기 경험:', gaveUpPet.value);
+  // console.log('가족 구성원:', familyMembers.value);
+  // console.log('가족 동의 여부:', familyAgreement.value);
+  const form : adoptionForm = {
+    name : name.value,
+    phone : phone.value,
+    email : email.value,
+    gender : gender.value,
+    adoptionNumber : adoptionNumber.value,
+    adoptionReason : adoptionReason.value,
+    hasPet : hasPet.value,
+    gaveUpPet : gaveUpPet.value,
+    familyMembers : familyMembers.value,
+    familyAgreement : familyAgreement.value,
+  }
+  createPost({
+    channelId: CHANID.AdoptionChannelId,
+    title: JSON.stringify(form),
+  });
 };
 </script>
 

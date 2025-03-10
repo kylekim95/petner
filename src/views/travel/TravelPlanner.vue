@@ -1,31 +1,12 @@
 <script setup lang="ts">
-import { useRoute } from 'vue-router';
-import { onMounted, ref } from 'vue';
+import { onMounted, onUnmounted, ref, watch, reactive } from 'vue';
 import draggable from 'vuedraggable';
 import TravelDestCard from '@/components/travel/planner/TravelDestCard.vue';
+import usePlanner, {type TravelData, type TravelDestData} from '@/hooks/usePlanner';
+import { useRoute } from 'vue-router';
+import PlannerMapComponent from '@/components/travel/planner/PlannerMapComponent.vue';
 
-interface TravelDestData {
-  id : number;
-  name : string;
-  locationX : number;
-  locationY : number;
-}
-interface TravelData {
-  title : string;
-  destData : TravelDestData[][];
-}
 const params = useRoute().params;
-const dummyData : TravelData = {
-  title : '여행 이름',
-  destData : [
-    [ {id:0, name: '가평 카페 109', locationX: 0, locationY: 0}, {id:1, name: '가평TOP랜드 번지점프', locationX: 0, locationY: 0}, ],
-    [ {id:2, name: '가평 카페 109', locationX: 0, locationY: 0}, ],
-    [ {id:3, name: '가평 카페 109', locationX: 0, locationY: 0}, ],
-  ]
-};
-const data = ref<TravelData>(dummyData);
-const isDragging = ref<boolean>(false);
-
 function AddNewDay() {
   data.value.destData.push([]);
 }
@@ -40,29 +21,56 @@ function ColorChangeOnHoverRestore(e : MouseEvent) {
   elem.classList.add('trashcan-default');
 }
 
-// import { getChannelPosts, type GetChannelPostsRequest, type GetChannelPostsResponse } from '@/apis/devcourse/Post/getChannelPosts';
-// import * as CHANID from '@/constants/communityConsts';
-// const route = useRoute();
-// const destData = ref<TravelDestData[]>();
-// onMounted(async ()=>{
-//   try{
-//     const response = await getChannelPosts({channelId: CHANID.PlannerChannelId});
-//     const index = response.posts.findIndex((e)=>e._id === route.params.id);
-//     if(index !== -1){
-//       console.log(response.posts[index]);
-//     }
-//   }
-//   catch(e){
-//     console.log(e);
-//   }
-// });
+const data = ref<{title:string, destData:TravelDestData[][]}>({title : '', destData : [[]]});
+const mapData = reactive<{
+  currentPlan: TravelData,
+  currentFocus: TravelDestData,
+  currentFocusDay: number
+}>({
+  currentPlan: { createdAt:'', destData:[[]], id:'', title:'' },
+  currentFocus: { contentid:'', contentTypeId:'', mapx:0, mapy:0, name:'' },
+  currentFocusDay: 0
+});
 
+const isDragging = ref<boolean>(false);
+const prevFocused = ref<HTMLElement>();
+
+const planner = usePlanner();
+watch(
+  ()=>mapData.currentPlan,
+  ()=>{
+    if(mapData.currentPlan){
+      data.value.title = mapData.currentPlan.title;
+      data.value.destData = mapData.currentPlan.destData;
+    }
+  }, { immediate: true }
+);
+onMounted(async ()=>{
+  const myPlans = await planner?.GetMyPlans();
+  if(myPlans){
+    mapData.currentPlan = myPlans.filter((e)=>e.id===params.plannerId)[0];
+  }
+});
+onUnmounted(()=>{
+  if(planner && mapData.currentPlan){
+    planner?.UpdatePlanData({
+    createdAt: mapData.currentPlan.createdAt,
+    id: mapData.currentPlan.id,
+    title: data.value.title,
+    destData: data.value.destData,
+  });
+  }
+});
+function HandleTitleChange(e : Event) {
+  const elem = e.target as HTMLInputElement;
+  data.value.title = elem.value;
+}
 </script>
 
 <template>
   <div class="container-fluid p-0 d-flex" style="height: calc(100vh - 75px);">
     <div class="d-flex flex-column pt-3 pb-0 px-3" style="width: 20%; min-width: 400px; flex: 0 auto;">
-      <p class="title-text">{{ data.title }}</p>
+      <input type="text" :value="data.title" class="title-text border-0" @change="(e)=>HandleTitleChange(e)" />
       <div style="overflow-y: scroll; scrollbar-width: none;">
 
         <div
@@ -91,12 +99,21 @@ function ColorChangeOnHoverRestore(e : MouseEvent) {
             @end="()=>{isDragging=false;}"
           >
             <template #item="{ element, index }">
-              <TravelDestCard :name="element.name" :index="index" :id="element.id" :-delete-dest-callback="(id : number)=>{
-                const temp = data.destData[index2].findIndex((e)=>e.id===id);
-                const newDestData = [...data.destData[index2]];
-                newDestData.splice(temp, 1);
-                data.destData[index2] = newDestData;
-              }"/>
+              <div style="width: 100%; height: 100%; transition: all .2s;" @click="(e)=>{
+                const focused = e.currentTarget as HTMLElement;
+                if(prevFocused !== null){ prevFocused?.classList.remove('focused'); }
+                focused.classList.add('focused');
+                prevFocused = focused;
+                mapData.currentFocus = element;
+                mapData.currentFocusDay = index2;
+              }">
+                <TravelDestCard :name="element.name" :index="index" :id="parseInt(element.contentid)" :-delete-dest-callback="(id : number, index : number)=>{
+                  const temp = data.destData[index2].findIndex((e)=>e.contentid===id.toString());
+                  const newDestData = [...data.destData[index2]];
+                  newDestData.splice(temp, 1);
+                  data.destData[index2] = newDestData;
+                }"/>
+              </div>
             </template>
           </draggable>
         </div>
@@ -108,7 +125,9 @@ function ColorChangeOnHoverRestore(e : MouseEvent) {
         </button>
       </div>
     </div>
-    <div class="h-100 bg-primary" style="width: 80%"></div>
+    <div class="h-100 bg-primary" style="width: 80%">
+      <PlannerMapComponent :travelData="mapData.currentPlan" :currentFocused="mapData.currentFocus" :currentFocusedDay="mapData.currentFocusDay" />
+    </div>
   </div>
 </template>
 
@@ -135,5 +154,8 @@ function ColorChangeOnHoverRestore(e : MouseEvent) {
 }
 .transition {
   transition: color 0.25s ease-in-out;
+}
+.focused {
+  padding-left: 20px;
 }
 </style>

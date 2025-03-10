@@ -8,8 +8,8 @@ export interface ExpandingMenuItemData {
   title: string;
   content: string;
 
-  contentId : number;
-  contentTypeId : number;
+  contentId: number;
+  contentTypeId: number;
 }
 interface ExpandingMenuProps {
   itemData: ExpandingMenuItemData[];
@@ -22,7 +22,6 @@ const prevFocusedId = ref(0);
 const menuItemElement = useTemplateRef<HTMLDivElement[]>('menuItemElements');
 const menuItemElementTitle = useTemplateRef<HTMLSpanElement[]>('menuItemElementTitles');
 const menuItemElementTitle2 = useTemplateRef<HTMLSpanElement[]>('menuItemElementTitles2');
-
 const menuItemElementContent = useTemplateRef<HTMLSpanElement[]>('menuItemElementContents');
 const menuItemElementContent2 = useTemplateRef<HTMLSpanElement[]>('menuItemElementContents2');
 
@@ -97,7 +96,7 @@ function handleCategoryClick(data: ExpandingMenuItemData) {
   router.push({
     name: 'travelDetail',
     params: { contentId: data.contentId },
-    query: { contentTypeId: data.contentTypeId },
+    query: { contenttypeid: data.contentTypeId },
   });
 }
 </script>
@@ -105,21 +104,23 @@ function handleCategoryClick(data: ExpandingMenuItemData) {
 <template>
   <div class="container w-100 h-100 d-flex gap-1 position-relative p-0">
     <div
-      v-for="(item) in props.itemData"
+      v-for="item in props.itemData"
       :key="item.id"
-      class="container h-100 rounded p-2"
+      class="container h-100 rounded p-0 overflow-hidden"
       :class="focusedId === item.id ? 'flex-fill' : 'col-2'"
+      ref="menuItemElements"
       style="
         transition: all 0.5s ease-in-out;
         background-blend-mode: multiply;
         background-color: rgb(0, 0, 0, 0.5);
+        background-size: cover;
+        background-position: center;
       "
       :style="{ backgroundImage: `url(${item.bgImage})` }"
-      ref="menuItemElements"
       @mouseenter="(e) => OnMouseEnter(e, item.id)"
       @transitionend="(e) => OnExpandEnd(e)"
       @transitionstart="(e) => OnExpandStart(e)"
-      @click="(e)=>handleCategoryClick(item)"
+      @click="(e) => handleCategoryClick(item)"
     >
       <div class="p-2 position-absolute bottom-0">
         <span

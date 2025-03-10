@@ -1,69 +1,182 @@
 <script setup lang="ts">
-import { defineProps } from 'vue';
-// Props 정의
-const props = defineProps<{
-  imageUrl: string;
-}>();
+import { defineProps, computed } from 'vue';
+import { useRouter } from 'vue-router';
+
+interface PostCardProps {
+  postId: string;
+  imageUrl: string; 
+  title: string; 
+  createdAt: string; 
+  authorImage: string; 
+  authorName: string; 
+  authorEmail: string;
+  likes?: any[];
+  comments?: any[]; 
+}
+
+const props = defineProps<PostCardProps>();
+const router = useRouter();
+
+// 카드 클릭 시 상세 페이지로 이동
+const handleCardClick = () => {
+  router.push(`/community/free/${props.postId}`);
+};
+
+const parsedData = computed(() => {
+  try {
+    const parsed = JSON.parse(props.title);
+    return {
+      title: parsed.title || props.title,
+      content: parsed.content || '',
+    };
+  } catch (e) {
+    console.error('타이틀 파싱 에러:', e);
+    return { title: props.title, content: '' };
+  }
+});
+
+const timeAgo = (dateStr: string) => {
+  const diff = Date.now() - new Date(dateStr).getTime();
+  const minutes = Math.floor(diff / 60000);
+  if (minutes < 60) return minutes + '분 전';
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return hours + '시간 전';
+  const days = Math.floor(hours / 24);
+  return days + '일 전';
+};
+
+const likeCount = computed(() => (props.likes ? props.likes.length : 0));
+const commentCount = computed(() => (props.comments ? props.comments.length : 0));
 </script>
+
 <template>
-  <div
-
-    class="overflow-hidden border border-gray-7"
-
-    :style="{ width: '90%', height: '670px', borderRadius: '15px' }"
-  >
-    <!-- 이미지 영역 -->
-    <div class="position-relative z-0 filter">
-      <img
-        :src="props.imageUrl"
-        alt="강아지"
-        width="100%"
-        height="430px"
-        style="filter: brightness(0.7)"
-      />
+  <div class="card-wrapper" @click="handleCardClick">
+    <div class="card-image">
+      <img :src="props.imageUrl" alt="게시글 이미지" />
     </div>
-    <!-- 텍스트 영역 -->
-    <div class="d-flex flex-column mt-3 mx-3 gap-3" :style="{ height: '100px' }">
-      <!-- 프로필 영역 -->
-      <div class="d-flex flex-row align-items-center gap-3">
-        <div
-          class="overflow-hidden"
-          :style="{ width: '40px', height: '40px', borderRadius: '40px' }"
-        >
-          <img
-            src="https://cdn.pixabay.com/photo/2016/04/19/15/13/minion-1338858_1280.jpg"
-            alt="강아지"
-            width="40px"
-            height="40px"
-            style="filter: brightness(0.7)"
-          />
+
+    <div class="card-body">
+      <div class="author-info">
+        <img :src="props.authorImage" alt="프로필 이미지" class="author-img" />
+        <div class="author-details">
+          <div class="author-name">{{ props.authorName }}</div>
+          <div class="author-email">{{ props.authorEmail }}</div>
         </div>
-        <span class="text-gray-7 fw-medium" :style="{ fontSize: '24px', fontWeight: '500' }"
-          >jungseok</span
-        >
+        <div class="post-time">{{ timeAgo(props.createdAt) }}</div>
       </div>
-      <div class="fw-bold" :style="{ fontSize: '20px' }">저희 집 댕댕이와 캠핑 다녀왔어요</div>
-      <div class="text-gray-7" :style="{ fontSize: '16px', fontWeight: '300' }">
-        부산에 있는 캠피장 다녀왔는데 기대했던거 이상이에요. 꼭한번 가보시는걸 추천드려요!
-      </div>
-      <div class="d-flex flex-row align-content-center justify-content-between">
-        <div class="d-flex flex-row align-items-center gap-3">
-          <div class="d-flex flex-row align-items-center gap-1">
-            <i
-              class="bi bi-suit-heart-fill"
-              style="color: #dc3644"
-              :style="{ fontSize: '20px' }"
-            ></i>
-            <span :style="{ fontSize: '16px', fontWeight: '700' }">3</span>
-          </div>
-          <div class="d-flex flex-row align-items-center gap-1">
-            <i class="bi bi-chat" :style="{ fontSize: '20px' }"></i>
-            <span :style="{ fontSize: '16px', fontWeight: '700' }">4</span>
-          </div>
-        </div>
-        <span :style="{ fontSize: '16px', fontWeight: '700' }">2시간 전</span>
+      <div class="post-title">{{ parsedData.title }}</div>
+      <div class="post-content">{{ parsedData.content }}</div>
+    </div>
+
+    <div class="card-footer">
+      <div class="stats">
+        <span class="stat">
+          <i class="bi bi-heart-fill" style="color: #dc3644"></i>
+          {{ likeCount }}
+        </span>
+        <span class="stat">
+          <i class="bi bi-chat"></i>
+          {{ commentCount }}
+        </span>
       </div>
     </div>
   </div>
 </template>
-<style scoped></style>
+
+<style scoped>
+.card-wrapper {
+  width: 90%;
+  max-width: 600px;
+  margin: 10px auto;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  transition: transform 0.2s;
+  cursor: pointer;
+}
+.card-wrapper:hover {
+  transform: scale(1.02);
+}
+
+.card-image img {
+  width: 100%;
+  height: 320px;
+  object-fit: cover;
+  filter: brightness(0.75);
+}
+
+.card-body {
+  padding: 15px;
+}
+
+.author-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.author-info .author-details {
+  margin-left: 10px;
+  flex: 1;
+}
+
+.author-img {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.author-name {
+  font-weight: 600;
+  font-size: 16px;
+  color: #333;
+}
+
+.author-email {
+  font-size: 14px;
+  color: #777;
+}
+
+.post-time {
+  font-size: 13px;
+  color: #555;
+  margin-left: 10px;
+  white-space: nowrap;
+}
+
+.post-title {
+  font-size: 20px;
+  font-weight: bold;
+  color: #222;
+  margin-bottom: 6px;
+}
+
+.post-content {
+  font-size: 16px;
+  color: #555;
+  line-height: 1.4;
+}
+
+.card-footer {
+  padding: 10px 15px;
+  background-color: #fafafa;
+  border-top: 1px solid #eee;
+}
+
+.stats {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+}
+
+.stat {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 14px;
+  color: #555;
+}
+</style>

@@ -1,141 +1,133 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import axios from 'axios';
 import CommentSection from '@/components/community/CommentSection.vue';
-
-const pageColor = ref('red');
-
-// 임시 게시글 데이터
-const post = ref({
-  title: '여기 화장실 너무한거 아님?',
-  content:
-    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum et purus quis arcu egestas tempus non eget ex. Suspendisse commodo nulla quis dolor convallis, et fringilla velit tempus. Vestibulum placerat sollicitudin mi vitae imperdiet. Morbi molestie tortor a nisl laoreet varius ut quis felis. In scelerisque, mauris at vestibulum sodales, sem leo dapibus felis, vitae accumsan lacus metus a dui. Mauris id eros turpis. Donec facilisis pharetra justo.',
-  user: {
-    username: 'kylekim95',
-    avatar: 'https://randomuser.me/api/portraits/men/1.jpg',
-    date: '2025년 2월 26일 11:54 AM',
-  },
-  image: 'https://www.w3schools.com/w3images/forest.jpg',
-
-  comments: [
-    {
-      user: {
-        username: 'kylekim95',
-        avatar: 'https://randomuser.me/api/portraits/men/2.jpg',
-      },
-      date: '2025/02/26 11:57',
-      content: 'ㅎㅎㅎㅎ',
-    },
-    {
-      user: {
-        username: 'kylekim95',
-        avatar: 'https://randomuser.me/api/portraits/men/3.jpg',
-      },
-      date: '2025/02/26 11:57',
-      content: 'ㅋㅋㅋㅋ',
-    },
-    {
-      user: {
-        username: 'kylekim95',
-        avatar: 'https://randomuser.me/api/portraits/men/4.jpg',
-      },
-      date: '2025/02/26 11:57',
-      content: 'ㅋㅋㅋㅋㅋㅋㅋ',
-    },
-  ],
-});
+import { getPost } from '@/apis/devcourse/Post/getPost';
+import { devPost } from '@/types/devcourse/devPost';
+import { devUser } from '@/types/devcourse/devUser';
+import { devComment } from '@/types/devcourse/devComment';
 
 const route = useRoute();
 const router = useRouter();
-const postId = route.params.postId;
+const postId = route.params.postId as string;
 
-// 게시글 삭제 함수
+// 게시글 데이터를 저장할 ref
+interface parsedPostData {
+  author : devUser,
+  title : string,
+  content : string,
+  image : string,
+  comments : devComment[],
+  id: string
+}
+const post = ref<parsedPostData>();
+
+onMounted(async () => {
+  try {
+    const response = (await getPost({id: postId})).post;
+    const parsedTitle = JSON.parse(response.title);
+    post.value = {
+      author: response.author,
+      title: parsedTitle.title,
+      content: parsedTitle.content,
+      image: response.image ?? '',
+      comments: response.comments,
+      id: response._id
+    }
+  }
+  catch(e){
+    console.log(e);
+  }
+});
+
+// 게시글 삭제 함수 (실제 API 호출 추가 가능)
 const handleDelete = async () => {
   console.log('게시글 삭제:', postId);
   router.push('/community');
 };
-
 // 댓글 삭제 함수
-const handleCommentDelete = (index: number) => {
-  post.value.comments.splice(index, 1);
+const handleCommentUpdate = async (index: number) => {
+  const response = (await getPost({id: postId})).post;
+  const parsedTitle = JSON.parse(response.title);
+  post.value = {
+    author: response.author,
+    title: parsedTitle.title,
+    content: parsedTitle.content,
+    image: response.image ?? '',
+    comments: response.comments,
+    id: response._id
+  }
 };
 </script>
 
 <template>
-  <div class="container my-5">
-    <div class="row">
-      <div
-        class="col-md-6"
-        style="background-color: var(--gray-3); border-radius: 8px; padding: 20px"
-      >
+  <div class="container my-5" v-if="post">
+    <div class="row" style="align-items: flex-start;">
+      <!-- 텍스트 영역 -->
+      <div class="col-md-8" style="background-color: var(--gray-3); border-radius: 8px; padding: 20px;">
         <div class="d-flex align-items-center mb-4">
           <div class="me-3">
             <img
-              :src="post.user.avatar"
+              :src="post.author.image"
               alt="user-profile"
               class="rounded-circle"
               width="50"
               height="50"
             />
           </div>
-
           <div>
-            <h5 class="mb-1">{{ post.user.username }}</h5>
-            <p class="text-muted mb-0">{{ post.user.date }}</p>
+            <h5 class="mb-1">{{ post.author.fullName }}</h5>
+            <p class="text-muted mb-0">{{ post.author.email }}</p>
           </div>
         </div>
-
-        <h2 class="mb-4" style="font-weight: 700">{{ post.title }}</h2>
+        <h2 class="mb-4 fw-bold">{{ post.title }}</h2>
         <p class="mb-4">{{ post.content }}</p>
       </div>
 
-      <!-- 이미지 섹션-->
-      <div class="col-md-6">
-        <div
-          style="
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            position: relative;
-            border-radius: 8px;
-          "
-        >
+      <!-- 이미지 영역 및 버튼 -->
+      <div class="col-md-4">
+        <div style="width: 100%; position: relative; border-radius: 8px;">
           <img
-            :src="post.image"
+            :src="post.image ?? undefined"
             alt="community-image"
             class="img-fluid"
             style="
-              object-fit: cover;
-              width: 100%;
-              height: 100%;
+              width: auto;
+              max-width: 100%;
+              height: auto;
+              max-height: 800px;
+              display: block;
+              margin: 0 auto;
+              object-fit: contain;
               box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
             "
           />
         </div>
+        <div class="d-flex justify-content-center gap-2 mt-3">
+          <button
+            class="btn px-4 py-2 hover-effect"
+            style="background-color: var(--primary-purple); color: var(--gray-1); border-radius: 30px;"
+          >
+            수정하기
+          </button>
+          <button
+            class="btn px-4 py-2 hover-effect"
+            style="border: 2px solid var(--primary-red); color: var(--primary-red); border-radius: 30px;"
+            @click="handleDelete"
+          >
+            삭제하기
+          </button>
+        </div>
       </div>
     </div>
 
-    <div class="d-flex justify-content-end gap-2 mt-3 mb-4">
-      <button
-        class="btn px-4 py-2 hover-effect"
-        style="background-color: var(--primary-purple); color: var(--gray-1); border-radius: 30px"
-      >
-        수정하기
-      </button>
-
-      <button
-        class="btn px-4 py-2 hover-effect"
-        style="border: 2px solid var(--primary-red); color: var(--primary-red); border-radius: 30px"
-        @click="handleDelete"
-      >
-        삭제하기
-      </button>
-    </div>
-
+    <!-- 댓글 섹션 -->
     <CommentSection
       :comments="post.comments"
-      :onDeleteComment="handleCommentDelete"
-      :color="pageColor"
+      :onUpdateComment="handleCommentUpdate"
+      color="red"
+      :postId="post.id"
     />
   </div>
 </template>
@@ -144,7 +136,6 @@ const handleCommentDelete = (index: number) => {
 .hover-effect {
   transition: all 0.3s ease;
 }
-
 .hover-effect:hover {
   font-weight: 600;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);

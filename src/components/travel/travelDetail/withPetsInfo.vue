@@ -41,18 +41,18 @@ const infoList = computed(() => {
       <ul class="list-unstyled fs-6">
         <li class="mb-2 fs-5 text-gray-7">
           동반 유형 :
-          <span class="fs-6 text-gray-10">{{ props.detail.acmpyTypeCd }}</span>
+          <span class="fs-5 text-gray-10">{{ props.detail.acmpyTypeCd }}</span>
         </li>
         <li class="mb-2 fs-5 text-gray-7">
-          동반 가능 동물 : <span class="fs-6 text-gray-10">{{ props.detail.acmpyPsblCpam }}</span>
+          동반 가능 동물 : <span class="fs-5 text-gray-10">{{ props.detail.acmpyPsblCpam }}</span>
         </li>
         <li class="mb-2 fs-5 text-gray-7">
-          동반 시 필요 사항 : <span class="fs-6 text-gray-10">{{ props.detail.acmpyNeedMtr }}</span>
+          동반 시 필요 사항 : <span class="fs-5 text-gray-10">{{ props.detail.acmpyNeedMtr }}</span>
         </li>
         <div class="d-block">
           <span class="fs-5 text-gray-7 mb-1">기타 유의사항</span>
           <ul class="list-unstyled">
-            <li v-for="(item, index) in infoList" :key="index" class="fs-6 text-gray-10">
+            <li v-for="(item, index) in infoList" :key="index" class="fs-5 text-gray-10">
               {{ item }}
             </li>
           </ul>

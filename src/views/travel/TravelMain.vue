@@ -39,6 +39,7 @@ const shoppingAndCulture: ShoppingAndCulture[] = [
     id: 3432213,
     img: 'http://tong.visitkorea.or.kr/cms/resource/56/3431756_image2_1.jpg',
     path: PATH.travelDetail.replace(':contentId', '3432213'),
+    customQuery: { contenttypeid: '14' },
   },
   {
     id: 2609837,
@@ -54,11 +55,13 @@ const shoppingAndCulture: ShoppingAndCulture[] = [
     id: 2639878,
     img: 'http://tong.visitkorea.or.kr/cms/resource/66/3336266_image2_1.jpg',
     path: PATH.travelDetail.replace(':contentId', '2639878'),
+    customQuery: { contenttypeid: '14' },
   },
   {
     id: 2553929,
     img: 'http://tong.visitkorea.or.kr/cms/resource/67/3340967_image2_1.jpg',
     path: PATH.travelDetail.replace(':contentId', '2553929'),
+    customQuery: { contenttypeid: '14' },
   },
   {
     id: 2756702,
@@ -70,21 +73,22 @@ const shoppingAndCulture: ShoppingAndCulture[] = [
     id: 1754453,
     img: 'http://tong.visitkorea.or.kr/cms/resource/28/3465428_image2_1.jpg',
     path: PATH.travelDetail.replace(':contentId', '1754453'),
+    customQuery: { contenttypeid: '14' },
   },
 ];
 const accommodations: Accommodation[] = [
   {
     id: 2531222,
     img: 'http://tong.visitkorea.or.kr/cms/resource/56/3067856_image2_1.jpg',
-    type: '한옥 숙소',
+    type: '강릉오죽한옥마을',
     location: '강원도',
-    price: '8,0000 원',
+    price: '80,000 원',
     path: PATH.travelDetail.replace(':contentId', '2531222'),
   },
   {
     id: 2708661,
     img: 'http://tong.visitkorea.or.kr/cms/resource/01/2709101_image2_1.jpg',
-    type: '펜션',
+    type: '비브릿지',
     location: '강원도',
     price: '170,000 원',
     path: PATH.travelDetail.replace(':contentId', '2708661'),
@@ -92,7 +96,7 @@ const accommodations: Accommodation[] = [
   {
     id: 2446529,
     img: 'http://tong.visitkorea.or.kr/cms/resource/11/2635611_image2_1.jpg',
-    type: '한옥 숙소',
+    type: '경주수호정',
     location: '경주시',
     price: '80,000 원',
     path: PATH.travelDetail.replace(':contentId', '2446529'),
@@ -100,7 +104,7 @@ const accommodations: Accommodation[] = [
   {
     id: 628690,
     img: 'http://tong.visitkorea.or.kr/cms/resource/81/1853081_image2_1.jpg',
-    type: '펜션',
+    type: '곰펜션',
     location: '강원도',
     price: '120,000 원',
     path: PATH.travelDetail.replace(':contentId', '628690'),
@@ -109,7 +113,7 @@ const accommodations: Accommodation[] = [
   {
     id: 2725982,
     img: 'http://tong.visitkorea.or.kr/cms/resource/83/2725983_image2_1.jpg',
-    type: '호텔',
+    type: '그랜드 인투라온호텔 정선',
     location: '강원도',
     price: '100,000 원',
     path: PATH.travelDetail.replace(':contentId', '2725982'),
@@ -121,51 +125,62 @@ const restaurants: Restaurant[] = [
     img: 'http://tong.visitkorea.or.kr/cms/resource/83/2844883_image2_1.JPG',
     type: '카페인덕동',
     location: '경남',
+    path: PATH.travelDetail.replace(':contentId', '2844892'),
   },
   {
     id: 2603720,
     img: 'http://tong.visitkorea.or.kr/cms/resource/58/2603758_image2_1.jpg',
     type: '누닝 펫푸드카페',
     location: '인천',
+    path: PATH.travelDetail.replace(':contentId', '2603720'),
   },
   {
     id: 2603467,
     img: 'http://tong.visitkorea.or.kr/cms/resource/68/2603468_image2_1.jpg',
     type: '(유)헤세의정원',
     location: '경기도',
+    path: PATH.travelDetail.replace(':contentId', '2603467'),
   },
   {
     id: 2848931,
     img: 'http://tong.visitkorea.or.kr/cms/resource/76/2848776_image2_1.jpg',
     type: '개떼놀이터',
     location: '강원도',
+    path: PATH.travelDetail.replace(':contentId', '2848931'),
   },
   {
     id: 2938673,
     img: 'http://tong.visitkorea.or.kr/cms/resource/73/2938273_image2_1.JPG',
     type: '태조밥상',
     location: '전북',
+    path: PATH.travelDetail.replace(':contentId', '2938673'),
   },
 ];
 
 const itemData: ExpandingMenuItemData[] = [
   {
-    id: 2705409,
+    id: 0,
     bgImage: 'http://tong.visitkorea.or.kr/cms/resource/84/3082584_image2_1.jpg',
     title: '강아지 숲 ',
     content: '강원도',
+    contentId: 2705409,
+    contentTypeId: 12,
   },
   {
-    id: 2702507,
+    id: 1,
     bgImage: 'http://tong.visitkorea.or.kr/cms/resource/67/2739267_image2_1.jpg',
     title: '해파랑길 44코스',
     content: '강원도',
+    contentId: 2702507,
+    contentTypeId: 28,
   },
   {
-    id: 125534,
+    id: 2,
     bgImage: 'http://tong.visitkorea.or.kr/cms/resource/24/3422224_image2_1.jpg',
     title: '강화 전등사',
     content: '인천',
+    contentId: 125534,
+    contentTypeId: 12,
   },
 ];
 </script>
@@ -214,7 +229,7 @@ const itemData: ExpandingMenuItemData[] = [
 
       <div class="container" style="width: 100%; margin-bottom: 5%">
         <div class="gray-10 fw-bold mt-5" style="font-size: 36px">관광 & 체험</div>
-        <div class="gray-10 text-gray-7" style="font-size: 24px">펫트너의 맛있는 여정</div>
+        <div class="gray-10 text-gray-7" style="font-size: 24px">펫트너가 추천하는 액티비티</div>
         <div style="height: 500px">
           <ExpandingMenu :item-data="itemData" class="mt-3" />
         </div>

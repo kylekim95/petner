@@ -7,6 +7,12 @@ import ImageUploader from '@/components/community/ImageUploader.vue';
 import KakaoMap from '@/components/community/KakaoMap.vue';
 import { ANIMAL_TYPE_ARRAY, GENDER_ARRAY } from '@/constants/mock/community/formOptions';
 import { reactive, ref, computed } from 'vue';
+import usePostMissingForm from '@/composibles/tanstack-query/usePostMissingForm';
+import { MissingChannelId } from '@/constants/communityConsts';
+import { useRouter } from 'vue-router';
+import { useQueryClient } from '@tanstack/vue-query';
+import PATH from '@/constants/path';
+import QUERY_KEY from '@/constants/queryKey';
 
 const data = reactive({
   name: '',
@@ -22,21 +28,49 @@ const data = reactive({
   placeFeature: '', // 실종 장소 특징
   region: '', // 관할지
 });
-const images = ref<File[]>([]); // 이미지 담을 배열
+const imageRef = ref<File | null>(null); // 이미지 담을 배열
 const doroRef = ref('');
+const postFormMutation = usePostMissingForm();
+
 const isValid = computed(() => {
   // data 배열을 돌면서 하나라도 비어있는 것이 있다면 false
   const dataResult = Object.values(data).every((value) => value.trim().length > 0);
-  const imageResult = images.value.length > 0;
+  const imageResult = imageRef.value !== null; // 이미지가 있다면요
   const addressResult = doroRef.value.trim().length > 0;
   return dataResult && imageResult && addressResult;
 });
 
-const handleSubmit = (e) => {
-  e.preventDefault();
+const router = useRouter();
+const queryClient = useQueryClient();
+const handleSubmit = async () => {
   if (isValid.value) {
-    // 여기에 폼 제출 로직
-    alert('제출되었습니다.');
+    // FormData만들기
+    const post = {
+      ...data,
+      address: doroRef.value,
+    };
+
+    await postFormMutation.mutateAsync({
+      title: JSON.stringify(post),
+      channelId: MissingChannelId,
+      image: imageRef.value ? imageRef.value : undefined,
+    });
+
+    if (postFormMutation.isSuccess) {
+      alert('정상적으로 제출이 완료되었습니다.');
+      // 기존 쿼리키를 무효화 하고 새롭게 데이터 요청
+      queryClient.invalidateQueries({
+        queryKey: QUERY_KEY.missingList,
+      });
+      await queryClient.refetchQueries({
+        queryKey: QUERY_KEY.missingList,
+        type: 'all',
+      });
+      router.push(PATH.communityMissing);
+    } else {
+      alert('제출에 실패했습니다.');
+      router.push(PATH.communityMissing);
+    }
   } else {
     alert('작성하지 않은 제출란이 있습니다.');
   }
@@ -45,7 +79,7 @@ const handleSubmit = (e) => {
 
 <template>
   <div class="container overflow-hidden border border-light px-3 m-4 py-5">
-    <form class="row gx-5">
+    <div class="row gx-5">
       <div class="col px-5">
         <div class="d-flex flex-column gap-4">
           <TitleText size="32px" color="gray-10" weight="600" class="mb-3">
@@ -71,7 +105,7 @@ const handleSubmit = (e) => {
             🐻‍❄️ 실종동물 정보
           </TitleText>
           <!-- 이미지 업로드 -->
-          <ImageUploader v-model="images" />
+          <ImageUploader v-model="imageRef" />
 
           <SelecterInput
             label="동물분류"
@@ -169,14 +203,13 @@ const handleSubmit = (e) => {
         >
           <button
             class="bg-primary-blue border border-none rounded text-white"
-            :style="{ width: '120px', height: '43px' }"
-            type="submit"
+            style="width: 120px; height: 43px"
             @click="handleSubmit"
           >
             등록
           </button>
         </div>
       </div>
-    </form>
+    </div>
   </div>
 </template>
