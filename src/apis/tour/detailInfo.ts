@@ -16,7 +16,7 @@ export async function fetchDetailInfoData(requiredData: InfoData) {
       },
     });
     const data = response.data.response.body.items.item;
-    console.log(data);
+    // console.log(data);
     return data;
   } catch (error) {
     console.error('Error fetching tour data:', error);
