@@ -14,6 +14,7 @@ import { useQueryClient } from '@tanstack/vue-query';
 import PATH from '@/constants/path';
 import QUERY_KEY from '@/constants/queryKey';
 import useFetchTargetMissing from '@/composibles/tanstack-query/useFetchTargetMissing';
+import useUpdateMissingPost from '@/composibles/tanstack-query/useUpdateMissingPost';
 
 // Page query 확인하기
 const route = useRoute();
@@ -69,7 +70,7 @@ const data = reactive({
 const imageRef = ref<File | null>(initialImage); // 이미지 담을 배열
 const doroRef = ref<string>(initialDoro.value);
 const postFormMutation = usePostMissingForm();
-
+const updateFormMutation = useUpdateMissingPost();
 const isValid = computed(() => {
   // data 배열을 돌면서 하나라도 비어있는 것이 있다면 false
   const dataResult = Object.values(data).every((value) => value.trim().length > 0);
@@ -111,6 +112,34 @@ const handleSubmit = async () => {
     }
   } else {
     alert('작성하지 않은 제출란이 있습니다.');
+  }
+};
+const handleUpdate = async () => {
+  if (isValid.value) {
+    const post = {
+      ...data,
+      address: doroRef.value,
+    };
+    await updateFormMutation.mutateAsync({
+      title: JSON.stringify(post),
+      channelId: MissingChannelId,
+      postId: postId,
+      image: imageRef.value ? imageRef.value : undefined,
+    });
+    if (updateFormMutation.isSuccess) {
+      alert('정상적으로 제출이 완료되었습니다.');
+      // 기존 쿼리키를 무효화 하고 새롭게 데이터 요청
+      queryClient.invalidateQueries({
+        queryKey: QUERY_KEY.missingList,
+      });
+      await queryClient.refetchQueries({
+        queryKey: QUERY_KEY.missingList,
+        type: 'all',
+      });
+      router.push(PATH.communityMissing);
+    }
+  } else {
+    alert('아직 제출하지 않은 작성란이 있습니다.');
   }
 };
 </script>
@@ -243,7 +272,7 @@ const handleSubmit = async () => {
             v-if="post !== undefined"
             class="bg-primary-blue border border-none rounded text-white"
             style="width: 120px; height: 43px"
-            @click="handleSubmit"
+            @click="handleUpdate"
           >
             수정
           </button>

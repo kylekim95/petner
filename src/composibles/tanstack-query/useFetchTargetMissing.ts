@@ -10,9 +10,9 @@ const useFetchTargetMissing = (postId: LocationQueryValue | LocationQueryValue[]
   const post = computed(() => postCards.value?.posts.filter((cards) => cards._id === postId));
 
   if (postId !== '') {
-    console.log('post', post.value);
     // title에 저장된 실종정보 파싱
     const contents: ComputedRef<MissingAnimalDataType> = computed(() => {
+      console.log('post', post.value);
       if (post.value !== undefined) {
         return JSON.parse(post?.value[0].title);
       }
