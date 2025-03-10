@@ -67,7 +67,7 @@ const handleSubmit = async () => {
         type: 'all',
       });
       router.push(PATH.communityMissing);
-    } else {
+    } else if (postFormMutation.isError) {
       alert('제출에 실패했습니다.');
       router.push(PATH.communityMissing);
     }
