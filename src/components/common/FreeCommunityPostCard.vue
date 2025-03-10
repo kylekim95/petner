@@ -10,7 +10,7 @@ const props = defineProps<FreeCommunityPost>();
 <template>
   <RouterLink :to="`/community/free/${props.data._id}`" class="text-decoration-none">
     <div class="card">
-      <div class="card-img-top overflow-hidden bg-gray-3">
+      <div class="card-img-top overflow-hidden bg-gray-3 d-flex justify-content-center">
         <img v-if="props.data.image" :src="props.data.image" alt="card animal image" style="height:100%; width:auto;"/>
       </div>
       <div class="card-body">
@@ -25,7 +25,7 @@ const props = defineProps<FreeCommunityPost>();
 
 <style scoped>
 .card {
-  min-width: 300px;
+  width: 300px;
 }
 
 .card-img-top {
