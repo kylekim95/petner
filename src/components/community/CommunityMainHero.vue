@@ -158,4 +158,14 @@ onMounted(async ()=>{
   transform: scale(1.03);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
+
+.linear-shadow {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(218, 218, 218, 0.15) 46%,
+    rgba(0, 0, 0, 0.3) 87%,
+    rgba(0, 0, 0, 0.3) 100%
+  );
+}
 </style>
