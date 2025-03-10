@@ -43,12 +43,17 @@ const auth = useAuthStore();
         <div class="d-flex">
           <TextBlock :text-block="plannerIntroText[2][0]"/>
         </div>
-        <button type="button" class="btn border rounded-5 mt-5 text-primary-green border-primary-green" style="width:250px; height:50px;">
-          <div class="d-flex justify-content-center position-relative">
-            <!-- <RouterLink v-if="auth.isAuth" to="#" style="text-decoration: none;"><div class="text-primary-green" :style="{ fontFamily:' Pretendard', fontSize: '20px', fontWeight: 500 }">시작하기</div></RouterLink> -->
-            <RouterLink v-if="!auth.isAuth" to="/login" style="text-decoration: none;"><div class="text-primary-green" :style="{ fontFamily:' Pretendard', fontSize: '20px', fontWeight: 500 }">로그인하러 가기</div></RouterLink>
-          </div>
-        </button>
+        <div v-if="!auth.isAuth"  type="button" class="btn border rounded-5 mt-5 text-primary-green border-primary-green" style="width:250px; height:50px;">
+          <RouterLink to="/login" style="text-decoration: none;">
+            <div class="d-flex justify-content-center position-relative">
+              <div class="text-primary-green" :style="{ fontFamily:' Pretendard', fontSize: '20px', fontWeight: 500 }">로그인하러 가기</div>
+            </div>
+          </RouterLink>
+        </div>
+        <div v-else class="d-flex flex-column mt-3">
+          <i class="bi-map text-primary-green m-2" style="font-size: 2rem;"></i>
+          <p class="p-0 m-0" :style="{ color:'#4B3C3C', fontFamily: 'Pretendard', fontSize:'20px', fontWeight:700 }">아이콘을 클릭하시면 새 여행 계획을 생성하거나 기존의 여행 계획에 추가할 수 있습니다!</p>
+        </div>
       </div>
       <div class="rounded-4 align-self-center overflow-hidden" style="width: fit-content; height: 400px;">
         <img src="/travelPlanner/planner-image.png" alt="" style="width:auto; height: 100%;">
