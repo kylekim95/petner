@@ -50,9 +50,9 @@ const toastMsg = '로그인에 실패했습니다. 다시 시도해주세요.';
 async function HandleAction(){
   try{
     await authStore.Login(email.value, password.value);
-    if(route.query.next) router.go(-1);
+    if(route.query.next) router.push(route.query.next.toString());
     else {
-      router.push('/');
+      router.go(-1);
     }
   }
   catch(e){

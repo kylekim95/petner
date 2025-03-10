@@ -5,8 +5,7 @@ export const isAuthenticated = (to, from): NavigationGuardReturn => {
   const auth = useAuthStore();
 
   if (!auth.isAuth) {
-    console.log(to.fullPath);
-    return { name: 'login'};
+    return { name: 'login', query : { next: to.fullPath }};
   }
   return true;
 };
