@@ -79,6 +79,8 @@ const itemsPerPage = 9;
 const totalPages = ref<number>(1);
 
 // 4-1) 조회 함수
+const fixedPagesCount = 5; // 한 그룹에 보여줄 페이지 수
+
 async function fetchAnimals() {
   let kindCdParam: '개' | '고양이' | '기타축종' | undefined;
   if (activeCategory.value === '전체') {
@@ -124,11 +126,25 @@ async function fetchAnimals() {
   const data = await getAnimalListQuery(params);
   if (Array.isArray(data)) {
     animalCards.value = data;
-    totalPages.value = data.length < itemsPerPage ? currentPage.value : currentPage.value + 1;
+    if (data.length < itemsPerPage) {
+      // 마지막 페이지: 데이터가 itemsPerPage 미만이면 실제 페이지 수로 설정
+      totalPages.value = currentPage.value;
+    } else {
+      // full page인 경우: 현재 그룹을 계산하여 totalPages를 고정
+      // 예: currentPage가 1~4이면 그룹 1 → totalPages = 5
+      //     currentPage가 5(그룹 마지막 페이지)라면 group을 2로 가정하여 totalPages = 10
+      let group = Math.floor((currentPage.value - 1) / fixedPagesCount) + 1;
+      if (currentPage.value % fixedPagesCount === 0) {
+        group++; // 현재 페이지가 그룹의 마지막 페이지이면 다음 그룹 존재 가정
+      }
+      totalPages.value = group * fixedPagesCount;
+    }
   } else {
     console.error('동물 조회 에러:', data);
   }
 }
+
+
 
 // 4-2) 페이지 이동 함수
 function goToPage(page: number) {
