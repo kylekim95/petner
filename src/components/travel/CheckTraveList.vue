@@ -149,6 +149,5 @@ onMounted(() => {
   width: 75%;
   flex-direction: column;
   align-items: start;
-  margin-bottom: 50px;
 }
 </style>

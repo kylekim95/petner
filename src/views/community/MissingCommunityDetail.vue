@@ -14,6 +14,8 @@ import CommentSection from '@/components/community/CommentSection.vue';
 import { getPost } from '@/apis/devcourse/Post/getPost';
 import { type devUser } from '@/types/devcourse/devUser';
 import { type devComment } from '@/types/devcourse/devComment';
+import { useAuthStore } from '@/stores/auth';
+import { storeToRefs } from 'pinia';
 
 const cat = ['나이', '품종', '성별', '색상', '마이크로 칩 번호'];
 const missingCat = ['분실 날짜', '분실 장소', '주위의 특징적 건물', '관할지'];
@@ -62,22 +64,22 @@ const contents: ComputedRef<MissingAnimalDataType> = computed(() => {
   }
   return null;
 });
-// 신고유저 정보 가져오기
-const userId = computed(() => {
+const user = computed(() => {
   if (data.value !== undefined) {
-    return data?.value[0]?.author._id;
+    return data?.value[0]?.author;
   }
   return null;
 });
-const userData = useFetchUser(userId?.value);
+const canEdit = computed(() => {
+  const uid = localStorage.getItem('uid');
+  return uid === user.value?._id;
+});
 const profileImgUrl =
-  userData.value?.user.image === undefined
-    ? '/PNG-Image/images/default-profile1.png'
-    : userData.value?.user.image;
+  user.value?.image === undefined ? '/PNG-Image/images/default-profile1.png' : user.value?.image;
 
 const dummyData = computed(() => ({
   title: '가족을 찾습니다',
-  postBy: userData.value?.user.fullName,
+  postBy: user.value?.fullName,
   createdAt: data.value[0].createdAt,
   animalInfo: {
     age: contents.value.age,
@@ -100,8 +102,6 @@ const dummyData = computed(() => ({
 }));
 
 const handleDelete = async () => {
-  // TODO : 유저 신상 파악해서 버튼 동작 제어하기
-
   // 삭제 요청  보내기
   deletePostMutation.mutate(postId);
   // 기존 쿼리키를 무효화 하고 새롭게 데이터 요청
@@ -117,8 +117,6 @@ const handleDelete = async () => {
 };
 
 const handleUpdate = () => {
-  // TODO : 유저 신상 파악해서 버튼 동작 제어하기
-
   router.push({ path: PATH.communityMissingForm, query: { postId: postId } });
 };
 // 댓글 삭제 함수
@@ -155,6 +153,7 @@ const handleCommentUpdate = async (index: number) => {
       <p class="m-0 p-0 date-text text-gray-7">{{ dummyData.createdAt }}</p>
       <div class="d-flex gap-2">
         <button
+          v-if="canEdit"
           class="btn border-0 bg-primary-green rounded-5 d-flex align-items-center justify-content-center"
           style="width: 100px; height: 35px"
           @click="handleUpdate"
@@ -162,6 +161,7 @@ const handleCommentUpdate = async (index: number) => {
           <p class="m-0 p-0 button-text text-gray-1">수정하기</p>
         </button>
         <button
+          v-if="canEdit"
           class="btn border-primary-red rounded-5 d-flex align-items-center justify-content-center bg-white"
           style="width: 100px; height: 35px"
           @click="handleDelete"
