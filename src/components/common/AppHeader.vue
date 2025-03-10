@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import NotificationModal from './NotificationModal.vue';
 import { getNotifications } from '@/apis/devcourse/Notification/getNotifications';
 import type { devNotification } from '@/types/devcourse/devNotification';
+import { notificationsSeen } from '@/apis/devcourse/Notification/notificationsSeen';
 
 const route = useRoute();
 const auth = useAuthStore();
@@ -13,9 +14,19 @@ const headerClass = computed(() => route.meta.headerVariant || 'header-default')
 
 const notificationOpen = ref<boolean>(false);
 const notificationsArr = ref<devNotification[]>();
-onMounted(async ()=>{
-  notificationsArr.value = (await getNotifications()).notifications.filter((e)=>!e.seen);
-});
+
+watch(
+  ()=>notificationOpen.value,
+  async ()=>{
+    if(!auth.isAuth) return;
+    if(notificationOpen.value === false){
+      notificationsSeen();
+    }
+    else{
+      notificationsArr.value = (await getNotifications()).notifications.filter((e)=>!e.seen);
+    }
+  }
+)
 </script>
 
 <template>

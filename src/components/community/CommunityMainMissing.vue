@@ -1,17 +1,29 @@
 <script setup lang="ts">
-import CommunityMainFindCard from '@/components/community/CommunityMainFindCard.vue';
-import { ref } from 'vue';
+import CommunityMainFindCard, { type MissingCommunityPost } from '@/components/community/CommunityMainFindCard.vue';
+import { ref, onMounted } from 'vue';
+import { getChannelPosts } from '@/apis/devcourse/Post/getChannelPosts';
+import { MissingChannelId } from '@/constants/communityConsts';
+import { type devPost } from '@/types/devcourse/devPost';
 
-const cards = ref(
-  new Array(8).fill(0).map(() => ({
-    imageURL: 'https://cdn.pixabay.com/photo/2020/06/30/22/34/dog-5357794_1280.jpg',
-    lostLocation: '홍대입구 6번 출구 근처',
-    areaLocation: '서울시 마포구',
-    breed: '토이푸들',
-    age: ' 12세',
-    feature: '초록색 목줄',
-  })),
-);
+const cards = ref<MissingCommunityPost[]>([]);
+const data = ref<devPost[]>([]);
+onMounted(async ()=>{
+  const posts = (await getChannelPosts({channelId: MissingChannelId})).posts;
+  if(posts.length <= 0) return;
+  data.value = posts.slice(0, 8);
+  cards.value = data.value.map<MissingCommunityPost>((e)=>{
+    const parsedData = JSON.parse(e.title);
+    return {
+      imageURL: e.image ?? '',
+      age: parsedData.age,
+      areaLocation: parsedData.region,
+      breed: parsedData.species,
+      feature: parsedData.feature,
+      lostLocation: parsedData.placeFeature,
+      id: e._id
+    }
+  });
+});
 </script>
 
 <template>
@@ -21,13 +33,13 @@ const cards = ref(
       :style="{ width: 100, marginBottom: '34px' }"
     >
       <div class="title">🚨 반려동물을 찾아주세요</div>
-      <div class="postNavigation d-flex flex-row justify-content-center align-items-center gap-2">
-        <span style="font-weight: 600">실종공고 게시판 </span>
-        <router-link to="/community/missing" style="text-decoration: none">
+      <router-link to="/community/missing" style="text-decoration: none">
+        <div class="postNavigation d-flex flex-row justify-content-center align-items-center gap-2">
+          <span style="font-weight: 600">실종공고 게시판 </span>
           <span class="text-primary-blue" style="font-weight: 700">더보기</span>
-        </router-link>
+        </div>
+      </router-link>
       </div>
-    </div>
     <div class="d-flex flex-wrap gap-2 justify-content-between">
       <div class="freePostCard" v-for="(item, index) in cards" :key="index">
         <CommunityMainFindCard :item="item" />

@@ -1,28 +1,40 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import PostCard from '@/components/community/PostCard.vue';
-import { getChannelPosts, type GetChannelPostsResponse } from '@/apis/devcourse/Post/getChannelPosts';
+import {
+  getChannelPosts,
+  type GetChannelPostsResponse,
+} from '@/apis/devcourse/Post/getChannelPosts';
 import * as CHANID from '@/constants/communityConsts';
 
 const router = useRouter();
-const filter = ref('latest');
+const filter = ref<'latest' | 'comment' | 'popular'>('latest');
 const currentPage = ref(1);
 const postsData = ref<GetChannelPostsResponse | null>(null);
-
-// 필터 변경 함수 (필요 시 필터 로직 추가)
-const handleFilterChange = (newFilter: string) => {
+const sortedData = computed(() => {
+  const posts = postsData.value?.posts;
+  switch (filter.value) {
+    case 'comment':
+      return posts!.sort((a, b) => b.comments.length - a.comments.length);
+    case 'popular':
+      return posts!.sort((a, b) => b.likes.length - a.likes.length);
+    default:
+      return posts;
+  }
+});
+// 필터 변경 함수
+const handleFilterChange = (newFilter: 'latest' | 'comment' | 'popular') => {
   filter.value = newFilter;
-  // 추가 필터링 로직 작성
 };
 
-// 글 작성 버튼
 const handleWriteButton = () => {
   router.push('/community/free/form');
 };
 
 onMounted(async () => {
   postsData.value = await getChannelPosts({ channelId: CHANID.FreeChannelId, offset: 0 });
+
   console.log('API로 받은 게시글 데이터:', postsData.value);
 });
 </script>
@@ -43,7 +55,11 @@ onMounted(async () => {
           함께 나누는 공간
         </h3>
         <p
-          style="font-family: 'Paperlogy'; font-size: 1.5rem; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);"
+          style="
+            font-family: 'Paperlogy';
+            font-size: 1.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+          "
         >
           펫트너와 함께하는 따뜻한 커뮤니티에서, 여러분의 이야기와 정보가 큰 도움이 됩니다!
         </p>
@@ -70,8 +86,8 @@ onMounted(async () => {
           </button>
           <button
             class="filter-button btn"
-            :class="{ active: filter === 'comments' }"
-            @click="handleFilterChange('comments')"
+            :class="{ active: filter === 'comment' }"
+            @click="handleFilterChange('comment')"
           >
             <i class="bi bi-chat"></i> 댓글순
           </button>
@@ -83,14 +99,10 @@ onMounted(async () => {
     </div>
 
     <!-- 카드 리스트 -->
-    <div class="container" style="max-width: 1280px; margin: 0 auto" v-if="postsData">
-      <div class="row row-cols-1 row-cols-md-2 g-4 justify-content-center">
-        <div
-          v-for="post in postsData.posts"
-          :key="post._id"
-          class="col d-flex justify-content-center"
-        >
-          <!-- 각 카드에 postId prop 추가 -->
+    <!-- my-5: 위아래 여백, row-cols-1 row-cols-md-2: 화면 크기에 따라 1~2열, g-4: 그리드 간격 -->
+    <div class="container my-5" v-if="postsData">
+      <div class="row row-cols-1 row-cols-md-2 g-4">
+        <div v-for="post in sortedData" :key="post._id" class="col">
           <PostCard
             :postId="post._id"
             :imageUrl="post.image"

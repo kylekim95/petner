@@ -14,7 +14,12 @@ const filteredPostCard = computed(() => {
     const contents = JSON.parse(post.title);
     return contents.animalType == animalType.value;
   });
-  console.log('필터링된 카드', filteredPostCard);
+  // console.log('필터링된 카드', filteredPostCard);
+
+  // 여기에 sorting 로직을 추가 -> 댓글순일경우
+  if (sortBy.value === 'comment') {
+    return filtered?.sort((a, b) => b.comments.length - a.comments.length);
+  }
   return filtered;
 });
 
@@ -33,9 +38,8 @@ const currentCards = postCards.value?.posts.slice(startIndex, startIndex + cards
 
 const handleWriteClick = () => {
   // 유저의 로그인 여부 판단
-  const store = useAuthStore();
-  const { isAuth } = storeToRefs(store);
-  if (isAuth) {
+  const uid = localStorage.getItem('uid');
+  if (uid) {
     router.push(PATH.communityMissingForm); // 로그인✅ -> 실종신고 폼으로 이동
   } else {
     alert('로그인 후 글을 작성할 수 있습니다.');

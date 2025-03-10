@@ -7,7 +7,7 @@ import { searchKeyword } from '@/apis/tour/searchKeyword';
 import { useFacilitiesStore } from '@/stores/facilitiesStore';
 import type { TourData } from '@/types/travelList/tourData';
 
-const facilitiesStore = useFacilitiesStore();
+const facilitiesStore = useFacilitiesStore(); // 숙소 옵션 Pinia
 
 const stayData = ref<TourData[]>([]); // API에서 불러온 데이터를 저장할 변수
 const isLoading = ref(false); // 로딩 상태
@@ -126,7 +126,7 @@ onMounted(() => {
       :key="index"
       :style="{ width: '100%' }"
     >
-      <TravelListCard :data="item" class="travelCard" />
+      <TravelListCard :data="item" />
     </div>
     <!-- 감지용 div -->
     <div ref="observerTarget" style="height: 10px"></div>
@@ -149,10 +149,5 @@ onMounted(() => {
   width: 75%;
   flex-direction: column;
   align-items: start;
-  margin-bottom: 50px;
-}
-
-.travelCard:hover {
-  cursor: pointer;
 }
 </style>

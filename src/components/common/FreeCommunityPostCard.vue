@@ -1,27 +1,26 @@
 <script setup lang="ts">
-import { defineProps } from 'vue';
-interface CommunityPost {
-  title: string;
-  imageURL: string;
-  content: string;
-  author: string;
-}
+import { type devPost } from '@/types/devcourse/devPost';
 
-defineProps<{
-  item: CommunityPost;
-}>();
+interface FreeCommunityPost {
+  data : devPost
+}
+const props = defineProps<FreeCommunityPost>();
 </script>
 
 <template>
-  <div class="card">
-    <img :src="item.imageURL" alt="card animal image" class="card-img-top" />
-    <div class="card-body">
-      <h4 v-if="item.title" class="card-title">
-        {{ item.title }}
-      </h4>
-      <p class="card-text">{{ item.content }}</p>
+  <RouterLink :to="`/community/free/${props.data._id}`" class="text-decoration-none">
+    <div class="card">
+      <div class="card-img-top overflow-hidden bg-gray-3">
+        <img v-if="props.data.image" :src="props.data.image" alt="card animal image" style="height:100%; width:auto;"/>
+      </div>
+      <div class="card-body">
+        <h4 class="card-title">
+          {{ JSON.parse(props.data.title).title }}
+        </h4>
+        <p class="card-text">{{ JSON.parse(props.data.title).content }}</p>
+      </div>
     </div>
-  </div>
+  </RouterLink>
 </template>
 
 <style scoped>
@@ -31,15 +30,20 @@ defineProps<{
 
 .card-img-top {
   height: 300px;
-  object-fit: cover;
 }
 
 .card-title {
   font-size: 20px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .card-text {
   font-size: 16px;
   color: var(--gray-7);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 </style>

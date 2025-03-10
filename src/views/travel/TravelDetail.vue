@@ -24,8 +24,11 @@ import { detailCommon } from '@/apis/tour/detailCommon';
 import { getChannelPosts } from '@/apis/devcourse/Post/getChannelPosts';
 import { FreeChannelId } from '@/constants/communityConsts';
 
+import { getAllSearchQuery } from '@/apis/devcourse/Search/getAllSearchQuery';
+import type { devPost } from '@/types/devcourse/devPost';
+
 const imageData = ref<string[]>([]);
-const postsData = ref<GetChannelPostsResponse | null>(null);
+const postsData = ref<devPost[]>([]);
 const detailRoomData = ref<RoomItem[]>([]);
 const detailInfoData = ref<DetailInfoData[]>([]);
 const detailCommonData = ref<DetailCard | null>(null);
@@ -89,10 +92,6 @@ onMounted(async () => {
     detailPetTourData.value = fetchedDetailPetTour[0];
     console.log('PETTOUR 데이터:', detailPetTourData.value);
 
-    //자유게시판 포스트 글 불러오기기
-    postsData.value = await getChannelPosts({ channelId: FreeChannelId, offset: 0 });
-    console.log('API로 받은 게시글 데이터:', postsData.value);
-
     //Common,Info,Intro를 InfoCard컴포넌트 프로퍼티에 넘기기위해 하나의 객체에 저장
     if (detailCommonData.value && detailIntroData.value) {
       detailMergedData.value = {
@@ -100,6 +99,12 @@ onMounted(async () => {
         ...detailIntroData.value,
       };
     }
+
+    //자유게시판 포스트 글 불러오기기
+    if(detailCommonData.value){
+      postsData.value = (await getAllSearchQuery({searchQuery: detailCommonData.value.title})).resultsPosts;
+    }
+
   } catch (error) {
     console.error('상세 데이터를 불러오는 중 오류 발생: ', error);
   }
@@ -107,22 +112,24 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div v-if="detailCommonData && imageData" class="my-5">
-    <PhotoGrid :firstimage="detailCommonData.firstimage" :images="imageData" />
-  </div>
-  <div v-if="detailMergedData" class="mb-3">
-    <InfoCard :detail="detailMergedData" />
-  </div>
-  <div v-if="detailPetTourData">
-    <WithPetsInfo :detail="detailPetTourData" />
-  </div>
-  <div v-if="contentTypeId === '32'" class="my-5">
-    <AccommodationCard :rooms="detailRoomData" />
-  </div>
-  <div class="container my-5">
-    <DetailInfoComponent :data="detailInfoData" />
-  </div>
-  <div class="container mb-5">
-    <CommunityFreePosts :data="postsData" />
+  <div class="container overflow-hidden">
+    <div v-if="detailCommonData && imageData" class="my-5">
+      <PhotoGrid :firstimage="detailCommonData.firstimage" :images="imageData" />
+    </div>
+    <div v-if="detailMergedData" class="mb-3">
+      <InfoCard :detail="detailMergedData" />
+    </div>
+    <div v-if="detailPetTourData">
+      <WithPetsInfo :detail="detailPetTourData" />
+    </div>
+    <div v-if="contentTypeId === '32'" class="my-5">
+      <AccommodationCard :rooms="detailRoomData" />
+    </div>
+    <div class="container my-5">
+      <DetailInfoComponent :data="detailInfoData" />
+    </div>
+    <div class="container mb-5">
+      <CommunityFreePosts :data="postsData" :title="detailCommonData ? detailCommonData.title : '자유게시판'" />
+    </div>
   </div>
 </template>

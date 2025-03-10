@@ -15,9 +15,9 @@ const props = defineProps<NotificationCardProps>();
     </div>
     <div style="width: 80%; align-content: center;">
       <p class="notification-modal-name m-0 p-0 text-gray-10 overflow-hidden" style="text-overflow: ellipsis; white-space: nowrap;">{{ props.notification.author.fullName }}</p>
-      <p v-if="props.notification.comment.comment" class="notification-modal-text m-0 p-0 text-gray-10 overflow-hidden" style="text-overflow: ellipsis; white-space: nowrap;">{{ props.notification.comment.comment }}</p>
-      <p v-if="props.notification.comment.comment" class="notification-modal-text m-0 p-0 text-gray-10 overflow-hidden" style="text-overflow: ellipsis; white-space: nowrap;"></p>
-      <p v-if="!props.notification.comment.comment" class="notification-modal-text m-0 p-0 text-gray-10" >좋아요를 보냈습니다.</p>
+      <p v-if="props.notification.comment" class="notification-modal-text m-0 p-0 text-gray-10 overflow-hidden" style="text-overflow: ellipsis; white-space: nowrap;">{{ props.notification.comment.comment }}</p>
+      <p v-if="props.notification.comment" class="notification-modal-text m-0 p-0 text-gray-10 overflow-hidden" style="text-overflow: ellipsis; white-space: nowrap;"></p>
+      <p v-if="!props.notification.comment" class="notification-modal-text m-0 p-0 text-gray-10" >좋아요를 보냈습니다.</p>
     </div>
   </div>
 </template>

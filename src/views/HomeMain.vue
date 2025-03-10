@@ -5,10 +5,10 @@ import PlannerBanner from '@/components/homeMain/PlannerBanner.vue';
 import AbandonedBanner from '@/components/homeMain/AbandonedBanner.vue';
 import PopularShoppingSwiperComponent from '@/components/homeMain/PopularShoppingSwiperComponent.vue';
 import GridMenu from '@/components/homeMain/GridMenu.vue';
-
 import { ref, onMounted } from 'vue';
 import { type PopularTravelData } from '@/components/homeMain/atoms/PopularTravelCard.vue';
 import { detailCommon } from '@/apis/tour/detailCommon';
+
 const popularIds = [
   ['39', '2603467'],
   ['12', '2564158'],
@@ -19,9 +19,8 @@ const popularIds = [
 const popularTravelData = ref<PopularTravelData[]>([]);
 onMounted(async ()=>{
   try{
-    const promises = popularIds.map((e)=>detailCommon({contentId: parseInt(e[1]), contentTypeId: parseInt(e[0])}));
+    const promises = popularIds.map((e)=>detailCommon({contentId: (e[1]), contentTypeId: (e[0])}));
     const responses = (await Promise.allSettled(promises)).filter((e)=>e.status==='fulfilled');
-    console.log(responses);
     popularTravelData.value = responses.map<PopularTravelData>((e, index)=>{
       const item = e.value[0];
       return {
@@ -33,7 +32,6 @@ onMounted(async ()=>{
         contentTypeId: popularIds[index][0]
       }
     });
-    console.log(popularTravelData);
   }
   catch(e){
     console.log(e);
