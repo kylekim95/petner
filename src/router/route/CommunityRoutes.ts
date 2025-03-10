@@ -1,5 +1,6 @@
 // Community.ts
 import PATH from '@/constants/path';
+import { isAuthenticated } from '@/utils/guard'
 
 const COMMUNITY_ROUTES = [
   {
@@ -25,6 +26,7 @@ const COMMUNITY_ROUTES = [
     name: 'freeCommunityForm',
     component: () => import('@/views/community/FreeCommunityForm.vue'),
     meta: { headerVariant: 'header-purple' },
+    beforeEnter: isAuthenticated
   },
   {
     path: PATH.communityMissing,
@@ -43,6 +45,7 @@ const COMMUNITY_ROUTES = [
     name: 'missingForm',
     component: () => import('@/views/community/MissingCommunityForm.vue'),
     meta: { headerVariant: 'header-blue' },
+    beforeEnter: isAuthenticated
   },
 ];
 export default COMMUNITY_ROUTES;

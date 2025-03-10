@@ -1,4 +1,5 @@
 import PATH from '@/constants/path';
+import { isAuthenticated } from '@/utils/guard'
 
 const ADOPTION_ROUTES = [
   {
@@ -30,12 +31,21 @@ const ADOPTION_ROUTES = [
     name: 'form',
     component: () => import('@/views/adoption/AdoptionForm.vue'),
     meta: { headerVariant: 'header-green' },
+    beforeEnter: isAuthenticated
   },
   {
     path: PATH.adoptionComplete,
     name: 'adoptionComplete',
     component: () => import('@/views/adoption/AdoptionComplete.vue'),
     meta: { headerVariant: 'header-green' },
+    beforeEnter: (to, from)=>{
+      if(from.name !== 'form'){
+        return true;
+      }
+      else{
+        return '/NotFound';
+      }
+    }
   },
   // 하위 라우터 추가..
 ];

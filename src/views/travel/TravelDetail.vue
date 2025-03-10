@@ -23,12 +23,16 @@ import { detailIntro } from '@/apis/tour/detailIntro';
 import { detailCommon } from '@/apis/tour/detailCommon';
 import { getChannelPosts } from '@/apis/devcourse/Post/getChannelPosts';
 import { FreeChannelId } from '@/constants/communityConsts';
+import { devUser } from '@/types/devcourse/devUser';
 
 import { getAllSearchQuery } from '@/apis/devcourse/Search/getAllSearchQuery';
 import type { devPost } from '@/types/devcourse/devPost';
+import { getUser, type GetUserResponse } from '@/apis/devcourse/User/getUser';
 
 const imageData = ref<string[]>([]);
 const postsData = ref<devPost[]>([]);
+const usersData = ref<devUser[]>([]);
+
 const detailRoomData = ref<RoomItem[]>([]);
 const detailInfoData = ref<DetailInfoData[]>([]);
 const detailCommonData = ref<DetailCard | null>(null);
@@ -67,30 +71,25 @@ onMounted(async () => {
     const imageResult = await fetchTourImageData({ contentId: contentId });
     if (Array.isArray(imageResult)) {
       imageData.value = imageResult.map((item: { originimgurl: string }) => item.originimgurl);
-      console.log('Image 데이터: ', imageData.value);
     } else {
       console.warn('API 응답 결과가 배열이 아닙니다.', imageData.value);
     }
     //detailCommon 호출
     const CommonData = await detailCommon({ contentId, contentTypeId });
     detailCommonData.value = CommonData[0];
-    console.log('COMMON 데이터:', detailCommonData.value);
 
     //detailInfo 호출
     const fetchedDetailInfoData = await fetchDetailInfoData({ contentId, contentTypeId });
     detailInfoData.value = fetchedDetailInfoData;
     detailRoomData.value = fetchedDetailInfoData;
-    console.log('INFO 데이터:', detailInfoData.value);
 
     //detailIntro 호출
     const fetchedDetailIntroData = await detailIntro({ contentId, contentTypeId });
     detailIntroData.value = fetchedDetailIntroData[0];
-    console.log('INTRO 데이터:', detailIntroData.value);
 
     //detailPetTour 호출
     const fetchedDetailPetTour = await fetchPetTourData({ contentId });
     detailPetTourData.value = fetchedDetailPetTour[0];
-    console.log('PETTOUR 데이터:', detailPetTourData.value);
 
     //Common,Info,Intro를 InfoCard컴포넌트 프로퍼티에 넘기기위해 하나의 객체에 저장
     if (detailCommonData.value && detailIntroData.value) {
@@ -102,7 +101,14 @@ onMounted(async () => {
 
     //자유게시판 포스트 글 불러오기기
     if(detailCommonData.value){
-      postsData.value = (await getAllSearchQuery({searchQuery: detailCommonData.value.title})).resultsPosts;
+      const posts = (await getAllSearchQuery({searchQuery: detailCommonData.value.title})).resultsPosts;
+      const users : devUser[] = [];
+      for(let i = 0; i < posts.length; i++){
+        const authorid : string = posts[i].author;
+        users.push((await getUser({id : authorid})).user);
+      }
+      postsData.value = posts;
+      usersData.value = users;
     }
 
   } catch (error) {
@@ -112,24 +118,26 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="container overflow-hidden">
-    <div v-if="detailCommonData && imageData" class="my-5">
-      <PhotoGrid :firstimage="detailCommonData.firstimage" :images="imageData" />
-    </div>
-    <div v-if="detailMergedData" class="mb-3">
-      <InfoCard :detail="detailMergedData" />
-    </div>
-    <div v-if="detailPetTourData">
-      <WithPetsInfo :detail="detailPetTourData" />
-    </div>
-    <div v-if="contentTypeId === '32'" class="my-5">
-      <AccommodationCard :rooms="detailRoomData" />
-    </div>
-    <div class="container my-5">
-      <DetailInfoComponent :data="detailInfoData" />
-    </div>
-    <div class="container mb-5">
-      <CommunityFreePosts :data="postsData" :title="detailCommonData ? detailCommonData.title : '자유게시판'" />
+  <div class="overflow-hidden">
+    <div class="container w-100">
+      <div v-if="detailCommonData && imageData" class="my-5">
+        <PhotoGrid :firstimage="detailCommonData.firstimage" :images="imageData" />
+      </div>
+      <div v-if="detailMergedData" class="mb-3">
+        <InfoCard :detail="detailMergedData" />
+      </div>
+      <div v-if="detailPetTourData">
+        <WithPetsInfo :detail="detailPetTourData" />
+      </div>
+      <div v-if="contentTypeId === '32'" class="my-5">
+        <AccommodationCard :rooms="detailRoomData" />
+      </div>
+      <div class="container my-5">
+        <DetailInfoComponent :data="detailInfoData" />
+      </div>
+      <div class="container mb-5">
+        <CommunityFreePosts :data="postsData" :users="usersData" :title="detailCommonData ? detailCommonData.title : '자유게시판'" />
+      </div>
     </div>
   </div>
 </template>

@@ -22,7 +22,7 @@ export async function detailCommon(dataId: DataId) {
         overviewYN: 'Y',
       },
     });
-
+    console.log(response);
     const data = response.data.response.body.items?.item;
     // console.log(data);
     return data; // API 응답 데이터를 반환

@@ -3,6 +3,7 @@
   background-color: var(--gray-1);
   color: var(--gray-10);
   border-bottom: 1px solid var(--gray-10);
+  position: relative;
 }
 .header-default .user-name {
   color: var(--gray-10);
@@ -32,6 +33,7 @@
   background-color: var(--primary-red);
   color: var(--gray-1);
   border-bottom: 1px solid var(--gray-1);
+  position: relative;
 }
 .header-red .user-name {
   color: var(--gray-1);
@@ -45,6 +47,7 @@
   background-color: var(--secondary-green);
   color: var(--gray-1);
   border-bottom: 1px solid var(--gray-1);
+  position: relative;
 }
 .header-green .user-name {
   color: var(--gray-1);
@@ -58,6 +61,7 @@
   background-color: var(--primary-blue);
   color: var(--gray-1);
   border-bottom: 1px solid var(--gray-1);
+  position: relative;
 }
 .header-blue .user-name {
   color: var(--gray-1);
@@ -71,6 +75,7 @@
   background-color: var(--primary-purple);
   color: var(--gray-1);
   border-bottom: 1px solid var(--gray-1);
+  position: relative;
 }
 .header-purple .user-name {
   color: var(--gray-1);

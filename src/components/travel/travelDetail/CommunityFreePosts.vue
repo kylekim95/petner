@@ -2,23 +2,16 @@
 import 'swiper/css';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import PostCard from '@/components/community/PostCard.vue';
-import type { GetChannelPostsResponse } from '@/apis/devcourse/Post/getChannelPosts';
 import { useRouter } from 'vue-router';
-import { useAuthStore } from '@/stores/auth';
-import { devPost } from '@/types/devcourse/devPost';
+import { type devPost } from '@/types/devcourse/devPost';
+import { type devUser } from '@/types/devcourse/devUser';
 
-const { data, title } = defineProps<{ data: devPost[], title: string }>();
+const { data, users, title } = defineProps<{ data: devPost[], users: devUser[], title: string }>();
 
-const authStore = useAuthStore();
 const router = useRouter();
 
 function handleClick() {
-  if (!authStore.isAuth) {
-    alert('로그인을 해주세요');
-    router.push({ name: 'login' });
-  } else {
-    router.push({ name: 'freeCommunityForm' });
-  }
+  router.push({ name: 'freeCommunityForm' });
 }
 </script>
 
@@ -42,13 +35,13 @@ function handleClick() {
       space-between="10"
       style="height: fit-content"
     >
-      <swiper-slide v-for="post in data.slice(0, 8)" :key="post._id"
+      <swiper-slide v-for="(post, index) in data.slice(0, 8)" :key="post._id"
         ><PostCard
           :postId="post._id"
           :imageUrl="post.image ?? ''"
-          :authorImage="post.author.image"
-          :authorName="post.author.fullName"
-          :authorEmail="post.author.email"
+          :authorImage="users[index].image"
+          :authorName="users[index].fullName"
+          :authorEmail="users[index].email"
           :title="post.title"
           :createdAt="post.createdAt"
           :likes="post.likes"

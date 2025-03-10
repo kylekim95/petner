@@ -2,7 +2,7 @@
 import TextBlock, { type TextBlockDescriptor } from '@/components/common/TextBlock.vue';
 import { useAuthStore } from '@/stores/auth';
 import { ref, useTemplateRef } from 'vue';
-import { useRouter, RouterLink } from 'vue-router';
+import { useRouter, RouterLink, useRoute } from 'vue-router';
 
 const IntroText : TextBlockDescriptor[] = [
   {
@@ -43,13 +43,17 @@ const authStore = useAuthStore();
 const email = ref('');
 const password = ref('');
 const router = useRouter();
+const route = useRoute();
 const toast = useTemplateRef<HTMLDivElement>('toast');
 const toastMsg = '로그인에 실패했습니다. 다시 시도해주세요.';
 
 async function HandleAction(){
   try{
     await authStore.Login(email.value, password.value);
-    router.push('/');
+    if(route.query.next) router.go(-1);
+    else {
+      router.push('/');
+    }
   }
   catch(e){
     toast.value?.classList.add('show');

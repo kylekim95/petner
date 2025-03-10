@@ -1,4 +1,5 @@
 import PATH from '@/constants/path';
+import { isAuthenticated } from '@/utils/guard'
 
 const AUTH_ROUTES = [
   {
@@ -18,6 +19,7 @@ const AUTH_ROUTES = [
     name: 'mypage',
     component: () => import('@/views/auth/MyPage.vue'),
     meta: { headerVariant: 'header-default' },
+    beforeEnter: isAuthenticated
   },
 ];
 export default AUTH_ROUTES;

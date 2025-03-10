@@ -38,13 +38,13 @@ const currentCards = postCards.value?.posts.slice(startIndex, startIndex + cards
 
 const handleWriteClick = () => {
   // 유저의 로그인 여부 판단
-  const uid = localStorage.getItem('uid');
-  if (uid) {
+  // const uid = localStorage.getItem('uid');
+  // if (uid) {
     router.push(PATH.communityMissingForm); // 로그인✅ -> 실종신고 폼으로 이동
-  } else {
-    alert('로그인 후 글을 작성할 수 있습니다.');
-    router.push(PATH.login); // 로그인❌ -> 로그인 창으로 이동
-  }
+  // } else {
+  //   alert('로그인 후 글을 작성할 수 있습니다.');
+  //   router.push(PATH.login); // 로그인❌ -> 로그인 창으로 이동
+  // }
 };
 </script>
 

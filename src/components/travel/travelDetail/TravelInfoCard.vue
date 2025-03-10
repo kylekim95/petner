@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import ShelterKakaoMap from '@/components/adoption/shelter/ShelterKakaoMap.vue';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import { ref, computed } from 'vue';
 import PlannerModal from './PlannerModal.vue';
@@ -73,6 +73,7 @@ export type DetailCard =
 const { detail } = defineProps<{ detail: DetailCard }>();
 const router = useRouter();
 const authStore = useAuthStore();
+const route = useRoute();
 
 // PlannerModal 관련 상태
 const isPlannerVisible = ref(false);
@@ -97,7 +98,6 @@ function togglePlannerModal() {
 
 function handleIconClick() {
   if (!authStore.isAuth) {
-    alert('로그인을 해주세요');
     router.push({ name: 'login' });
   } else {
     isPlannerVisible.value = !isPlannerVisible.value;
@@ -560,7 +560,7 @@ function formatPolicy(text: string | null): string {
 
       <!-- 오른쪽: 지도 Placeholder -->
       <div class="col-6">
-        <div class="map-placeholder d-flex align-items-center justify-content-center rounded-4">
+        <div class="map-placeholder d-flex align-items-center justify-content-center rounded-4 overflow-hidden">
           <ShelterKakaoMap :lat="Number(detail.mapy)" :lng="Number(detail.mapx)" />
         </div>
       </div>
