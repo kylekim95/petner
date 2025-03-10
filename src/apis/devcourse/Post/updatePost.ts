@@ -1,6 +1,6 @@
-import { type devPost, ExtractPostFromJson } from "@/types/devcourse/devPost";
+import { type devPost, ExtractPostFromJson } from '@/types/devcourse/devPost';
 import { POST } from '@/apis/devcourse/endpoints';
-import devAPI from "@/config/axiosDevConfig";
+import devAPI from '@/config/axiosDevConfig';
 
 export interface UpdatePostRequest {
   postId: string;
@@ -10,7 +10,7 @@ export interface UpdatePostRequest {
   imageToDeletePublicId?: string;
 }
 export interface UpdatePostResponse {
-  post : devPost;
+  post: devPost;
 }
 
 export async function updatePost(request: UpdatePostRequest): Promise<UpdatePostResponse> {
@@ -18,17 +18,21 @@ export async function updatePost(request: UpdatePostRequest): Promise<UpdatePost
   form.append('postId', request.postId);
   form.append('title', request.title);
   form.append('channelId', request.channelId);
-  if(request.image && request.imageToDeletePublicId) {
+  if (request.image && request.imageToDeletePublicId) {
     form.append('image', request.image);
     form.append('imageToDeletePublicId', request.imageToDeletePublicId);
   }
-  const response = await devAPI.put<devPost>(import.meta.env.VITE_API_BASE_URL + POST.update, form, {
-    headers: {
-      'Content-Type': 'multipart/form-data'
-    }
-  });
+  const response = await devAPI.put<devPost>(
+    import.meta.env.VITE_API_BASE_URL + POST.update,
+    form,
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    },
+  );
   console.log(response);
   return {
-    post: ExtractPostFromJson(response.data)
-  }
+    post: ExtractPostFromJson(response.data),
+  };
 }
