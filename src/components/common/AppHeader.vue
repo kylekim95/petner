@@ -33,11 +33,11 @@ watch(
   <header class="header" :class="headerClass">
     <router-link to="/" class="logo"> Petner </router-link>
     <nav class="links">
-      <router-link to="/adoption" class="link">유기동물 입양</router-link>
+      <router-link to="/adoption" class="link">유기 동물 입양</router-link>
       <router-link to="/travel" class="link">반려동물 동반 여행</router-link>
       <!-- <router-link to="/page3" class="link">반려용품 쇼핑</router-link> -->
       <router-link to="/community" class="link">커뮤니티</router-link>
-      <router-link to="/community/missing" class="link">실종신고</router-link>
+      <router-link to="/community/missing" class="link">동물 실종 신고</router-link>
     </nav>
     <router-link to="/mypage" class="user-avatar" v-if="auth.isAuth">
       <div class="person-circle">

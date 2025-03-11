@@ -17,7 +17,7 @@
   background-color: transparent;
   color: var(--gray-1);
   border-bottom: 1px solid var(--gray-1);
-  backdrop-filter: blur(2px);
+  backdrop-filter: blur(1px);
   position: absolute;
   z-index: 9999;
 }
