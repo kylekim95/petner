@@ -87,9 +87,9 @@ const commentCount = computed(() => (props.comments ? props.comments.length : 0)
 
 <style scoped>
 .card-wrapper {
-  width: 100%;         
-  max-width: 600px;     
-  margin: 10px 0;       
+  width: 100%;
+  max-width: 600px;
+  margin: 10px 0;
   border-radius: 15px;
   overflow: hidden;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -165,6 +165,9 @@ const commentCount = computed(() => (props.comments ? props.comments.length : 0)
   font-size: 16px;
   color: #555;
   line-height: 1.4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .card-footer {
