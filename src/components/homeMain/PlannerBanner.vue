@@ -81,8 +81,12 @@ const handleAddPlan = () => {
         <div class="planner-description">
           <TextBlock :text-block="plannerIntroText[2][0]" />
         </div>
-        <div class="planner-additional-description">
-          <TextBlock :text-block="plannerIntroText[3][0]" />
+        <div v-if="!auth.isAuth"  type="button" class="btn border rounded-5 mt-5 text-primary-green border-primary-green p-0 align-content-center" style="width:250px; height:50px;">
+          <RouterLink to="/login" style="text-decoration: none;">
+            <div class="d-flex justify-content-center p-0 m-0">
+              <p class="m-0 p-0 text-primary-green" :style="{ fontFamily:' Pretendard', fontSize: '20px', fontWeight: 500,}">로그인하러 가기</p>
+            </div>
+          </RouterLink>
         </div>
         <div class="planner-button-container">
           <RouterLink v-if="!auth.isAuth" to="/login" class="planner-button">
