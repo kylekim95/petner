@@ -2,7 +2,6 @@
 import { useAuthStore } from '@/stores/auth';
 import TextBlock, { type TextBlockDescriptor } from '../common/TextBlock.vue';
 import { RouterLink, useRouter } from 'vue-router';
-
 const plannerIntroText: TextBlockDescriptor[][] = [
   [
     {
@@ -65,7 +64,6 @@ const handleAddPlan = () => {
   router.push('/travel');
 };
 </script>
-
 <template>
   <div class="planner-hero">
     <div class="planner-content">
@@ -81,12 +79,8 @@ const handleAddPlan = () => {
         <div class="planner-description">
           <TextBlock :text-block="plannerIntroText[2][0]" />
         </div>
-        <div v-if="!auth.isAuth"  type="button" class="btn border rounded-5 mt-5 text-primary-green border-primary-green p-0 align-content-center" style="width:250px; height:50px;">
-          <RouterLink to="/login" style="text-decoration: none;">
-            <div class="d-flex justify-content-center p-0 m-0">
-              <p class="m-0 p-0 text-primary-green" :style="{ fontFamily:' Pretendard', fontSize: '20px', fontWeight: 500,}">로그인하러 가기</p>
-            </div>
-          </RouterLink>
+        <div class="planner-additional-description">
+          <TextBlock :text-block="plannerIntroText[3][0]" />
         </div>
         <div class="planner-button-container">
           <RouterLink v-if="!auth.isAuth" to="/login" class="planner-button">
@@ -111,7 +105,6 @@ const handleAddPlan = () => {
     </div>
   </div>
 </template>
-
 <style scoped>
 .planner-hero {
   position: relative;
@@ -127,7 +120,6 @@ const handleAddPlan = () => {
   padding: 0 5%;
   box-sizing: border-box;
 }
-
 .planner-content {
   display: flex;
   width: 100%;
@@ -135,7 +127,6 @@ const handleAddPlan = () => {
   align-items: center;
   justify-content: space-between;
 }
-
 .planner-text {
   display: flex;
   flex-direction: column;
@@ -144,14 +135,12 @@ const handleAddPlan = () => {
   padding-right: 20px;
   text-align: left;
 }
-
 .planner-title {
   display: flex;
   flex-wrap: wrap;
   font-family: 'Pretendard';
   margin-bottom: 10px;
 }
-
 .planner-title > :first-child {
   background-color: var(--primary-green);
   color: var(--gray-1);
@@ -159,39 +148,33 @@ const handleAddPlan = () => {
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
 }
-
 .planner-title > :last-child {
-  color: #4b3c3c;
+  color: #4B3C3C;
   margin-left: 8px;
 }
-
 .planner-subtitle {
   font-family: 'Pretendard';
   font-size: 50px;
   line-height: 1.2;
-  color: #4b3c3c;
+  color: #4B3C3C;
   margin-bottom: 15px;
 }
-
 .planner-description {
   font-family: 'Pretendard';
   font-size: 20px;
   line-height: 1.5;
-  color: #4b3c3c;
+  color: #4B3C3C;
   margin-bottom: 10px;
 }
-
 .planner-additional-description {
   font-family: 'Pretendard';
   font-size: 20px;
   line-height: 1.5;
-  color: #4b3c3c;
+  color: #4B3C3C;
 }
-
 .planner-button-container {
   margin-top: 20px;
 }
-
 .planner-button {
   display: inline-flex;
   align-items: center;
@@ -204,77 +187,65 @@ const handleAddPlan = () => {
   text-decoration: none;
   transition: background-color 0.3s, color 0.3s;
 }
-
 .planner-button:hover {
   background-color: var(--primary-green);
-  color: #ffffff;
+  color: #FFFFFF;
 }
-
 .login-paw-icon {
   font-size: 1.5rem;
   margin-right: 8px;
   color: var(--primary-green);
   transition: color 0.3s;
 }
-
 .planner-button:hover .login-paw-icon {
-  color: #ffffff;
+  color: #FFFFFF;
 }
-
 .planner-add-plan {
   display: flex;
   align-items: center;
   padding: 12px 20px;
   border: 2px solid var(--primary-green);
   border-radius: 8px;
-  background-color: #ffffff;
+  background-color: #FFFFFF;
   color: var(--primary-green);
   cursor: pointer;
   transition: background 0.3s, transform 0.2s, color 0.3s;
   margin-top: 20px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
-
 .planner-add-plan:hover {
   background: var(--primary-green);
-  color: #ffffff;
+  color: #FFFFFF;
   transform: scale(1.02);
 }
-
 .planner-add-icon {
   font-size: 1.5rem;
   margin-right: 10px;
   color: var(--primary-green);
 }
-
 .planner-add-plan:hover .planner-add-icon {
-  color: #ffffff;
+  color: #FFFFFF;
 }
-
 .planner-add-text {
   display: flex;
   flex-direction: column;
 }
-
 .planner-add-title {
   font-size: 20px;
   font-weight: 600;
   font-family: 'Pretendard';
 }
-
 .planner-add-subtext {
   font-size: 16px;
   font-family: 'Pretendard';
   color: #555;
 }
-
 .planner-image-container {
   width: 45%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-
 .planner-image {
   max-width: 100%;
   height: auto;

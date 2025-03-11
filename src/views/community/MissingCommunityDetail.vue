@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import useFetchMissingDetail from '@/composibles/tanstack-query/useFetchMissingDetail';
+// import useFetchMissingDetail from '@/composibles/tanstack-query/useFetchMissingDetail';
 import { useRoute, useRouter } from 'vue-router';
 import useFetchMissingPost from '@/composibles/tanstack-query/useFetchMissingPost';
 import { computed, ref, onMounted } from 'vue';
 import type MissingAnimalDataType from '@/types/missingAnimal';
 import type { ComputedRef } from 'vue';
-import useFetchUser from '@/composibles/tanstack-query/useFetchUser';
+// import useFetchUser from '@/composibles/tanstack-query/useFetchUser';
 import useDeletePost from '@/composibles/tanstack-query/useDeletePost';
 import { useQueryClient } from '@tanstack/vue-query';
 import QUERY_KEY from '@/constants/queryKey';
@@ -14,8 +14,8 @@ import CommentSection from '@/components/community/CommentSection.vue';
 import { getPost } from '@/apis/devcourse/Post/getPost';
 import { type devUser } from '@/types/devcourse/devUser';
 import { type devComment } from '@/types/devcourse/devComment';
-import { useAuthStore } from '@/stores/auth';
-import { storeToRefs } from 'pinia';
+// import { useAuthStore } from '@/stores/auth';
+// import { storeToRefs } from 'pinia';
 
 const cat = ['나이', '품종', '성별', '색상', '마이크로 칩 번호'];
 const missingCat = ['분실 날짜', '분실 장소', '주위의 특징적 건물', '관할지'];

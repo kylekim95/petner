@@ -5,11 +5,12 @@ import { useRoute } from 'vue-router';
 import PhotoGrid from '@/components/travel/travelDetail/PhotoGrid.vue';
 import InfoCard from '@/components/travel/travelDetail/TravelInfoCard.vue';
 
+import { FreeChannelId } from '@/constants/communityConsts';
+
 import { type DetailCard } from '@/components/travel/travelDetail/TravelInfoCard.vue';
 import { type PetTravelDetail } from '@/components/travel/travelDetail/withPetsInfo.vue';
 import { type RoomItem } from '@/components/travel/travelDetail/AccommodationCard.vue';
 import { type DetailInfoData } from '@/components/travel/travelDetail/DetailInfoComponent.vue';
-import { type GetChannelPostsResponse } from '@/apis/devcourse/Post/getChannelPosts';
 
 import WithPetsInfo from '@/components/travel/travelDetail/withPetsInfo.vue';
 import AccommodationCard from '@/components/travel/travelDetail/AccommodationCard.vue';
@@ -21,13 +22,11 @@ import { fetchPetTourData } from '@/apis/tour/detailPetTour';
 import { fetchDetailInfoData } from '@/apis/tour/detailInfo';
 import { detailIntro } from '@/apis/tour/detailIntro';
 import { detailCommon } from '@/apis/tour/detailCommon';
-import { getChannelPosts } from '@/apis/devcourse/Post/getChannelPosts';
-import { FreeChannelId } from '@/constants/communityConsts';
-import { devUser } from '@/types/devcourse/devUser';
+import { type devUser } from '@/types/devcourse/devUser';
 
 import { getAllSearchQuery } from '@/apis/devcourse/Search/getAllSearchQuery';
 import type { devPost } from '@/types/devcourse/devPost';
-import { getUser, type GetUserResponse } from '@/apis/devcourse/User/getUser';
+import { getUser } from '@/apis/devcourse/User/getUser';
 
 const imageData = ref<string[]>([]);
 const postsData = ref<devPost[]>([]);
@@ -101,10 +100,13 @@ onMounted(async () => {
 
     //자유게시판 포스트 글 불러오기기
     if(detailCommonData.value){
-      const posts = (await getAllSearchQuery({searchQuery: detailCommonData.value.title})).resultsPosts;
+      const posts = (await getAllSearchQuery({searchQuery: detailCommonData.value.title})).resultsPosts.filter((e)=>{
+        return (e.channel as unknown as string)===FreeChannelId}
+      );
+      console.log('posts', posts);
       const users : devUser[] = [];
       for(let i = 0; i < posts.length; i++){
-        const authorid : string = posts[i].author;
+        const authorid : string = posts[i].author as unknown as string;
         users.push((await getUser({id : authorid})).user);
       }
       postsData.value = posts;

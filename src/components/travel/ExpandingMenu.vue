@@ -122,7 +122,7 @@ function handleCategoryClick(data: ExpandingMenuItemData) {
       @transitionstart="(e) => OnExpandStart(e)"
       @click="(e) => handleCategoryClick(item)"
     >
-      <div class="p-2 position-absolute bottom-0">
+      <div class="px-5 py-4 position-absolute bottom-0">
         <span
           class="horizontal-text-title text-gray-1"
           :class="item.id === focusedId ? 'opacity-100' : 'opacity-0'"
