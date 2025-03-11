@@ -2,7 +2,10 @@
 import { createPost } from '@/apis/devcourse/Post/createPost';
 import * as CHANID from '@/constants/communityConsts';
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 import type adoptionForm from '@/types/adoptionForm';
+
+const router = useRouter();
 
 // 개인정보 입력 필드
 const name = ref('');
@@ -48,6 +51,9 @@ const handleSubmit = () => {
     channelId: CHANID.AdoptionChannelId,
     title: JSON.stringify(form),
   });
+
+  // 페이지 이동
+  router.push('/adoption-complete');
 };
 </script>
 

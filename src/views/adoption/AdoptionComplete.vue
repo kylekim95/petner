@@ -54,8 +54,8 @@ import PATH from '@/constants/path';
 
 <style scoped>
 .wrapper {
-  width: 100vw;
-  height: 80vh;
+  width: 100%;
+  height: 100vh;
   background-color: var(--secondary-green);
 
   display: flex;
@@ -80,6 +80,7 @@ import PATH from '@/constants/path';
   color: var(--gray-1);
   display: block;
   margin-bottom: 30px;
+  font-size: 18px;
 }
 
 .hand-img {
@@ -94,7 +95,8 @@ import PATH from '@/constants/path';
   height: 50px;
   background-color: var(--gray-1);
   color: var(--primary-green);
-  font-size: 24;
+  font-size: 22px;
+  font-weight: bold;
   text-decoration: none;
   border-radius: 8px;
 
