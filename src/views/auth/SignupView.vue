@@ -60,7 +60,7 @@ const passwordRules = [
 async function HandleAction() {
   try{
     await auth.Signup(name.value, email.value, password.value);
-    router.push('/login');
+    router.replace('/login');
   }
   catch(e){
     toast.value?.classList.add('show');
@@ -109,7 +109,7 @@ async function HandleAction() {
           </form>
           <div class="w-100 justify-content-center d-flex my-3 gap-3">
             <TextBlock :text-block="SwitchText[0]" />
-            <router-link style="text-decoration: none" to='login'><TextBlock :text-block="SwitchText[1]" /></router-link>
+            <router-link style="text-decoration: none" to='/login?next=/signup'><TextBlock :text-block="SwitchText[1]" /></router-link>
           </div>
         </div>
       </div>
