@@ -15,6 +15,10 @@ export const useAuthStore = defineStore('auth', ()=>{
   const userId = ref<string | null>(localStorage.getItem('uid'));
   const isAuth = ref<boolean>(false);
 
+  if(localStorage.getItem('jwt')){
+    isAuth.value = true;
+  }
+
   async function GetUser() {
     if(token.value && userId.value){
       const request : GetUserRequest = { id: userId.value };

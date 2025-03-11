@@ -20,7 +20,7 @@ const useFetchTargetMissing = (postId: LocationQueryValue | LocationQueryValue[]
     });
     return { post, isLoading, contents };
   } else {
-    return { post: null, isLoading: null, contents: null };
+    return { post: undefined, isLoading: null, contents: null };
   }
 };
 export default useFetchTargetMissing;
