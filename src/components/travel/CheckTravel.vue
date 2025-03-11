@@ -45,6 +45,7 @@ const pageCategoryData = ref({
 
 // 지역 정보
 const areaInfo = ref([
+  { area: '전체', areaCode: '' },
   { area: '서울', areaCode: '1' },
   { area: '인천', areaCode: '2' },
   { area: '대전', areaCode: '3' },
