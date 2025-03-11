@@ -3,7 +3,6 @@ import MainHero from '@/components/homeMain/MainHero.vue';
 import PopularTravelSwiperComponent from '@/components/homeMain/PopularTravelSwiperComponent.vue';
 import PlannerBanner from '@/components/homeMain/PlannerBanner.vue';
 import AbandonedBanner from '@/components/homeMain/AbandonedBanner.vue';
-import PopularShoppingSwiperComponent from '@/components/homeMain/PopularShoppingSwiperComponent.vue';
 import GridMenu from '@/components/homeMain/GridMenu.vue';
 import { ref, onMounted } from 'vue';
 import { type PopularTravelData } from '@/components/homeMain/atoms/PopularTravelCard.vue';
@@ -45,5 +44,4 @@ onMounted(async ()=>{
   <PlannerBanner />
   <AbandonedBanner />
   <GridMenu />
-  <PopularShoppingSwiperComponent />
 </template>

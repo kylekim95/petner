@@ -26,7 +26,8 @@ import AdoptionCardBanner from '@/components/adoption/main/AdoptionCardBanner.vu
 
 <style scoped>
 .main-wrapper {
-  width: 100vw;
+  width: 100%;
+  overflow-x: hidden; /* 가로 스크롤 숨김 */
 }
 
 .fitted-contents {

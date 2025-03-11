@@ -6,8 +6,8 @@
       <div class="banner-card">
         <img src="/PNG-Image/images/alert-bell.png" alert="bell image" />
         <p>
-          우리나라 유기동물들에게 <br />
-          조금만 귀기울여주세요
+          유기동물들에게 <br />
+          관심을 기울여주세요
         </p>
       </div>
       <div class="banner-card">
