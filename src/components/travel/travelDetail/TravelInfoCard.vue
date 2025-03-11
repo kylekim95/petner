@@ -546,11 +546,11 @@ function formatPolicy(text: string | null): string {
         </div>
         <div class="d-flex align-items-center justify-content-between mt-2">
           <h2 class="fs-5">쉬는 날</h2>
-          <span class="fs-6">{{ detail?.restdate || '-' }}</span>
+          <span class="fs-6">{{ detail?.restdate ? formatPolicy(detail.restdate) : '-' }}</span>
         </div>
         <div class="d-flex align-items-center justify-content-between mt-2">
           <h2 class="fs-5">주차 정보</h2>
-          <span class="fs-6">{{ detail.parking ?? '-' }}</span>
+          <span class="fs-6">{{ detail.parking ? formatPolicy(detail.parking) : '-' }}</span>
         </div>
         <div class="d-flex align-items-center justify-content-between mt-2">
           <h2 class="fs-5">체험 안내</h2>
@@ -560,7 +560,9 @@ function formatPolicy(text: string | null): string {
 
       <!-- 오른쪽: 지도 Placeholder -->
       <div class="col-6">
-        <div class="map-placeholder d-flex align-items-center justify-content-center rounded-4 overflow-hidden">
+        <div
+          class="map-placeholder d-flex align-items-center justify-content-center rounded-4 overflow-hidden"
+        >
           <ShelterKakaoMap :lat="Number(detail.mapy)" :lng="Number(detail.mapx)" />
         </div>
       </div>
