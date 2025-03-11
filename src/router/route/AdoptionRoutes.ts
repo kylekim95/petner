@@ -39,7 +39,7 @@ const ADOPTION_ROUTES = [
     component: () => import('@/views/adoption/AdoptionComplete.vue'),
     meta: { headerVariant: 'header-green' },
     beforeEnter: (to, from)=>{
-      if(from.name !== 'form'){
+      if(from.name === 'form'){
         return true;
       }
       else{

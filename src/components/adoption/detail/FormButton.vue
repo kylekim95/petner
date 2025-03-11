@@ -1,3 +1,7 @@
+<script setup lang="ts">
+import { RouterLink } from 'vue-router';
+</script>
+
 <template>
   <div class="container my-5 p-5 bg-cover bg-center rounded-3 adopt-form-section">
     <div class="adopt-form-content text-left text-white">
@@ -12,11 +16,11 @@
         <br />
         신중하게 결정하시고, 입양 후에도 책임감을 다해주세요.
       </p>
-      <a
-        href="/adoption/form"
+      <RouterLink
+        to="/adoption/form"
         class="btn btn-gray-1 text-primary-green mt-3"
         style="font-size: 1.2rem"
-        >바로가기</a
+        >바로가기</RouterLink
       >
     </div>
   </div>
