@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { onMounted } from 'vue';
+
 export interface AdoptionRequestData {
   name: string;
   contact: string;
@@ -13,15 +15,8 @@ interface AdoptionRequestDisplayProps {
 }
 const props = defineProps<AdoptionRequestDisplayProps>();
 const petnerText =
-  '본인은 펫트너를 통해 입양한 반려동물에게  책임을 다하고, 최적의 환경과 보살핌을 제공할 것을 서약합니다.';
-const formattedOathDate =
-  props.data.oathDate.getFullYear() +
-  '년 ' +
-  props.data.oathDate.getMonth() +
-  '월 ' +
-  props.data.oathDate.getDay() +
-  '일';
-console.log(formattedOathDate);
+  '본인은 펫트너를 통해 입양한 반려동물에게 책임을 다하고, 최적의 환경과 보살핌을 제공할 것을 서약합니다.';
+const formattedOathDate = props.data.oathDate.toLocaleDateString();
 </script>
 
 <template>

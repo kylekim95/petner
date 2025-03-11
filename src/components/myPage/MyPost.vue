@@ -84,19 +84,9 @@ watch(
         },
       ],
     };
+    console.log(adoptionRequestData.value.oathDate);
   },
 );
-
-// 게시글 목업 데이터
-const postData = ref({
-  imgUrl:
-    'https://media.istockphoto.com/id/1853686056/ko/%EC%82%AC%EC%A7%84/%EC%A7%91%EC%97%90%EC%84%9C-%ED%9C%B4%EC%8B%9D%EC%9D%84-%EC%B7%A8%ED%95%98%EB%8A%94-%EA%B3%A8%EB%93%A0-%EB%A6%AC%ED%8A%B8%EB%A6%AC%EB%B2%84.jpg?s=1024x1024&w=is&k=20&c=qrl0V8QEo7JzTYnGk7hPuSKhmryWD5vnLnrWy0C3XzU=',
-  author: '신중석',
-  date: '2024.10.21',
-  title: '우리 강아지 너무 귀엽지 않나요?',
-  like: 1498,
-  chat: 1498,
-});
 
 const goToPostDetail = (post: devPost) => {
   if (post.channel._id === CHANID.MissingChannelId) {
