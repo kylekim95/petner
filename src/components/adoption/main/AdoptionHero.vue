@@ -1,4 +1,5 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+</script>
 
 <template>
   <div class="hero-wrapper">
@@ -26,14 +27,13 @@
 
 .hero-message-wrapper {
   position: absolute;
-  top: 0px;
-  width: 100vw;
+  top: 0;
+  width: 100%;
   height: 575px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: auto;
 }
 
 .hero-message {
@@ -42,8 +42,21 @@
   font-family: 'Paperlogy';
   font-weight: 600;
   color: var(--gray-1);
-  padding-top: 350px;
   text-align: end;
   line-height: 130%;
+  padding-top: 100px;
+  opacity: 0;
+  animation: fadeInSlide 1.5s ease-out forwards 0.5s;
+}
+
+@keyframes fadeInSlide {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 </style>

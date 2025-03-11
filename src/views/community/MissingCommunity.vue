@@ -60,7 +60,7 @@ const handleWriteClick = () => {
       <div class="banner-text">
         <h1>
           동네 이웃과 함께,<br />
-          유실동물을 찾아요!
+          실종 동물을 찾아요!
         </h1>
         <h2>여러분의 작은 제보가 큰 변화를 만듭니다. 함께 힘을 모아 반려동물을 찾아요!</h2>
       </div>
@@ -115,42 +115,47 @@ const handleWriteClick = () => {
 
 <style scoped>
 .wrapper {
-  width: 100vw;
+  width: 100%;
   min-width: 800px;
   margin-bottom: 50px;
 }
 .banner {
   position: relative;
+  overflow: hidden;
+  width: 100%;
+  max-width: 100%;
 }
 .banner-img {
   width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
+
 .banner-text {
   width: 100%;
   height: 100%;
   position: absolute;
-  top: 0px;
-  left: 0px;
-
+  top: 0;
+  left: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 2rem;
   background-color: transparent;
-
   font-family: 'Paperlogy';
   text-align: center;
   color: var(--gray-1);
 }
 
 .banner-text h1 {
-  font-size: 2rem;
+  font-size: 2.5rem;
   font-weight: 700;
   line-height: 150%;
 }
 .banner-text h2 {
-  font-size: 1.2em;
+  font-size: 1.3em;
 }
 .fitted-content {
   width: 66vw;

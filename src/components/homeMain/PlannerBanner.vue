@@ -57,6 +57,7 @@ const plannerIntroText: TextBlockDescriptor[][] = [
     },
   ],
 ];
+
 const auth = useAuthStore();
 const router = useRouter();
 const handleAddPlan = () => {

@@ -196,7 +196,7 @@ const itemData: ExpandingMenuItemData[] = [
           <div class="row">
             <div class="col-12">
               <h1 style="font-family: paperlogy; font-weight: 700; font-size: 48px">
-                반려 동물과 함께 하는 <span class="text-primary-red">특별한</span> 여행
+                반려 동물과 함께 하는 <span class="text-primary-red">특별한</span> 여행,
               </h1>
               <p style="font-family: paperlogy; font-weight: 700; font-size: 48px">
                 펫트너와 함께 떠나요!
@@ -212,24 +212,24 @@ const itemData: ExpandingMenuItemData[] = [
       <CultureShoppingSwiper
         :shopping="shoppingAndCulture"
         section-title="문화 & 쇼핑"
-        section-subtitle="펫트너의 쇼핑과 문화의 만남"
+        section-subtitle="반려동물과 함께하는 쇼핑과 문화"
       />
 
       <AccommodationSwiper
         :accommodations="accommodations"
         section-title="숙소"
-        section-subtitle="펫트너가 추천하는 반려동물 친화 숙소"
+        section-subtitle="반려동물과 편안하게 쉴 수 있는 숙소, 여행의 시작을 함께하세요."
       />
 
       <RestaurantSwiper
         :restaurants="restaurants"
         section-title="음식점 & 카페"
-        section-subtitle="펫트너의 맛있는 여정"
+        section-subtitle="반려동물과 특별한 순간을 즐길 수 있는 감성 맛집을 소개합니다."
       />
 
       <div class="container" style="width: 100%; margin-bottom: 5%">
         <div class="gray-10 fw-bold mt-5" style="font-size: 36px">관광 & 체험</div>
-        <div class="gray-10 text-gray-7" style="font-size: 24px">펫트너가 추천하는 액티비티</div>
+        <div class="gray-10 text-gray-7" style="font-size: 24px">반려동물과 함께하는 특별한 순간, 즐거움이 가득한 체험을 만나보세요.</div>
         <div style="height: 500px">
           <ExpandingMenu :item-data="itemData" class="mt-3" />
         </div>

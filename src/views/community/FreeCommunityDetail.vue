@@ -225,7 +225,6 @@ const handleCommentUpdate = async (index: number) => {
             <!-- 작성자 정보 영역 -->
             <div class="author-info ms-2">
               <h5 class="mb-0">{{ post.author.fullName }}</h5>
-              <p class="mb-0 text-muted">{{ post.author.email }}</p>
               <small class="text-muted"> {{ new Date(post.createdAt).toLocaleString() }}</small>
             </div>
           </div>

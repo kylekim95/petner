@@ -8,55 +8,43 @@ import CITY_ORG from '@/constants/api/cityOrg';
 import type { OrgType } from '@/types/shelter';
 import { useQuery } from '@tanstack/vue-query';
 import { getShelterListApi, getShelterInfo } from '@/apis/adoption/shelter';
+import lottie from 'lottie-web';
+import LottieAnimation from './LottieAnimation.vue'; // 경로에 맞게 수정
 
-const selectedRegion = ref('서울특별시');
+const selectedRegion = ref('서울특별시'); // 기본 선택: 서울특별시
 const cityOrgList = ref<OrgType[]>([]); // 구, 군 리스트
 
 watch(selectedRegion, (newV, oldV) => {
-  //선택된 지역이 CITY_ORG의 key안에없다면
-  if (!Object.keys(CITY_ORG).includes(selectedRegion.value)) {
-    return;
-  }
-  // 선택된 상위 region에 대한 모든 보호소 를 조회
-  cityOrgList.value = [...CITY_ORG[newV]]; // 하위 orgList
-  //console.log('cityOrgList', cityOrgList.value);
+  if (!Object.keys(CITY_ORG).includes(selectedRegion.value)) return;
+  cityOrgList.value = [...CITY_ORG[newV]];
   refetch();
 });
 
-// 1. 모든 구군에 대한 간소화된 shleterList를 얻는다.
+// 1. 간소화된 shelterList 조회
 const {
   data: shelters,
   isLoading: isLoadingShelters,
   refetch,
 } = useQuery({
   queryKey: ['shelters', 'list', selectedRegion],
-  queryFn: () =>
-    Promise.all(cityOrgList.value.map((org) => getShelterListApi(org.uprCd, org.orgCd))),
-});
-// 다음쿼리가 실행될 준비가 되었는지 확인한다.
-const enabled = computed(() => {
-  console.log('shelters value', shelters.value);
-  if (shelters.value && (shelters.value.length > 0 || shelters.value !== undefined)) {
-    return true;
-  }
-  return false;
+  queryFn: () => {
+    if (cityOrgList.value.length === 0) return Promise.resolve([]);
+    return Promise.all(cityOrgList.value.map((org) => getShelterListApi(org.uprCd, org.orgCd)));
+  },
 });
 
-// 2. 보호소 별 상세정보를 조회
-const {
-  data: shelterDetails,
-  isLoading: isLoadingShelterDetails,
-  // refetch,
-} = useQuery({
+// shelters 데이터가 배열이면 쿼리 실행 (빈 배열이어도)
+const enabled = computed(() => Array.isArray(shelters.value));
+
+// 2. 보호소별 상세정보 조회
+const { data: shelterDetails, isLoading: isLoadingShelterDetails } = useQuery({
   queryKey: ['shelterDetails', 'list', selectedRegion],
   queryFn: () => {
-    console.log('두번째 쿼리가 작동', '원본 shelters', shelters.value);
-    //
     const flatShelters = computed(() => shelters.value?.flatMap((A) => A));
-
-    return Promise.all(flatShelters.value!.map((shelter) => getShelterInfo(shelter.careRegNo)));
+    if (!flatShelters.value || flatShelters.value.length === 0) return Promise.resolve([]);
+    return Promise.all(flatShelters.value.map((shelter) => getShelterInfo(shelter.careRegNo)));
   },
-  enabled, // 준비 완료시 queryFn 실행
+  enabled,
 });
 
 const shelterInfoList = computed(() => {
@@ -66,6 +54,7 @@ const shelterInfoList = computed(() => {
   console.log('result', result);
   return result;
 });
+
 const tooltipText = ref('');
 const tooltipStyle = ref<CSSProperties>({
   position: 'absolute',
@@ -129,6 +118,10 @@ const attachRegionEvents = () => {
 };
 
 onMounted(() => {
+  if (Object.keys(CITY_ORG).includes(selectedRegion.value)) {
+    cityOrgList.value = [...CITY_ORG[selectedRegion.value]];
+    refetch();
+  }
   attachRegionEvents();
 });
 </script>
@@ -155,12 +148,24 @@ onMounted(() => {
           >
         </div>
         <div
-          v-if="isLoadingShelterDetails || isLoadingShelters"
-          class="d-flex justify-items-center"
+          v-if="
+            isLoadingShelterDetails ||
+            isLoadingShelters ||
+            (shelterInfoList && shelterInfoList.length === 0)
+          "
+          class="map-prompt-wrapper"
         >
-          로딩중
+          <LottieAnimation />
+          <p class="map-prompt-text">
+            {{
+              isLoadingShelterDetails || isLoadingShelters
+                ? '로딩중'
+                : '지도에서 지역을 선택해 보호소를 확인하세요.'
+            }}
+          </p>
         </div>
-        <div class="card-list-wrapper">
+
+        <div v-else class="card-list-wrapper">
           <ShelterCard
             v-for="shelter in shelterInfoList"
             :key="shelter.careNm"
@@ -169,10 +174,6 @@ onMounted(() => {
         </div>
       </div>
     </div>
-    <!-- <div class="mt-4 text-center">
-      <span v-if="selectedRegion">선택된 지역: {{ selectedRegion }}</span>
-      <span v-else>지역을 클릭해 선택해주세요.</span>
-    </div> -->
   </div>
 </template>
 
@@ -201,6 +202,7 @@ onMounted(() => {
 .shelter-info-wrapper {
   width: 664px;
   height: 645px;
+  position: relative;
 }
 .shelter-title-card {
   width: 100%;
@@ -219,9 +221,23 @@ onMounted(() => {
   font-style: normal;
   color: var(--primary-red);
 }
-
 .card-list-wrapper {
   height: 545px;
   overflow-y: scroll;
+}
+
+/* 지도 선택 안내 스타일 */
+.map-prompt-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+.map-prompt-text {
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--gray-7);
+  margin-top: 20px;
 }
 </style>
