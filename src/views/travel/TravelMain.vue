@@ -229,7 +229,9 @@ const itemData: ExpandingMenuItemData[] = [
 
       <div class="container" style="width: 100%; margin-bottom: 5%">
         <div class="gray-10 fw-bold mt-5" style="font-size: 36px">관광 & 체험</div>
-        <div class="gray-10 text-gray-7" style="font-size: 24px">반려동물과 함께하는 특별한 순간, 즐거움이 가득한 체험을 만나보세요.</div>
+        <div class="gray-10 text-gray-7" style="font-size: 24px">
+          반려동물과 함께하는 특별한 순간, 즐거움이 가득한 체험을 만나보세요.
+        </div>
         <div style="height: 500px">
           <ExpandingMenu :item-data="itemData" class="mt-3" />
         </div>
@@ -273,5 +275,41 @@ const itemData: ExpandingMenuItemData[] = [
   z-index: 2;
   color: #fff;
   text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+::v-deep img {
+  transition: transform 0.3s ease;
+}
+::v-deep img:hover {
+  transform: scale(1.05);
+  cursor: pointer;
+}
+
+/* Swiper 슬라이드, 메인카테고리박스, 확장메뉴 아이템 등에 커서 & 스케일 적용 */
+::v-deep .swiper-slide,
+::v-deep .main-category-box,
+::v-deep .expanding-menu-item {
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+::v-deep .swiper-slide:hover,
+::v-deep .main-category-box:hover,
+::v-deep .expanding-menu-item:hover {
+  transform: scale(1.01);
+  border-radius: 12px; /* 기본 라운드 값 설정 */
+}
+
+::v-deep .swiper-slide img,
+::v-deep .main-category-box img,
+::v-deep .expanding-menu-item img {
+  border-radius: 12px; /* 기본 라운드 값 설정 */
+  transition: transform 0.3s ease;
+}
+
+::v-deep .swiper-slide:hover img,
+::v-deep .main-category-box:hover img,
+::v-deep .expanding-menu-item:hover img {
+  border-radius: 12px; /* 기본 라운드 값 설정 */
+  transform: scale(1.01);
 }
 </style>
