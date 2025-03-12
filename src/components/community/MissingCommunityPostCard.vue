@@ -15,7 +15,7 @@ const data = computed(() => JSON.parse(props.card.title));
 const { fullName, _id: userId, image } = props.card.author; // 사용자 정보 가져오기
 const userData = useFetchUser(userId);
 const profileImgUrl =
-  image === undefined ? '/PNG-Image/images/default-profile1.png' : userData.value?.user.image;
+  image === undefined ? '/PNG-Image/images/default-profile1.png' : image;
 const router = useRouter();
 const handleClick = () => {
   router.push(`/community/missing/${props.card._id}`);
