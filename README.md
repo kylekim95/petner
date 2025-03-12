@@ -100,7 +100,10 @@
 
 ## 폴더 구조
 ```bash
+│   App.vue
+│   main.ts
 ├───apis
+│   │   supabase.ts
 │   ├───adoption
 │   ├───devcourse
 │   │   ├───Auth
@@ -143,14 +146,19 @@
 │   └───travel
 ├───hooks
 ├───router
+│   │   index.ts
 │   └───route
 ├───stores
+│       auth.ts
+│       facilitiesStore.ts
 ├───types
 │   ├───devcourse
 │   └───travelList
 ├───utils
 │   └───travel
 └───views
+    │   HomeMain.vue
+    │   NotFound.vue
     ├───adoption
     ├───auth
     ├───community
