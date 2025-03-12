@@ -29,14 +29,15 @@ const handleClick = () => {
   >
     <!-- 이미지 영역 -->
     <div class="position-relative z-0 filter">
-      <img
-        :src="card.image"
-        alt="강아지"
-        width="100%"
-        height="442px"
-        class="card-image"
-        :style="{ filter: 'brightness(0.7)', borderRadius: '10px 10px 0px 0px' }"
-      />
+      <div class="overflow-hidden" style="max-height: 442px;">
+        <img
+          :src="card.image"
+          alt="강아지"
+          width="100%"
+          class="card-image"
+          :style="{ filter: 'brightness(0.7)', borderRadius: '10px 10px 0px 0px' }"
+        />
+      </div>
       <div
         class="position-absolute bg-white text-center"
         :style="{
