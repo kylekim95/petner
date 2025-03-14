@@ -12,7 +12,7 @@ export interface LoginResponse {
 }
 
 export async function login(request: LoginRequest): Promise<LoginResponse> {
-  const response = await devAPI.post(import.meta.env.VITE_API_BASE_URL + AUTH.login, {
+  const response = await devAPI.post('devcourse' + AUTH.login, {
     ...request
   });
   console.log(response)
