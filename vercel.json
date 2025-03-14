@@ -1,7 +1,7 @@
 {
   "rewrites": [
     {
-      "source": "/devcourse/:path*",
+      "source": "//devcourse/:path*",
       "destination": "http://13.125.143.126:5001/:path*"
     }
   ]
